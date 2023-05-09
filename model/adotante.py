@@ -18,7 +18,7 @@ class Adotante(Pessoa):
     ):
         super().__init__(cpf, nome, data_nascimento, logradouro, numero)
         self.__tipo_habitacao = tipo_habitacao
-        self.__tipo_habitacao = tamanho_habitacao
+        self.__tamanho_habitacao = tamanho_habitacao
         self.__possui_animal = possui_animal
 
     @property

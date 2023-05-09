@@ -4,4 +4,4 @@ class Endereco:
         self.__numero = numero
 
     def __str__(self):
-        return f"Endereço: {self.__logradouro}, {self.__numero}"
+        return f"{self.__logradouro}, {self.__numero}"

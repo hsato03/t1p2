@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class TipoHabitacao(Enum):
-    CASA = (1,)
+    CASA = 1
     APARTAMENTO = 2
