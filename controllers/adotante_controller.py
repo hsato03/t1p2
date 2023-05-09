@@ -1,9 +1,8 @@
-from model.endereco import Endereco
 from views.adotante_view import AdotanteView
 from model.adotante import Adotante
-from datetime import datetime
 from model.tipo_habitacao import TipoHabitacao
 from model.tamanho_habitacao import TamanhoHabitacao
+from datetime import datetime
 
 
 class AdotanteController:
@@ -12,7 +11,7 @@ class AdotanteController:
         self.__tela_adotante = AdotanteView()
         self.__controlador_sistema = controlador_sistema
 
-    def pega_adotante_por_cpf(self, cpf: int):
+    def buscar_adotante_por_cpf(self, cpf: int):
         for adotante in self.__adotantes:
             if adotante.cpf == cpf:
                 return adotante
@@ -20,14 +19,11 @@ class AdotanteController:
 
     def incluir_adotante(self):
         dados_adotante = self.__tela_adotante.pega_dados_adotante()
-        data_nascimento_formatada = datetime.strptime(
-            dados_adotante["data_nascimento"], "%d/%m/%Y"
-        )
 
         adotante = Adotante(
             dados_adotante["cpf"],
             dados_adotante["nome"],
-            data_nascimento_formatada.date(),
+            dados_adotante["data"],
             dados_adotante["logradouro"],
             dados_adotante["numero"],
             TipoHabitacao(dados_adotante["tipo_habitacao"]),
@@ -37,9 +33,13 @@ class AdotanteController:
         self.__adotantes.append(adotante)
 
     def alterar_adotante(self):
+        if len(self.__adotantes) <= 0:
+            print("Nenhum adotante cadastrado.")
+            return
+
         self.listar_adotantes()
         cpf_adotante = self.__tela_adotante.seleciona_adotante()
-        adotante = self.pega_adotante_por_cpf(cpf_adotante)
+        adotante = self.buscar_adotante_por_cpf(cpf_adotante)
 
         if adotante is not None:
             novos_dados_adotante = self.__tela_adotante.pega_dados_adotante()
@@ -62,9 +62,14 @@ class AdotanteController:
         else:
             self.__tela_adotante.mostra_mensagem("ATENCAO: Adotante não existente")
 
-    # Sugestão: se a lista estiver vazia, mostrar a mensagem de lista vazia
     def listar_adotantes(self):
-        for adotante in self.__adotantes:
+        if len(self.__adotantes) <= 0:
+            print("Nenhum adotante cadastrado.")
+            return
+
+        for i in range(len(self.__adotantes)):
+            adotante = self.__adotantes[i]
+            print(f"ADOTANTE #{i + 1:02d}")
             self.__tela_adotante.mostra_adotante(
                 {
                     "cpf": adotante.cpf,
@@ -78,15 +83,18 @@ class AdotanteController:
             )
 
     def excluir_adotante(self):
+        if len(self.__adotantes) <= 0:
+            print("Nenhum adotante cadastrado.")
+            return
         self.listar_adotantes()
         cpf_adotante = self.__tela_adotante.seleciona_adotante()
-        adotante = self.pega_adotante_por_cpf(cpf_adotante)
+        adotante = self.buscar_adotante_por_cpf(cpf_adotante)
 
         if adotante is not None:
             self.__adotantes.remove(adotante)
             self.listar_adotantes()
         else:
-            self.__tela_adotante.mostra_mensagem("ATENCAO: Amigo não existente")
+            self.__tela_adotante.mostra_mensagem("ATENCAO: Adotante nao existente")
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()
@@ -97,6 +105,7 @@ class AdotanteController:
             2: self.alterar_adotante,
             3: self.listar_adotantes,
             4: self.excluir_adotante,
+            5: self.buscar_adotante_por_cpf,
             0: self.retornar,
         }
 

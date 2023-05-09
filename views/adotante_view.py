@@ -1,59 +1,86 @@
+from views.exceptions.opcao_invalida_exception import OpcaoInvalidaException
+from datetime import datetime
+
+
 class AdotanteView:
-    # fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado
     def tela_opcoes(self):
-        print("-------- ADOTANTES ----------")
-        print("Escolha a opcao")
-        print("1 - Incluir Adotante")
-        print("2 - Alterar Adotante")
-        print("3 - Listar Adotantes")
-        print("4 - Excluir Adotante")
-        print("0 - Retornar")
+        print("\n---------- ADOTANTES ----------")
+        print("[1] -> Incluir Adotante")
+        print("[2] -> Alterar Adotante")
+        print("[3] -> Listar Adotantes")
+        print("[4] -> Excluir Adotante")
+        print("[0] -> Retornar")
 
         opcao = int(input("Escolha a opcao: "))
+        if opcao not in range(0, 5):
+            raise OpcaoInvalidaException()
+
         return opcao
 
     def tela_opcoes_tipo_habitacao(self):
-        print("\t-------- TIPOS HABITACAO ----------")
-        print("\t[1] - Casa")
-        print("\t[2] - Apartamento")
+        print("TIPO HABITACAO:")
+        print("\t[1] -> Casa")
+        print("\t[2] -> Apartamento")
 
         opcao = int(input("Escolha a opcao: "))
+        if opcao not in range(0, 3):
+            raise OpcaoInvalidaException()
+
         return opcao
 
     def tela_opcoes_tamanho_habitacao(self):
-        print("\t-------- TAMANHOS HABITACAO ----------")
-        print("\t[1] - Pequeno")
-        print("\t[2] - Medio")
-        print("\t[3] - Grande")
+        print("TAMANHO HABITACAO:")
+        print("\t[1] -> Pequeno")
+        print("\t[2] -> Medio")
+        print("\t[3] -> Grande")
 
-        opcao = int(input("Escolha a opçao: "))
+        opcao = int(input("Escolha a opcao: "))
+        if opcao not in range(0, 4):
+            raise OpcaoInvalidaException()
+
         return opcao
 
     def tela_opcoes_possui_animal(self):
-        print("\t-------- POSSUI ANIMAL ----------")
-        print("\t[1] - Sim")
-        print("\t[2] - Nao")
+        print("POSSUI ANIMAL:")
+        print("\t[1] -> Sim")
+        print("\t[2] -> Nao")
 
-        opcao = int(input("Escolha a opçao: "))
+        opcao = int(input("Escolha a opcao: "))
+        if opcao not in range(0, 3):
+            raise OpcaoInvalidaException()
+
         return opcao
 
     # fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado
     def pega_dados_adotante(self):
-        print("-------- DADOS ADOTANTE ----------")
+        data_nascimento, tipo_habitacao, tamanho_habitacao, possui_animal = None, None, None, None
+        print("\n-------- DADOS ADOTANTE ----------")
         cpf = input("CPF: ")
         nome = input("Nome: ")
-        data_nascimento = input("Data de nascimento: ")
-        tipo_habitacao = self.tela_opcoes_tipo_habitacao()
-        tamanho_habitacao = self.tela_opcoes_tamanho_habitacao()
-        possui_animal = self.tela_opcoes_possui_animal()
-        print("\t------ DADOS ENDERECO --------")
+        while True:
+            try:
+                data_nascimento = input("Data de nascimento (dd/mm/yyyy): ") if data_nascimento is None else data_nascimento
+                data_nascimento_convertida = datetime.strptime(
+                    data_nascimento, "%d/%m/%Y"
+                )
+                tipo_habitacao = self.tela_opcoes_tipo_habitacao() if tipo_habitacao is None else tipo_habitacao
+                tamanho_habitacao = self.tela_opcoes_tamanho_habitacao() if tamanho_habitacao is None else tamanho_habitacao
+                possui_animal = self.tela_opcoes_possui_animal() if possui_animal is None else possui_animal
+                break
+            except OpcaoInvalidaException as e:
+                print(e)
+            except ValueError:
+                data_nascimento = None
+                print("ERRO: Data em formato invalido! Tente novamente.")
+
+        print("DADOS ENDERECO:")
         logradouro = input("\tLogradouro: ")
-        numero = input("\tNúmero: ")
+        numero = input("\tNumero: ")
 
         return {
             "nome": nome,
             "cpf": cpf,
-            "data_nascimento": data_nascimento,
+            "data_nascimento": data_nascimento_convertida,
             "tipo_habitacao": tipo_habitacao,
             "tamanho_habitacao": tamanho_habitacao,
             "possui_animal": possui_animal,
@@ -63,15 +90,14 @@ class AdotanteView:
 
     # fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado
     def mostra_adotante(self, dados_adotante):
-        print("#" * 70)
-        print("\t- CPF DO ADOTANTE:", dados_adotante["cpf"])
-        print("\t- NOME DO ADOTANTE:", dados_adotante["nome"])
-        print("\t- DATA DE NASCIMENTO DO ADOTANTE:", dados_adotante["data_nascimento"])
+        print("\t- CPF:", dados_adotante["cpf"])
+        print("\t- NOME:", dados_adotante["nome"])
+        print("\t- DATA DE NASCIMENTO:", dados_adotante["data_nascimento"])
         print(
-            "\t- TIPO DE HABITACAO DO ADOTANTE:", dados_adotante["tipo_habitacao"].name
+            "\t- TIPO DE HABITACAO:", dados_adotante["tipo_habitacao"].name
         )
         print(
-            "\t- TAMANHO DE HABITACAO DO ADOTANTE:",
+            "\t- TAMANHO DE HABITACAO:",
             dados_adotante["tamanho_habitacao"].name,
         )
         print("\t- POSSUI ANIMAL:", dados_adotante["possui_animal"])
