@@ -4,7 +4,9 @@ from datetime import date
 
 
 class Adocao:
-    def __init__(self, adotante: Adotante, animal: Animal, data: date, termo_assinado: bool):
+    def __init__(
+        self, adotante: Adotante, animal: Animal, data: date, termo_assinado: bool
+    ):
         self.__adotante = adotante
         self.__animal = animal
         self.__data = data
@@ -33,12 +35,10 @@ class Adocao:
     @data.setter
     def data(self, data: date):
         self.__data = data
-        
+
     @property
     def termo_assinado(self):
         return self.__termo_assinado
 
     def assinar_termo(self):
         self.__termo_assinado = True
-
-

@@ -3,7 +3,6 @@ from controllers.adotante_controller import AdotanteController
 
 
 class SistemaController:
-
     def __init__(self):
         self.__controlador_adotantes = AdotanteController(self)
         self.__tela_sistema = SistemaView()
@@ -17,6 +16,7 @@ class SistemaController:
 
     def cadastra_adotantes(self):
         self.__controlador_adotantes.abre_tela()
+
     def encerra_sistema(self):
         exit(0)
 
