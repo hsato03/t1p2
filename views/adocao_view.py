@@ -1,5 +1,5 @@
 from datetime import date
-from controllers.adotante_controller import AdotanteController
+from exceptions.opcao_invalida_exception import OpcaoInvalidaException
 
 
 class AdocaoView:
@@ -7,11 +7,16 @@ class AdocaoView:
         print("\n---------- ADOCOES ----------")
         print("[1] -> Incluir Adocao")
         print("[2] -> Alterar Adocao")
-        print("[3] -> Listar Adocoes")
-        print("[4] -> Excluir Adocao")
+        print("[3] -> Excluir Adocao")
+        print("[4] -> Listar Adocoes")
+        print("[5] -> Listar Adocao por id")
         print("[0] -> Retornar")
 
+        
         opcao = int(input("Escolha a opcao: "))
+        if opcao not in range(0, 6):
+            raise OpcaoInvalidaException("Opcao invalida. Tente novamente.")
+
         return opcao
 
     def tela_opcoes_termo(self):

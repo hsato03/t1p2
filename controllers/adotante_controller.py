@@ -91,7 +91,7 @@ class AdotanteController:
             adotante = self.buscar_adotante_por_cpf(cpf_adotante)
 
             self.__adotantes.remove(adotante)
-            self.listar_adotantes()
+            self.__tela_adotante.mostra_mensagem("Adotante removido com sucesso.")
         except EntidadeNaoEncontradaException as e:
             print(e)
 
