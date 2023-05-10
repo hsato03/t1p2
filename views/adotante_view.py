@@ -24,7 +24,7 @@ class AdotanteView:
         print("\t[2] -> Apartamento")
 
         opcao = int(input("Escolha a opcao: "))
-        if opcao not in range(0, 3):
+        if opcao not in range(1, 3):
             raise OpcaoInvalidaException()
 
         return opcao
@@ -36,7 +36,7 @@ class AdotanteView:
         print("\t[3] -> Grande")
 
         opcao = int(input("Escolha a opcao: "))
-        if opcao not in range(0, 4):
+        if opcao not in range(1, 4):
             raise OpcaoInvalidaException()
 
         return opcao
@@ -47,7 +47,7 @@ class AdotanteView:
         print("\t[2] -> Nao")
 
         opcao = int(input("Escolha a opcao: "))
-        if opcao not in range(0, 3):
+        if opcao not in range(1, 3):
             raise OpcaoInvalidaException()
 
         return opcao
@@ -59,14 +59,16 @@ class AdotanteView:
         nome = input("Nome: ")
         while True:
             try:
-                data_nascimento = input("Data de nascimento (dd/mm/yyyy): ") if data_nascimento is None else data_nascimento
+                data_nascimento = input(
+                    "Data de nascimento (dd/mm/yyyy): ") if data_nascimento is None else data_nascimento
                 data_nascimento_convertida = datetime.strptime(
                     data_nascimento, "%d/%m/%Y"
                 ).date()
+                break
             except ValueError:
                 data_nascimento = None
                 print("ERRO: Data em formato invalido! Tente novamente.")
-
+        while True:
             try:
                 tipo_habitacao = self.tela_opcoes_tipo_habitacao() if tipo_habitacao is None else tipo_habitacao
                 tamanho_habitacao = self.tela_opcoes_tamanho_habitacao() if tamanho_habitacao is None else tamanho_habitacao
@@ -75,8 +77,7 @@ class AdotanteView:
             except OpcaoInvalidaException as e:
                 print(e)
             except ValueError:
-                print("Opção invalida! Tente novamente.")
-
+                print("Opcao invalida! Tente novamente.")
 
         print("DADOS ENDERECO:")
         logradouro = input("\tLogradouro: ")
@@ -93,7 +94,7 @@ class AdotanteView:
             "numero": numero,
         }
 
-    def mostra_adotante(self, dados_adotante):
+    def mostra_adotante(self, dados_adotante: dict):
         print("\t- CPF:", dados_adotante["cpf"])
         print("\t- NOME:", dados_adotante["nome"])
         print("\t- DATA DE NASCIMENTO:", dados_adotante["data_nascimento"])
@@ -112,5 +113,5 @@ class AdotanteView:
         cpf = input("CPF do adotante que deseja selecionar: ")
         return cpf
 
-    def mostra_mensagem(self, msg):
+    def mostra_mensagem(self, msg: str):
         print(msg)

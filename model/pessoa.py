@@ -1,9 +1,10 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from datetime import date
 from .endereco import Endereco
 
 
 class Pessoa(ABC):
+    @abstractmethod
     def __init__(
         self, cpf: str, nome: str, data_nascimento: date, logradouro: str, numero: str
     ):

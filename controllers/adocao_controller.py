@@ -5,10 +5,10 @@ from datetime import date
 
 
 class AdocaoController:
-    def __init__(self, controlador_sistema):
+    def __init__(self, controlador_principal):
         self.__adocoes = []
         self.__tela_adocao = AdocaoView()
-        self.__controlador_sistema = controlador_sistema
+        self.__controlador_principal = controlador_principal
 
     def buscar_adocao_por_identificador(self, identificador: int):
         for adocao in self.__adocoes:
@@ -23,7 +23,7 @@ class AdocaoController:
         adotante = None
         try:
             cpf_adotante = dados_adotante["cpf_adotante"]
-            adotante = self.__controlador_sistema.controlador_adotantes.buscar_adotante_por_cpf(cpf_adotante)
+            adotante = self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(cpf_adotante)
         except EntidadeNaoEncontradaException as e:
             print(e)
 
@@ -62,7 +62,7 @@ class AdocaoController:
         pass
 
     def retornar(self):
-        self.__controlador_sistema.abre_tela()
+        self.__controlador_principal.abre_tela()
 
     def abre_tela(self):
         lista_opcoes = {

@@ -36,7 +36,7 @@ class AdocaoView:
             "termo_assinado": termo_assinado
         }
 
-    def mostra_adocao(self, dados_adocao):
+    def mostra_adocao(self, dados_adocao: dict):
         print("\t - CPF ADOTANTE: ", dados_adocao["cpf_adotante"])
         print("\t - N° CHIP ANIMAL: ", dados_adocao["numero_chip"])
         print("\t - DATA DE ADOCAO: ", dados_adocao["data"])
@@ -46,5 +46,5 @@ class AdocaoView:
         id = input("CPF/N° Chip da adocao que deseja selecionar: ")
         return id
 
-    def mostra_mensagem(self, msg):
+    def mostra_mensagem(self, msg: str):
         print(msg)

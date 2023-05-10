@@ -6,10 +6,10 @@ from exceptions.entidade_nao_encontrada_exception import EntidadeNaoEncontradaEx
 
 
 class AdotanteController:
-    def __init__(self, controlador_sistema):
+    def __init__(self, controlador_principal):
         self.__adotantes = []
         self.__tela_adotante = AdotanteView()
-        self.__controlador_sistema = controlador_sistema
+        self.__controlador_principal = controlador_principal
 
     def buscar_adotante_por_cpf(self, cpf: int):
         for adotante in self.__adotantes:
@@ -120,7 +120,7 @@ class AdotanteController:
 
 
     def retornar(self):
-        self.__controlador_sistema.abre_tela()
+        self.__controlador_principal.abre_tela()
 
     def abre_tela(self):
         lista_opcoes = {
