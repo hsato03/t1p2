@@ -1,5 +1,6 @@
 from views.sistema_view import SistemaView
 from controllers.adotante_controller import AdotanteController
+from exceptions.opcao_invalida_exception import OpcaoInvalidaException
 
 
 class SistemaController:
@@ -24,6 +25,9 @@ class SistemaController:
         lista_opcoes = {1: self.cadastra_adotantes, 0: self.encerra_sistema}
 
         while True:
-            opcao_escolhida = self.__tela_sistema.tela_opcoes()
-            funcao_escolhida = lista_opcoes[opcao_escolhida]
-            funcao_escolhida()
+            try:
+                opcao_escolhida = self.__tela_sistema.tela_opcoes()
+                funcao_escolhida = lista_opcoes[opcao_escolhida]
+                funcao_escolhida()
+            except OpcaoInvalidaException as e:
+                print(e)

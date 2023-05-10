@@ -23,7 +23,7 @@ class AdotanteController:
         adotante = Adotante(
             dados_adotante["cpf"],
             dados_adotante["nome"],
-            dados_adotante["data"],
+            dados_adotante["data_nascimento"],
             dados_adotante["logradouro"],
             dados_adotante["numero"],
             TipoHabitacao(dados_adotante["tipo_habitacao"]),

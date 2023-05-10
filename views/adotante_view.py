@@ -1,4 +1,4 @@
-from views.exceptions.opcao_invalida_exception import OpcaoInvalidaException
+from exceptions.opcao_invalida_exception import OpcaoInvalidaException
 from datetime import datetime
 
 
@@ -62,7 +62,12 @@ class AdotanteView:
                 data_nascimento = input("Data de nascimento (dd/mm/yyyy): ") if data_nascimento is None else data_nascimento
                 data_nascimento_convertida = datetime.strptime(
                     data_nascimento, "%d/%m/%Y"
-                )
+                ).date()
+            except ValueError:
+                data_nascimento = None
+                print("ERRO: Data em formato invalido! Tente novamente.")
+
+            try:
                 tipo_habitacao = self.tela_opcoes_tipo_habitacao() if tipo_habitacao is None else tipo_habitacao
                 tamanho_habitacao = self.tela_opcoes_tamanho_habitacao() if tamanho_habitacao is None else tamanho_habitacao
                 possui_animal = self.tela_opcoes_possui_animal() if possui_animal is None else possui_animal
@@ -70,8 +75,8 @@ class AdotanteView:
             except OpcaoInvalidaException as e:
                 print(e)
             except ValueError:
-                data_nascimento = None
-                print("ERRO: Data em formato invalido! Tente novamente.")
+                print("Opção invalida! Tente novamente.")
+
 
         print("DADOS ENDERECO:")
         logradouro = input("\tLogradouro: ")
