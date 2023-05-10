@@ -77,7 +77,7 @@ class AnimalController:
                     "nome": cachorro.nome,
                     "raca": cachorro.raca,
                     "tamanho_cachorro": cachorro.tamanho,
-                    "tipo_animal": tipo_animal
+                    "tipo_animal": 1
                 }
             )
 
@@ -94,13 +94,41 @@ class AnimalController:
                     "numero_chip": gato.numero_chip,
                     "nome": gato.nome,
                     "raca": gato.raca,
-                    "tipo_animal": tipo_animal
+                    "tipo_animal": 2
                 }
             )
 
-    # TODO
     def alterar_animal(self):
-        pass
+        tipo_animal = self.__tela_animal.tela_opcoes_tipo_animal()
+        numero_chip = self.__tela_animal.seleciona_animal()
+
+        if tipo_animal == 1:
+            if len(self.__cachorros) <= 0:
+                self.__tela_animal.mostra_mensagem("Nenhum cachorro cadastrado.")
+                return
+
+            try:
+                cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
+                dados_novos_cachorro = self.__tela_animal.pega_dados_animal_alterar(tipo_animal)
+                cachorro.numero_chip = dados_novos_cachorro["numero_chip"]
+                cachorro.nome = dados_novos_cachorro["nome"]
+                cachorro.raca = dados_novos_cachorro["raca"]
+                cachorro.tamanho_cachorro = dados_novos_cachorro["tamanho_cachorro"]
+            except EntidadeNaoEncontradaException as e:
+                print(e)
+        else:
+            if len(self.__gatos) <= 0:
+                self.__tela_animal.mostra_mensagem("Nenhum gato cadastrado.")
+                return
+
+            try:
+                gato = self.buscar_gato_por_numero_chip(numero_chip)
+                dados_novos_gato = self.__tela_animal.pega_dados_animal_alterar(tipo_animal)
+                gato.numero_chip = dados_novos_gato["numero_chip"]
+                gato.nome = dados_novos_gato["nome"]
+                gato.raca = dados_novos_gato["raca"]
+            except EntidadeNaoEncontradaException as e:
+                print(e)
 
     def excluir_animal(self):
         tipo_animal = self.__tela_animal.tela_opcoes_tipo_animal()
