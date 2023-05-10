@@ -1,9 +1,10 @@
 from datetime import date
+from controllers.adotante_controller import AdotanteController
 
 
 class AdocaoView:
     def tela_opcoes(self):
-        print("---------- ADOCOES ----------")
+        print("\n---------- ADOCOES ----------")
         print("[1] -> Incluir Adocao")
         print("[2] -> Alterar Adocao")
         print("[3] -> Listar Adocoes")
@@ -15,18 +16,18 @@ class AdocaoView:
 
     def tela_opcoes_termo(self):
         print("ASSINAR TERMO?")
-        print("[1] -> Sim")
-        print("[2] -> Nao")
+        print("\t[1] -> Sim")
+        print("\t[2] -> Nao")
 
         opcao = int(input("Escolha a opcao: "))
         return opcao
 
     def pega_dados_adocao(self):
-        print("-------- DADOS ADOCAO ----------")
+        print("\n-------- DADOS ADOCAO ----------")
         cpf_adotante = input("CPF (adotante): ")
         chip_animal = input("N° Chip (animal): ")
         data = date.today()
-        termo_assinado = True if self.tela_opcoes_termo() == 1 else False
+        termo_assinado = self.tela_opcoes_termo()
 
         return {
             "cpf_adotante": cpf_adotante,
@@ -34,3 +35,16 @@ class AdocaoView:
             "data": data,
             "termo_assinado": termo_assinado
         }
+
+    def mostra_adocao(self, dados_adocao):
+        print("\t - CPF ADOTANTE: ", dados_adocao["cpf_adotante"])
+        print("\t - N° CHIP ANIMAL: ", dados_adocao["numero_chip"])
+        print("\t - DATA DE ADOCAO: ", dados_adocao["data"])
+        print("\t - TERMO ASSINADO: ", dados_adocao["termo_assinado"])
+
+    def seleciona_adocao(self):
+        id = input("CPF/N° Chip da adocao que deseja selecionar: ")
+        return id
+
+    def mostra_mensagem(self, msg):
+        print(msg)

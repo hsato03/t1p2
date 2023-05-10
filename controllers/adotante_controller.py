@@ -2,7 +2,7 @@ from views.adotante_view import AdotanteView
 from model.adotante import Adotante
 from model.tipo_habitacao import TipoHabitacao
 from model.tamanho_habitacao import TamanhoHabitacao
-from datetime import datetime
+from exceptions.entidade_nao_encontrada_exception import EntidadeNaoEncontradaException
 
 
 class AdotanteController:
@@ -15,7 +15,7 @@ class AdotanteController:
         for adotante in self.__adotantes:
             if adotante.cpf == cpf:
                 return adotante
-        return None
+        raise EntidadeNaoEncontradaException("ERRO: Adotante nao existente.")
 
     def incluir_adotante(self):
         dados_adotante = self.__tela_adotante.pega_dados_adotante()
@@ -34,14 +34,13 @@ class AdotanteController:
 
     def alterar_adotante(self):
         if len(self.__adotantes) <= 0:
-            print("Nenhum adotante cadastrado.")
+            self.__tela_adotante.mostra_mensagem("Nenhum adotante cadastrado.")
             return
 
         self.listar_adotantes()
         cpf_adotante = self.__tela_adotante.seleciona_adotante()
-        adotante = self.buscar_adotante_por_cpf(cpf_adotante)
-
-        if adotante is not None:
+        try:
+            adotante = self.buscar_adotante_por_cpf(cpf_adotante)
             novos_dados_adotante = self.__tela_adotante.pega_dados_adotante()
             adotante.nome = novos_dados_adotante["nome"]
             adotante.cpf = novos_dados_adotante["cpf"]
@@ -59,17 +58,17 @@ class AdotanteController:
                 novos_dados_adotante["logradouro"], novos_dados_adotante["numero"]
             )
             self.listar_adotantes()
-        else:
-            self.__tela_adotante.mostra_mensagem("ATENCAO: Adotante não existente")
+        except EntidadeNaoEncontradaException as e:
+            print(e)
 
     def listar_adotantes(self):
         if len(self.__adotantes) <= 0:
-            print("Nenhum adotante cadastrado.")
+            self.__tela_adotante.mostra_mensagem("Nenhum adotante cadastrado.")
             return
 
         for i in range(len(self.__adotantes)):
             adotante = self.__adotantes[i]
-            print(f"ADOTANTE #{i + 1:02d}")
+            self.__tela_adotante.mostra_mensagem(f"ADOTANTE #{i + 1:02d}")
             self.__tela_adotante.mostra_adotante(
                 {
                     "cpf": adotante.cpf,
@@ -84,17 +83,41 @@ class AdotanteController:
 
     def excluir_adotante(self):
         if len(self.__adotantes) <= 0:
-            print("Nenhum adotante cadastrado.")
+            self.__tela_adotante.mostra_mensagem("Nenhum adotante cadastrado.")
             return
         self.listar_adotantes()
         cpf_adotante = self.__tela_adotante.seleciona_adotante()
-        adotante = self.buscar_adotante_por_cpf(cpf_adotante)
+        try:
+            adotante = self.buscar_adotante_por_cpf(cpf_adotante)
 
-        if adotante is not None:
             self.__adotantes.remove(adotante)
             self.listar_adotantes()
-        else:
-            self.__tela_adotante.mostra_mensagem("ATENCAO: Adotante nao existente")
+        except EntidadeNaoEncontradaException as e:
+            print(e)
+
+    def listar_adotante_por_cpf(self):
+        if len(self.__adotantes) <= 0:
+            self.__tela_adotante.mostra_mensagem("Nenhum adotante cadastrado.")
+            return
+        cpf_adotante = self.__tela_adotante.seleciona_adotante()
+
+        try:
+            adotante = self.buscar_adotante_por_cpf(cpf_adotante)
+
+            self.__tela_adotante.mostra_adotante(
+                {
+                    "cpf": adotante.cpf,
+                    "nome": adotante.nome,
+                    "data_nascimento": adotante.data_nascimento,
+                    "tipo_habitacao": adotante.tipo_habitacao,
+                    "tamanho_habitacao": adotante.tamanho_habitacao,
+                    "possui_animal": adotante.possui_animal,
+                    "endereco": adotante.endereco,
+                }
+            )
+        except EntidadeNaoEncontradaException as e:
+            print(e)
+
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()
@@ -105,10 +128,9 @@ class AdotanteController:
             2: self.alterar_adotante,
             3: self.listar_adotantes,
             4: self.excluir_adotante,
-            5: self.buscar_adotante_por_cpf,
+            5: self.listar_adotante_por_cpf,
             0: self.retornar,
         }
 
-        continua = True
-        while continua:
+        while True:
             lista_opcoes[self.__tela_adotante.tela_opcoes()]()

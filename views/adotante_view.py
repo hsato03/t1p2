@@ -9,10 +9,11 @@ class AdotanteView:
         print("[2] -> Alterar Adotante")
         print("[3] -> Listar Adotantes")
         print("[4] -> Excluir Adotante")
+        print("[5] -> Buscar Adotante por CPF")
         print("[0] -> Retornar")
 
         opcao = int(input("Escolha a opcao: "))
-        if opcao not in range(0, 5):
+        if opcao not in range(0, 6):
             raise OpcaoInvalidaException()
 
         return opcao
@@ -51,7 +52,6 @@ class AdotanteView:
 
         return opcao
 
-    # fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado
     def pega_dados_adotante(self):
         data_nascimento, tipo_habitacao, tamanho_habitacao, possui_animal = None, None, None, None
         print("\n-------- DADOS ADOTANTE ----------")
@@ -93,7 +93,6 @@ class AdotanteView:
             "numero": numero,
         }
 
-    # fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado
     def mostra_adotante(self, dados_adotante):
         print("\t- CPF:", dados_adotante["cpf"])
         print("\t- NOME:", dados_adotante["nome"])
