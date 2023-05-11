@@ -19,7 +19,7 @@ class SistemaController:
     @property
     def controlador_adocoes(self):
         return self.__controlador_adocoes
-    
+
     @property
     def controlador_animais(self):
         return self.__controlador_animais
@@ -40,7 +40,12 @@ class SistemaController:
         exit(0)
 
     def abre_tela(self):
-        lista_opcoes = {3: self.cadastra_animais, 2: self.cadastra_adocoes, 1: self.cadastra_adotantes, 0: self.encerra_sistema}
+        lista_opcoes = {
+            3: self.cadastra_animais,
+            2: self.cadastra_adocoes,
+            1: self.cadastra_adotantes,
+            0: self.encerra_sistema,
+        }
 
         while True:
             try:
@@ -49,3 +54,5 @@ class SistemaController:
                 funcao_escolhida()
             except OpcaoInvalidaException as e:
                 print(e)
+            except ValueError:
+                print("Somente numeros. Tente novamente.")

@@ -27,9 +27,13 @@ class AdocaoController:
         animal = None
         try:
             cpf_adotante = dados_adotante["cpf_adotante"]
-            adotante = self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(cpf_adotante)
+            adotante = self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(
+                cpf_adotante
+            )
             numero_chip = dados_adotante["numero_chip"]
-            animal = self.__controlador_principal.controlador_animais.buscar_animal_por_numero_chip(numero_chip)
+            animal = self.__controlador_principal.controlador_animais.buscar_animal_por_numero_chip(
+                numero_chip
+            )
         except EntidadeNaoEncontradaException as e:
             self.__tela_adocao.mostra_mensagem(e)
 
@@ -37,7 +41,7 @@ class AdocaoController:
             adotante,
             animal,
             date.today(),
-            True if dados_adotante["termo_assinado"] == 1 else False
+            True if dados_adotante["termo_assinado"] == 1 else False,
         )
         self.__adocoes.append(adocao)
 
@@ -45,7 +49,7 @@ class AdocaoController:
         if len(self.__adocoes) <= 0:
             self.__tela_adocao.mostra_mensagem("Nenhuma adocao cadastrada.")
             return
-        
+
         try:
             while True:
                 try:
@@ -53,16 +57,24 @@ class AdocaoController:
                     break
                 except OpcaoInvalidaException as e:
                     self.__tela_adocao.mostra_mensagem(e)
+                except ValueError:
+                    self.__tela_adocao.mostra_mensagem(
+                        "Somente numeros. Tente novamente."
+                    )
 
             id = self.__tela_adocao.seleciona_adocao(tipo_id)
             adocao = self.buscar_adocao_por_identificador(id, tipo_id)
             novos_dados_adocao = self.__tela_adocao.pega_dados_adocao()
 
             cpf_adotante = novos_dados_adocao["cpf_adotante"]
-            adotante = self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(cpf_adotante)
+            adotante = self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(
+                cpf_adotante
+            )
 
             numero_chip = novos_dados_adocao["numero_chip"]
-            animal = self.__controlador_principal.controlador_animais.buscar_animal_por_numero_chip(numero_chip)
+            animal = self.__controlador_principal.controlador_animais.buscar_animal_por_numero_chip(
+                numero_chip
+            )
 
             adocao.adotante = adotante
             adocao.animal = animal
@@ -84,7 +96,7 @@ class AdocaoController:
                     "cpf_adotante": adocao.adotante.cpf,
                     "numero_chip": adocao.animal.numero_chip,
                     "data": adocao.data,
-                    "termo_assinado": adocao.termo_assinado
+                    "termo_assinado": adocao.termo_assinado,
                 }
             )
 
@@ -92,7 +104,7 @@ class AdocaoController:
         if len(self.__adocoes) <= 0:
             self.__tela_adocao.mostra_mensagem("Nenhuma adocao cadastrada.")
             return
-        
+
         self.listar_adocoes()
 
         while True:
@@ -101,6 +113,8 @@ class AdocaoController:
                 break
             except OpcaoInvalidaException as e:
                 self.__tela_adocao.mostra_mensagem(e)
+            except ValueError:
+                self.__tela_adocao.mostra_mensagem("Somente numeros. Tente novamente.")
 
         id = self.__tela_adocao.seleciona_adocao(tipo_id)
 
@@ -122,17 +136,21 @@ class AdocaoController:
                 break
             except OpcaoInvalidaException as e:
                 self.__tela_adocao.mostra_mensagem(e)
+            except ValueError:
+                self.__tela_adocao.mostra_mensagem("Somente numeros. Tente novamente.")
 
         id = self.__tela_adocao.seleciona_adocao(tipo_id)
         try:
             adocao = self.buscar_adocao_por_identificador(id, tipo_id)
 
-            self.__tela_adocao.mostra_adocao({
-                "cpf_adotante": adocao.adotante.cpf,
-                "numero_chip": adocao.animal.numero_chip,
-                "data": adocao.data,
-                "termo_assinado": True if adocao.termo_assinado == 1 else False
-            })
+            self.__tela_adocao.mostra_adocao(
+                {
+                    "cpf_adotante": adocao.adotante.cpf,
+                    "numero_chip": adocao.animal.numero_chip,
+                    "data": adocao.data,
+                    "termo_assinado": True if adocao.termo_assinado == 1 else False,
+                }
+            )
         except EntidadeNaoEncontradaException as e:
             self.__tela_adocao.mostra_mensagem(e)
 
@@ -154,3 +172,5 @@ class AdocaoController:
                 lista_opcoes[self.__tela_adocao.tela_opcoes()]()
             except OpcaoInvalidaException as e:
                 self.__tela_adocao.mostra_mensagem(e)
+            except ValueError:
+                self.__tela_adocao.mostra_mensagem("Somente numeros. Tente novamente")

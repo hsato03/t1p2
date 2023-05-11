@@ -53,31 +53,45 @@ class AdotanteView:
         return opcao
 
     def pega_dados_adotante(self):
-        data_nascimento, tipo_habitacao, tamanho_habitacao, possui_animal = None, None, None, None
+        tipo_habitacao, tamanho_habitacao, possui_animal = (
+            None,
+            None,
+            None,
+        )
         print("\n-------- DADOS ADOTANTE ----------")
         cpf = input("CPF: ")
         nome = input("Nome: ")
         while True:
             try:
-                data_nascimento = input(
-                    "Data de nascimento (dd/mm/yyyy): ") if data_nascimento is None else data_nascimento
+                data_nascimento = input("Data de nascimento (dd/mm/yyyy): ")
                 data_nascimento_convertida = datetime.strptime(
                     data_nascimento, "%d/%m/%Y"
                 ).date()
                 break
             except ValueError:
-                data_nascimento = None
                 print("ERRO: Data em formato invalido! Tente novamente.")
         while True:
             try:
-                tipo_habitacao = self.tela_opcoes_tipo_habitacao() if tipo_habitacao is None else tipo_habitacao
-                tamanho_habitacao = self.tela_opcoes_tamanho_habitacao() if tamanho_habitacao is None else tamanho_habitacao
-                possui_animal = self.tela_opcoes_possui_animal() if possui_animal is None else possui_animal
+                tipo_habitacao = (
+                    self.tela_opcoes_tipo_habitacao()
+                    if tipo_habitacao is None
+                    else tipo_habitacao
+                )
+                tamanho_habitacao = (
+                    self.tela_opcoes_tamanho_habitacao()
+                    if tamanho_habitacao is None
+                    else tamanho_habitacao
+                )
+                possui_animal = (
+                    self.tela_opcoes_possui_animal()
+                    if possui_animal is None
+                    else possui_animal
+                )
                 break
             except OpcaoInvalidaException as e:
                 print(e)
             except ValueError:
-                print("Opcao invalida! Tente novamente.")
+                print("Somente numeros. Tente novamente.")
 
         print("DADOS ENDERECO:")
         logradouro = input("\tLogradouro: ")
@@ -98,9 +112,7 @@ class AdotanteView:
         print("\t- CPF:", dados_adotante["cpf"])
         print("\t- NOME:", dados_adotante["nome"])
         print("\t- DATA DE NASCIMENTO:", dados_adotante["data_nascimento"])
-        print(
-            "\t- TIPO DE HABITACAO:", dados_adotante["tipo_habitacao"].name
-        )
+        print("\t- TIPO DE HABITACAO:", dados_adotante["tipo_habitacao"].name)
         print(
             "\t- TAMANHO DE HABITACAO:",
             dados_adotante["tamanho_habitacao"].name,

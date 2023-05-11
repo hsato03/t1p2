@@ -17,13 +17,13 @@ class AnimalController:
         gato = self.buscar_gato_por_numero_chip(numero_chip)
         if gato is not None:
             return gato
-            
+
         cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
         if cachorro is not None:
             return cachorro
 
         raise EntidadeNaoEncontradaException("ERRO: Animal nao existente")
-    
+
     def buscar_gato_por_numero_chip(self, numero_chip: str):
         for gato in self.__gatos:
             if gato.numero_chip == numero_chip:
@@ -78,7 +78,7 @@ class AnimalController:
                     "nome": cachorro.nome,
                     "raca": cachorro.raca,
                     "tamanho_cachorro": cachorro.tamanho,
-                    "tipo_animal": 1
+                    "tipo_animal": 1,
                 }
             )
 
@@ -95,7 +95,7 @@ class AnimalController:
                     "numero_chip": gato.numero_chip,
                     "nome": gato.nome,
                     "raca": gato.raca,
-                    "tipo_animal": 2
+                    "tipo_animal": 2,
                 }
             )
 
@@ -110,7 +110,9 @@ class AnimalController:
 
             try:
                 cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
-                dados_novos_cachorro = self.__tela_animal.pega_dados_animal_alterar(tipo_animal)
+                dados_novos_cachorro = self.__tela_animal.pega_dados_animal_alterar(
+                    tipo_animal
+                )
                 cachorro.numero_chip = dados_novos_cachorro["numero_chip"]
                 cachorro.nome = dados_novos_cachorro["nome"]
                 cachorro.raca = dados_novos_cachorro["raca"]
@@ -124,7 +126,9 @@ class AnimalController:
 
             try:
                 gato = self.buscar_gato_por_numero_chip(numero_chip)
-                dados_novos_gato = self.__tela_animal.pega_dados_animal_alterar(tipo_animal)
+                dados_novos_gato = self.__tela_animal.pega_dados_animal_alterar(
+                    tipo_animal
+                )
                 gato.numero_chip = dados_novos_gato["numero_chip"]
                 gato.nome = dados_novos_gato["nome"]
                 gato.raca = dados_novos_gato["raca"]
@@ -152,7 +156,7 @@ class AnimalController:
             if len(self.__gatos) <= 0:
                 self.__tela_animal.mostra_mensagem("Nenhum gato cadastrado")
                 return
-            
+
             try:
                 self.listar_gatos
                 gato = self.buscar_gato_por_numero_chip(numero_chip)
@@ -164,7 +168,7 @@ class AnimalController:
     def listar_animal_por_numero_chip(self):
         numero_chip = self.__tela_animal.seleciona_animal()
         try:
-            animal = self.buscar_animal_por_numero_chip(numero_chip)   
+            animal = self.buscar_animal_por_numero_chip(numero_chip)
             dados_animal = {
                 "numero_chip": animal.numero_chip,
                 "nome": animal.nome,
@@ -176,7 +180,7 @@ class AnimalController:
                 dados_animal["tamanho_cachorro"] = animal.tamanho
             else:
                 dados_animal["tipo_animal"] = 2
-            
+
             self.__tela_animal.mostra_animal(dados_animal)
         except EntidadeNaoEncontradaException as e:
             self.__tela_animal.mostra_mensagem(e)
@@ -199,3 +203,5 @@ class AnimalController:
                 lista_opcoes[self.__tela_animal.tela_opcoes()]()
             except OpcaoInvalidaException as e:
                 self.__tela_animal.mostra_mensagem(e)
+            except ValueError:
+                self.__tela_animal.mostra_mensagem("Somente numeros. Tente novamente.")

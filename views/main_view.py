@@ -3,7 +3,7 @@ from exceptions.opcao_invalida_exception import OpcaoInvalidaException
 
 class SistemaView:
     def tela_opcoes(self):
-        print("---------- MENU PRINCIPAL ----------")
+        print("\n---------- MENU PRINCIPAL ----------")
         print("[1] -> Adotantes")
         print("[2] -> Adocoes")
         print("[3] -> Animais")

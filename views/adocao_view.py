@@ -12,7 +12,6 @@ class AdocaoView:
         print("[5] -> Listar Adocao por id")
         print("[0] -> Retornar")
 
-        
         opcao = int(input("Escolha a opcao: "))
         if opcao not in range(0, 6):
             raise OpcaoInvalidaException()
@@ -50,12 +49,14 @@ class AdocaoView:
                 break
             except OpcaoInvalidaException as e:
                 print(e)
+            except ValueError:
+                print("Somente numeros. Tente novamente.")
 
         return {
             "cpf_adotante": cpf_adotante,
             "numero_chip": numero_chip,
             "data": data,
-            "termo_assinado": termo_assinado
+            "termo_assinado": termo_assinado,
         }
 
     def mostra_adocao(self, dados_adocao: dict):

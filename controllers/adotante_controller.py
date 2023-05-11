@@ -119,7 +119,6 @@ class AdotanteController:
         except EntidadeNaoEncontradaException as e:
             self.__tela_adotante.mostra_mensagem(e)
 
-
     def retornar(self):
         self.__controlador_principal.abre_tela()
 
@@ -138,3 +137,7 @@ class AdotanteController:
                 lista_opcoes[self.__tela_adotante.tela_opcoes()]()
             except OpcaoInvalidaException as e:
                 self.__tela_adotante.mostra_mensagem(e)
+            except ValueError:
+                self.__tela_adotante.mostra_mensagem(
+                    "Somente numeros. Tente novamente."
+                )

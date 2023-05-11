@@ -57,6 +57,8 @@ class AnimalView:
                 break
             except OpcaoInvalidaException as e:
                 print(e)
+            except ValueError:
+                print("Somente numeros. Tente novamente.")
 
         raca = input("Raca: ")
         dados_animal["raca"] = raca
@@ -69,6 +71,8 @@ class AnimalView:
                     break
                 except OpcaoInvalidaException as e:
                     print(e)
+                except ValueError:
+                    print("Somente numeros. Tente novamente.")
 
         return dados_animal
 
@@ -92,7 +96,9 @@ class AnimalView:
                     dados_animal["tamanho_cachorro"] = tamanho_cachorro
                 except OpcaoInvalidaException as e:
                     print(e)
-            
+                except ValueError:
+                    print("Somente numeros. Tente novamente.")
+
         return dados_animal
 
     def mostra_animal(self, dados_animal: dict):
