@@ -1,6 +1,7 @@
 from views.adocao_view import AdocaoView
 from model.adocao import Adocao
 from exceptions.entidade_nao_encontrada_exception import EntidadeNaoEncontradaException
+from exceptions.opcao_invalida_exception import OpcaoInvalidaException
 from datetime import date
 
 
@@ -10,24 +11,27 @@ class AdocaoController:
         self.__tela_adocao = AdocaoView()
         self.__controlador_principal = controlador_principal
 
-    def buscar_adocao_por_identificador(self, identificador: str):
+    def buscar_adocao_por_identificador(self, identificador: str, tipo_id: int):
         for adocao in self.__adocoes:
-            if adocao.adotante.cpf == identificador:
-                return adocao
-            elif adocao.animal.numero_chip == identificador:
-                return adocao
+            if tipo_id == 1:
+                if adocao.adotante.cpf == identificador:
+                    return adocao
+            else:
+                if adocao.animal.numero_chip == identificador:
+                    return adocao
         raise EntidadeNaoEncontradaException("ERRO: Adocao nao existente.")
 
     def incluir_adocao(self):
         dados_adotante = self.__tela_adocao.pega_dados_adocao()
         adotante = None
+        animal = None
         try:
             cpf_adotante = dados_adotante["cpf_adotante"]
             adotante = self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(cpf_adotante)
             numero_chip = dados_adotante["numero_chip"]
-            animal = self.__controlador_principal.buscar_animal_por_numero_chip(numero_chip)
+            animal = self.__controlador_principal.controlador_animais.buscar_animal_por_numero_chip(numero_chip)
         except EntidadeNaoEncontradaException as e:
-            print(e)
+            self.__tela_adocao.mostra_mensagem(e)
 
         adocao = Adocao(
             adotante,
@@ -43,22 +47,29 @@ class AdocaoController:
             return
         
         try:
-            id = self.__tela_adocao.seleciona_adocao()
-            adocao = self.buscar_adocao_por_identificador(id)
+            while True:
+                try:
+                    tipo_id = self.__tela_adocao.tela_opcoes_identificador()
+                    break
+                except OpcaoInvalidaException as e:
+                    self.__tela_adocao.mostra_mensagem(e)
+
+            id = self.__tela_adocao.seleciona_adocao(tipo_id)
+            adocao = self.buscar_adocao_por_identificador(id, tipo_id)
             novos_dados_adocao = self.__tela_adocao.pega_dados_adocao()
 
             cpf_adotante = novos_dados_adocao["cpf_adotante"]
             adotante = self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(cpf_adotante)
 
             numero_chip = novos_dados_adocao["numero_chip"]
-            animal = self.__controlador_principal.buscar_animal_por_numero_chip(numero_chip)
+            animal = self.__controlador_principal.controlador_animais.buscar_animal_por_numero_chip(numero_chip)
 
             adocao.adotante = adotante
             adocao.animal = animal
             adocao.data = novos_dados_adocao["data"]
             adocao.termo_assinado = novos_dados_adocao["termo_assinado"]
         except EntidadeNaoEncontradaException as e:
-            print(e)
+            self.__tela_adocao.mostra_mensagem(e)
 
     def listar_adocoes(self):
         if len(self.__adocoes) <= 0:
@@ -79,37 +90,51 @@ class AdocaoController:
 
     def excluir_adocao(self):
         if len(self.__adocoes) <= 0:
-            print("Nenhuma adocao cadastrada.")
+            self.__tela_adocao.mostra_mensagem("Nenhuma adocao cadastrada.")
             return
         
         self.listar_adocoes()
-        id = self.__tela_adocao.seleciona_adocao()
+
+        while True:
+            try:
+                tipo_id = self.__tela_adocao.tela_opcoes_identificador()
+                break
+            except OpcaoInvalidaException as e:
+                self.__tela_adocao.mostra_mensagem(e)
+
+        id = self.__tela_adocao.seleciona_adocao(tipo_id)
 
         try:
-            adocao = self.buscar_adocao_por_identificador(id)
+            adocao = self.buscar_adocao_por_identificador(id, tipo_id)
             self.__adocoes.remove(adocao)
             self.__tela_adocao.mostra_mensagem("Adocao removida com sucesso.")
         except EntidadeNaoEncontradaException as e:
-            print(e)
+            self.__tela_adocao.mostra_mensagem(e)
 
     def listar_adocao_por_identificador(self):
         if len(self.__adocoes) <= 0:
             self.__tela_adocao.mostra_mensagem("Nenhuma adocao cadastrada.")
             return
 
-        id = self.__tela_adocao.seleciona_adocao()
+        while True:
+            try:
+                tipo_id = self.__tela_adocao.tela_opcoes_identificador()
+                break
+            except OpcaoInvalidaException as e:
+                self.__tela_adocao.mostra_mensagem(e)
+
+        id = self.__tela_adocao.seleciona_adocao(tipo_id)
         try:
-            adocao = self.buscar_adocao_por_identificador(id)
+            adocao = self.buscar_adocao_por_identificador(id, tipo_id)
 
             self.__tela_adocao.mostra_adocao({
                 "cpf_adotante": adocao.adotante.cpf,
                 "numero_chip": adocao.animal.numero_chip,
                 "data": adocao.data,
-                "termo_assinado": adocao.termo_assinado
+                "termo_assinado": True if adocao.termo_assinado == 1 else False
             })
         except EntidadeNaoEncontradaException as e:
-            print(e)
-
+            self.__tela_adocao.mostra_mensagem(e)
 
     def retornar(self):
         self.__controlador_principal.abre_tela()
@@ -125,4 +150,7 @@ class AdocaoController:
         }
 
         while True:
-            lista_opcoes[self.__tela_adocao.tela_opcoes()]()
+            try:
+                lista_opcoes[self.__tela_adocao.tela_opcoes()]()
+            except OpcaoInvalidaException as e:
+                self.__tela_adocao.mostra_mensagem(e)

@@ -3,6 +3,7 @@ from model.adotante import Adotante
 from model.tipo_habitacao import TipoHabitacao
 from model.tamanho_habitacao import TamanhoHabitacao
 from exceptions.entidade_nao_encontrada_exception import EntidadeNaoEncontradaException
+from exceptions.opcao_invalida_exception import OpcaoInvalidaException
 
 
 class AdotanteController:
@@ -59,7 +60,7 @@ class AdotanteController:
             )
             self.listar_adotantes()
         except EntidadeNaoEncontradaException as e:
-            print(e)
+            self.__tela_adotante.mostra_mensagem(e)
 
     def listar_adotantes(self):
         if len(self.__adotantes) <= 0:
@@ -93,7 +94,7 @@ class AdotanteController:
             self.__adotantes.remove(adotante)
             self.__tela_adotante.mostra_mensagem("Adotante removido com sucesso.")
         except EntidadeNaoEncontradaException as e:
-            print(e)
+            self.__tela_adotante.mostra_mensagem(e)
 
     def listar_adotante_por_cpf(self):
         if len(self.__adotantes) <= 0:
@@ -116,7 +117,7 @@ class AdotanteController:
                 }
             )
         except EntidadeNaoEncontradaException as e:
-            print(e)
+            self.__tela_adotante.mostra_mensagem(e)
 
 
     def retornar(self):
@@ -133,4 +134,7 @@ class AdotanteController:
         }
 
         while True:
-            lista_opcoes[self.__tela_adotante.tela_opcoes()]()
+            try:
+                lista_opcoes[self.__tela_adotante.tela_opcoes()]()
+            except OpcaoInvalidaException as e:
+                self.__tela_adotante.mostra_mensagem(e)

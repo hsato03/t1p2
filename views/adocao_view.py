@@ -15,7 +15,7 @@ class AdocaoView:
         
         opcao = int(input("Escolha a opcao: "))
         if opcao not in range(0, 6):
-            raise OpcaoInvalidaException("Opcao invalida. Tente novamente.")
+            raise OpcaoInvalidaException()
 
         return opcao
 
@@ -27,16 +27,33 @@ class AdocaoView:
         opcao = int(input("Escolha a opcao: "))
         return opcao
 
+    def tela_opcoes_identificador(self):
+        print("BUSCAR POR:")
+        print("\t[1] -> CPF")
+        print("\t[2] -> N° chip")
+
+        opcao = int(input("Escolha a opcao"))
+        if opcao not in range(1, 3):
+            raise OpcaoInvalidaException()
+
+        return opcao
+
     def pega_dados_adocao(self):
         print("\n-------- DADOS ADOCAO ----------")
         cpf_adotante = input("CPF (adotante): ")
-        chip_animal = input("N° Chip (animal): ")
+        numero_chip = input("N° Chip (animal): ")
         data = date.today()
-        termo_assinado = self.tela_opcoes_termo()
+
+        while True:
+            try:
+                termo_assinado = self.tela_opcoes_termo()
+                break
+            except OpcaoInvalidaException as e:
+                print(e)
 
         return {
             "cpf_adotante": cpf_adotante,
-            "chip_animal": chip_animal,
+            "numero_chip": numero_chip,
             "data": data,
             "termo_assinado": termo_assinado
         }
@@ -47,8 +64,11 @@ class AdocaoView:
         print("\t - DATA DE ADOCAO: ", dados_adocao["data"])
         print("\t - TERMO ASSINADO: ", dados_adocao["termo_assinado"])
 
-    def seleciona_adocao(self):
-        id = input("CPF/N° Chip da adocao que deseja selecionar: ")
+    def seleciona_adocao(self, tipo_id: int):
+        if tipo_id == 1:
+            id = input("CPF da adocao que deseja selecionar: ")
+        else:
+            id = input("N° Chip da adocao que deseja selecionar: ")
         return id
 
     def mostra_mensagem(self, msg: str):

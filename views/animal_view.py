@@ -7,7 +7,7 @@ class AnimalView:
         print("[1] -> Incluir Animal")
         print("[2] -> Alterar Animal")
         print("[3] -> Excluir Animal")
-        print("[4] -> Listar Animal")
+        print("[4] -> Listar Animais")
         print("[5] -> Buscar Animal por N° chip")
         print("[0] -> Retornar")
 
@@ -43,7 +43,7 @@ class AnimalView:
     def pega_dados_animal(self):
         print("\n-------- DADOS ANIMAL ----------")
         numero_chip = input("N° chip: ")
-        nome = input("Nome:")
+        nome = input("Nome: ")
 
         dados_animal = {
             "numero_chip": numero_chip,
@@ -62,8 +62,13 @@ class AnimalView:
         dados_animal["raca"] = raca
 
         if tipo_animal == 1:
-            tamanho_cachorro = self.tela_opcoes_tamanho_cachorro()
-            dados_animal["tamanho_cachorro"] = tamanho_cachorro
+            while True:
+                try:
+                    tamanho_cachorro = self.tela_opcoes_tamanho_cachorro()
+                    dados_animal["tamanho_cachorro"] = tamanho_cachorro
+                    break
+                except OpcaoInvalidaException as e:
+                    print(e)
 
         return dados_animal
 
@@ -81,8 +86,14 @@ class AnimalView:
         dados_animal["raca"] = raca
 
         if tipo_animal == 1:
-            tamanho_cachorro = self.tela_opcoes_tamanho_cachorro()
-            dados_animal["tamanho_cachorro"] = tamanho_cachorro
+            while True:
+                try:
+                    tamanho_cachorro = self.tela_opcoes_tamanho_cachorro()
+                    dados_animal["tamanho_cachorro"] = tamanho_cachorro
+                except OpcaoInvalidaException as e:
+                    print(e)
+            
+        return dados_animal
 
     def mostra_animal(self, dados_animal: dict):
         print(f"\t- N° CHIP: {dados_animal['numero_chip']}")
@@ -93,9 +104,8 @@ class AnimalView:
             print(f"\t- TAMANHO CACHORRO: {dados_animal['tamanho_cachorro'].name}")
 
     def seleciona_animal(self):
-        numero_chip = int(input("N° chip do animal que deseja selecionar: "))
+        numero_chip = input("N° chip do animal que deseja selecionar: ")
         return numero_chip
 
     def mostra_mensagem(self, msg: str):
         print(msg)
-

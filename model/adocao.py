@@ -40,5 +40,6 @@ class Adocao:
     def termo_assinado(self):
         return self.__termo_assinado
 
-    def assinar_termo(self):
-        self.__termo_assinado = True
+    @termo_assinado.setter
+    def termo_assinado(self, termo_assinado: bool):
+        self.__termo_assinado = termo_assinado
