@@ -98,8 +98,8 @@ class AdotanteView:
         numero = input("\tNumero: ")
 
         return {
-            "nome": nome,
             "cpf": cpf,
+            "nome": nome,
             "data_nascimento": data_nascimento_convertida,
             "tipo_habitacao": tipo_habitacao,
             "tamanho_habitacao": tamanho_habitacao,

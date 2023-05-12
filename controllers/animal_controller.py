@@ -1,16 +1,15 @@
 from views.animal_view import AnimalView
-from model.cachorro import Cachorro
-from model.tamanho_cachorro import TamanhoCachorro
-from model.gato import Gato
+from model import Cachorro, TamanhoCachorro, Gato, TIPO_CACHORRO, TIPO_GATO
+
 from exceptions.entidade_nao_encontrada_exception import EntidadeNaoEncontradaException
 from exceptions.opcao_invalida_exception import OpcaoInvalidaException
 
 
 class AnimalController:
-    def __init__(self, controlador_principal):
+    def __init__(self, controlador_sistema):
         self.__gatos = []
         self.__cachorros = []
-        self.__controlador_principal = controlador_principal
+        self.__controlador_principal = controlador_sistema
         self.__tela_animal = AnimalView()
 
     def buscar_animal_por_numero_chip(self, numero_chip: str):
@@ -39,7 +38,7 @@ class AnimalController:
     def incluir_animal(self):
         dados_animal = self.__tela_animal.pega_dados_animal()
 
-        if dados_animal["tipo_animal"] == 1:
+        if dados_animal["tipo_animal"] == TIPO_CACHORRO:
             cachorro = Cachorro(
                 dados_animal["numero_chip"],
                 dados_animal["nome"],
@@ -58,7 +57,7 @@ class AnimalController:
     def listar_animais(self):
         tipo_animal = self.__tela_animal.tela_opcoes_tipo_animal()
 
-        if tipo_animal == 1:
+        if tipo_animal == TIPO_CACHORRO:
             self.listar_cachorros()
 
         else:
@@ -78,7 +77,7 @@ class AnimalController:
                     "nome": cachorro.nome,
                     "raca": cachorro.raca,
                     "tamanho_cachorro": cachorro.tamanho,
-                    "tipo_animal": 1,
+                    "tipo_animal": TIPO_CACHORRO,
                 }
             )
 
@@ -95,7 +94,7 @@ class AnimalController:
                     "numero_chip": gato.numero_chip,
                     "nome": gato.nome,
                     "raca": gato.raca,
-                    "tipo_animal": 2,
+                    "tipo_animal": TIPO_GATO,
                 }
             )
 
@@ -103,7 +102,7 @@ class AnimalController:
         tipo_animal = self.__tela_animal.tela_opcoes_tipo_animal()
         numero_chip = self.__tela_animal.seleciona_animal()
 
-        if tipo_animal == 1:
+        if tipo_animal == TIPO_CACHORRO:
             if len(self.__cachorros) <= 0:
                 self.__tela_animal.mostra_mensagem("Nenhum cachorro cadastrado.")
                 return
@@ -139,7 +138,7 @@ class AnimalController:
         tipo_animal = self.__tela_animal.tela_opcoes_tipo_animal()
         numero_chip = self.__tela_animal.seleciona_animal()
 
-        if tipo_animal == 1:
+        if tipo_animal == TIPO_CACHORRO:
             if len(self.__cachorros) <= 0:
                 self.__tela_animal.mostra_mensagem("Nenhum cachorro cadastrado.")
                 return
@@ -158,7 +157,7 @@ class AnimalController:
                 return
 
             try:
-                self.listar_gatos
+                self.listar_gatos()
                 gato = self.buscar_gato_por_numero_chip(numero_chip)
                 self.__gatos.remove(gato)
                 self.__tela_animal.mostra_mensagem("Gato removido com sucesso.")

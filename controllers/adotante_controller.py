@@ -7,12 +7,12 @@ from exceptions.opcao_invalida_exception import OpcaoInvalidaException
 
 
 class AdotanteController:
-    def __init__(self, controlador_principal):
+    def __init__(self, controlador_sistema):
         self.__adotantes = []
         self.__tela_adotante = AdotanteView()
-        self.__controlador_principal = controlador_principal
+        self.__controlador_principal = controlador_sistema
 
-    def buscar_adotante_por_cpf(self, cpf: int):
+    def buscar_adotante_por_cpf(self, cpf: str):
         for adotante in self.__adotantes:
             if adotante.cpf == cpf:
                 return adotante
@@ -40,32 +40,31 @@ class AdotanteController:
 
         self.listar_adotantes()
         cpf_adotante = self.__tela_adotante.seleciona_adotante()
-        try:
-            adotante = self.buscar_adotante_por_cpf(cpf_adotante)
-            novos_dados_adotante = self.__tela_adotante.pega_dados_adotante()
-            adotante.nome = novos_dados_adotante["nome"]
-            adotante.cpf = novos_dados_adotante["cpf"]
-            adotante.data_nascimento = novos_dados_adotante["data_nascimento"]
-            adotante.tipo_habitacao = TipoHabitacao(
-                novos_dados_adotante["tipo_habitacao"]
-            )
-            adotante.tamanho_habitacao = TamanhoHabitacao(
-                novos_dados_adotante["tamanho_habitacao"]
-            )
-            adotante.possui_animal = (
-                True if novos_dados_adotante["possui_animal"] == 1 else False
-            )
-            adotante.add_endereco(
-                novos_dados_adotante["logradouro"], novos_dados_adotante["numero"]
-            )
-            self.listar_adotantes()
-        except EntidadeNaoEncontradaException as e:
-            self.__tela_adotante.mostra_mensagem(e)
+        adotante = self.buscar_adotante_por_cpf(cpf_adotante)
+        novos_dados_adotante = self.__tela_adotante.pega_dados_adotante()
+
+        adotante.nome = novos_dados_adotante["nome"]
+        adotante.cpf = novos_dados_adotante["cpf"]
+        adotante.data_nascimento = novos_dados_adotante["data_nascimento"]
+        adotante.tipo_habitacao = TipoHabitacao(
+            novos_dados_adotante["tipo_habitacao"]
+        )
+        adotante.tamanho_habitacao = TamanhoHabitacao(
+            novos_dados_adotante["tamanho_habitacao"]
+        )
+        adotante.possui_animal = (
+            True if novos_dados_adotante["possui_animal"] == 1 else False
+        )
+        adotante.add_endereco(
+            novos_dados_adotante["logradouro"], novos_dados_adotante["numero"]
+        )
+        self.listar_adotantes()
+
+
 
     def listar_adotantes(self):
         if len(self.__adotantes) <= 0:
-            self.__tela_adotante.mostra_mensagem("Nenhum adotante cadastrado.")
-            return
+            raise EntidadeNaoEncontradaException("Nenhum adotante cadastrado.")
 
         for i in range(len(self.__adotantes)):
             adotante = self.__adotantes[i]
@@ -86,38 +85,34 @@ class AdotanteController:
         if len(self.__adotantes) <= 0:
             self.__tela_adotante.mostra_mensagem("Nenhum adotante cadastrado.")
             return
+
         self.listar_adotantes()
         cpf_adotante = self.__tela_adotante.seleciona_adotante()
-        try:
-            adotante = self.buscar_adotante_por_cpf(cpf_adotante)
+        adotante = self.buscar_adotante_por_cpf(cpf_adotante)
 
-            self.__adotantes.remove(adotante)
-            self.__tela_adotante.mostra_mensagem("Adotante removido com sucesso.")
-        except EntidadeNaoEncontradaException as e:
-            self.__tela_adotante.mostra_mensagem(e)
+        self.__adotantes.remove(adotante)
+        self.__tela_adotante.mostra_mensagem("Adotante removido com sucesso.")
+
 
     def listar_adotante_por_cpf(self):
         if len(self.__adotantes) <= 0:
             self.__tela_adotante.mostra_mensagem("Nenhum adotante cadastrado.")
             return
+
         cpf_adotante = self.__tela_adotante.seleciona_adotante()
+        adotante = self.buscar_adotante_por_cpf(cpf_adotante)
 
-        try:
-            adotante = self.buscar_adotante_por_cpf(cpf_adotante)
-
-            self.__tela_adotante.mostra_adotante(
-                {
-                    "cpf": adotante.cpf,
-                    "nome": adotante.nome,
-                    "data_nascimento": adotante.data_nascimento,
-                    "tipo_habitacao": adotante.tipo_habitacao,
-                    "tamanho_habitacao": adotante.tamanho_habitacao,
-                    "possui_animal": adotante.possui_animal,
-                    "endereco": adotante.endereco,
-                }
-            )
-        except EntidadeNaoEncontradaException as e:
-            self.__tela_adotante.mostra_mensagem(e)
+        self.__tela_adotante.mostra_adotante(
+            {
+                "cpf": adotante.cpf,
+                "nome": adotante.nome,
+                "data_nascimento": adotante.data_nascimento,
+                "tipo_habitacao": adotante.tipo_habitacao,
+                "tamanho_habitacao": adotante.tamanho_habitacao,
+                "possui_animal": adotante.possui_animal,
+                "endereco": adotante.endereco,
+            }
+        )
 
     def retornar(self):
         self.__controlador_principal.abre_tela()
@@ -135,7 +130,7 @@ class AdotanteController:
         while True:
             try:
                 lista_opcoes[self.__tela_adotante.tela_opcoes()]()
-            except OpcaoInvalidaException as e:
+            except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
                 self.__tela_adotante.mostra_mensagem(e)
             except ValueError:
                 self.__tela_adotante.mostra_mensagem(

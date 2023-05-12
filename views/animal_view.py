@@ -1,4 +1,5 @@
-from exceptions.opcao_invalida_exception import OpcaoInvalidaException
+from exceptions import OpcaoInvalidaException
+from model import TIPO_CACHORRO, TIPO_GATO
 
 
 class AnimalView:
@@ -63,7 +64,7 @@ class AnimalView:
         raca = input("Raca: ")
         dados_animal["raca"] = raca
 
-        if tipo_animal == 1:
+        if tipo_animal == TIPO_CACHORRO:
             while True:
                 try:
                     tamanho_cachorro = self.tela_opcoes_tamanho_cachorro()
@@ -89,7 +90,7 @@ class AnimalView:
         raca = input("Raca: ")
         dados_animal["raca"] = raca
 
-        if tipo_animal == 1:
+        if tipo_animal == TIPO_CACHORRO:
             while True:
                 try:
                     tamanho_cachorro = self.tela_opcoes_tamanho_cachorro()
@@ -106,7 +107,7 @@ class AnimalView:
         print(f"\t- NOME: {dados_animal['nome']}")
         print(f"\t- RACA: {dados_animal['raca']}")
 
-        if dados_animal["tipo_animal"] == 1:
+        if dados_animal["tipo_animal"] == TIPO_CACHORRO:
             print(f"\t- TAMANHO CACHORRO: {dados_animal['tamanho_cachorro'].name}")
 
     def seleciona_animal(self):

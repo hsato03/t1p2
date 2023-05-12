@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 
+TIPO_CACHORRO = 1
+TIPO_GATO = 2
+
 
 class Animal(ABC):
     @abstractmethod
