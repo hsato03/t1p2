@@ -20,8 +20,8 @@ class AnimalView:
 
     def tela_opcoes_tipo_animal(self):
         print("TIPO ANIMAL:")
-        print("\t[1] - Cachorro")
-        print("\t[2] - Gato")
+        print("\t[1] -> Cachorro")
+        print("\t[2] -> Gato")
 
         opcao = int(input("Escolha a opcao: "))
         if opcao not in range(1, 3):
@@ -31,9 +31,9 @@ class AnimalView:
 
     def tela_opcoes_tamanho_cachorro(self):
         print("TAMANHO CACHORRO:")
-        print("[1] - Pequeno")
-        print("[2] - Medio")
-        print("[3] - Grande")
+        print("\t[1] - Pequeno")
+        print("\t[2] - Medio")
+        print("\t[3] - Grande")
 
         opcao = int(input("Escolha a opcao: "))
         if opcao not in range(1, 4):
@@ -80,7 +80,7 @@ class AnimalView:
     def pega_dados_animal_alterar(self, tipo_animal: int):
         print("\n-------- DADOS ANIMAL ----------")
         numero_chip = input("N° chip: ")
-        nome = input("Nome:")
+        nome = input("Nome: ")
 
         dados_animal = {
             "numero_chip": numero_chip,

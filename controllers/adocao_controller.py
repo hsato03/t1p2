@@ -3,6 +3,8 @@ from model import Adocao
 from exceptions import EntidadeNaoEncontradaException, OpcaoInvalidaException
 from datetime import date
 
+TIPO_CPF = 1
+TIPO_N_CHIP = 2
 
 class AdocaoController:
     def __init__(self, controlador_sistema):
@@ -45,6 +47,7 @@ class AdocaoController:
             self.__tela_adocao.mostra_mensagem("Nenhuma adocao cadastrada.")
             return
 
+        self.listar_adocoes()
         while True:
             try:
                 tipo_id = self.__tela_adocao.tela_opcoes_identificador()

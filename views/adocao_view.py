@@ -20,8 +20,8 @@ class AdocaoView:
 
     def tela_opcoes_termo(self):
         print("ASSINAR TERMO?")
-        print("\t[1] -> Sim")
-        print("\t[2] -> Nao")
+        print("\t[1] - Sim")
+        print("\t[2] - Nao")
 
         opcao = int(input("Escolha a opcao: "))
         return opcao
@@ -31,7 +31,7 @@ class AdocaoView:
         print("\t[1] -> CPF")
         print("\t[2] -> N° chip")
 
-        opcao = int(input("Escolha a opcao"))
+        opcao = int(input("Escolha a opcao: "))
         if opcao not in range(1, 3):
             raise OpcaoInvalidaException()
 

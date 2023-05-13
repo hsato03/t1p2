@@ -98,6 +98,7 @@ class AnimalController:
 
     def alterar_animal(self):
         tipo_animal = self.__tela_animal.tela_opcoes_tipo_animal()
+        self.listar_cachorros() if tipo_animal == TIPO_CACHORRO else self.listar_gatos()
         numero_chip = self.__tela_animal.seleciona_animal()
 
         if tipo_animal == TIPO_CACHORRO:
