@@ -1,8 +1,6 @@
-from views.animal_view import AnimalView
+from views import AnimalView
 from model import Cachorro, TamanhoCachorro, Gato, TIPO_CACHORRO, TIPO_GATO
-
-from exceptions.entidade_nao_encontrada_exception import EntidadeNaoEncontradaException
-from exceptions.opcao_invalida_exception import OpcaoInvalidaException
+from exceptions import EntidadeNaoEncontradaException, OpcaoInvalidaException
 
 
 class AnimalController:
@@ -107,32 +105,26 @@ class AnimalController:
                 self.__tela_animal.mostra_mensagem("Nenhum cachorro cadastrado.")
                 return
 
-            try:
-                cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
-                dados_novos_cachorro = self.__tela_animal.pega_dados_animal_alterar(
-                    tipo_animal
-                )
-                cachorro.numero_chip = dados_novos_cachorro["numero_chip"]
-                cachorro.nome = dados_novos_cachorro["nome"]
-                cachorro.raca = dados_novos_cachorro["raca"]
-                cachorro.tamanho_cachorro = dados_novos_cachorro["tamanho_cachorro"]
-            except EntidadeNaoEncontradaException as e:
-                self.__tela_animal.mostra_mensagem(e)
+            cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
+            dados_novos_cachorro = self.__tela_animal.pega_dados_animal_alterar(
+                tipo_animal
+            )
+            cachorro.numero_chip = dados_novos_cachorro["numero_chip"]
+            cachorro.nome = dados_novos_cachorro["nome"]
+            cachorro.raca = dados_novos_cachorro["raca"]
+            cachorro.tamanho_cachorro = dados_novos_cachorro["tamanho_cachorro"]
         else:
             if len(self.__gatos) <= 0:
                 self.__tela_animal.mostra_mensagem("Nenhum gato cadastrado.")
                 return
 
-            try:
-                gato = self.buscar_gato_por_numero_chip(numero_chip)
-                dados_novos_gato = self.__tela_animal.pega_dados_animal_alterar(
-                    tipo_animal
-                )
-                gato.numero_chip = dados_novos_gato["numero_chip"]
-                gato.nome = dados_novos_gato["nome"]
-                gato.raca = dados_novos_gato["raca"]
-            except EntidadeNaoEncontradaException as e:
-                self.__tela_animal.mostra_mensagem(e)
+            gato = self.buscar_gato_por_numero_chip(numero_chip)
+            dados_novos_gato = self.__tela_animal.pega_dados_animal_alterar(
+                tipo_animal
+            )
+            gato.numero_chip = dados_novos_gato["numero_chip"]
+            gato.nome = dados_novos_gato["nome"]
+            gato.raca = dados_novos_gato["raca"]
 
     def excluir_animal(self):
         tipo_animal = self.__tela_animal.tela_opcoes_tipo_animal()
@@ -143,46 +135,36 @@ class AnimalController:
                 self.__tela_animal.mostra_mensagem("Nenhum cachorro cadastrado.")
                 return
 
-            try:
-                self.listar_cachorros()
-                cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
-                self.__cachorros.remove(cachorro)
-                self.__tela_animal.mostra_mensagem("Cachorro removido com sucesso.")
-            except EntidadeNaoEncontradaException as e:
-                self.__tela_animal.mostra_mensagem(e)
-
+            self.listar_cachorros()
+            cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
+            self.__cachorros.remove(cachorro)
+            self.__tela_animal.mostra_mensagem("Cachorro removido com sucesso.")
         else:
             if len(self.__gatos) <= 0:
                 self.__tela_animal.mostra_mensagem("Nenhum gato cadastrado")
                 return
 
-            try:
-                self.listar_gatos()
-                gato = self.buscar_gato_por_numero_chip(numero_chip)
-                self.__gatos.remove(gato)
-                self.__tela_animal.mostra_mensagem("Gato removido com sucesso.")
-            except EntidadeNaoEncontradaException as e:
-                self.__tela_animal.mostra_mensagem(e)
+            self.listar_gatos()
+            gato = self.buscar_gato_por_numero_chip(numero_chip)
+            self.__gatos.remove(gato)
+            self.__tela_animal.mostra_mensagem("Gato removido com sucesso.")
 
     def listar_animal_por_numero_chip(self):
         numero_chip = self.__tela_animal.seleciona_animal()
-        try:
-            animal = self.buscar_animal_por_numero_chip(numero_chip)
-            dados_animal = {
-                "numero_chip": animal.numero_chip,
-                "nome": animal.nome,
-                "raca": animal.raca,
-            }
+        animal = self.buscar_animal_por_numero_chip(numero_chip)
+        dados_animal = {
+            "numero_chip": animal.numero_chip,
+            "nome": animal.nome,
+            "raca": animal.raca,
+        }
 
-            if isinstance(animal, Cachorro):
-                dados_animal["tipo_animal"] = 1
-                dados_animal["tamanho_cachorro"] = animal.tamanho
-            else:
-                dados_animal["tipo_animal"] = 2
+        if isinstance(animal, Cachorro):
+            dados_animal["tipo_animal"] = 1
+            dados_animal["tamanho_cachorro"] = animal.tamanho
+        else:
+            dados_animal["tipo_animal"] = 2
 
-            self.__tela_animal.mostra_animal(dados_animal)
-        except EntidadeNaoEncontradaException as e:
-            self.__tela_animal.mostra_mensagem(e)
+        self.__tela_animal.mostra_animal(dados_animal)
 
     def retornar(self):
         self.__controlador_principal.abre_tela()
@@ -200,7 +182,7 @@ class AnimalController:
         while True:
             try:
                 lista_opcoes[self.__tela_animal.tela_opcoes()]()
-            except OpcaoInvalidaException as e:
+            except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
                 self.__tela_animal.mostra_mensagem(e)
             except ValueError:
                 self.__tela_animal.mostra_mensagem("Somente numeros. Tente novamente.")

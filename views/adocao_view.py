@@ -1,5 +1,5 @@
 from datetime import date
-from exceptions.opcao_invalida_exception import OpcaoInvalidaException
+from exceptions import OpcaoInvalidaException
 
 
 class AdocaoView:

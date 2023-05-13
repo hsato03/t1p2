@@ -1,9 +1,6 @@
-from views.adotante_view import AdotanteView
-from model.adotante import Adotante
-from model.tipo_habitacao import TipoHabitacao
-from model.tamanho_habitacao import TamanhoHabitacao
-from exceptions.entidade_nao_encontrada_exception import EntidadeNaoEncontradaException
-from exceptions.opcao_invalida_exception import OpcaoInvalidaException
+from views import AdotanteView
+from model import Adotante, TipoHabitacao, TamanhoHabitacao
+from exceptions import EntidadeNaoEncontradaException, OpcaoInvalidaException
 
 
 class AdotanteController:

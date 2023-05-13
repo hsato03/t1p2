@@ -1,4 +1,4 @@
-from exceptions.opcao_invalida_exception import OpcaoInvalidaException
+from exceptions import OpcaoInvalidaException
 from datetime import datetime
 
 

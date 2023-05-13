@@ -1,7 +1,5 @@
-from views.sistema_view import SistemaView
-from controllers.adotante_controller import AdotanteController
-from controllers.adocao_controller import AdocaoController
-from controllers.animal_controller import AnimalController
+from views import SistemaView
+from controllers import AdotanteController, AdocaoController, AnimalController
 from exceptions import OpcaoInvalidaException
 
 

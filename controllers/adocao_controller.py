@@ -1,7 +1,6 @@
-from views.adocao_view import AdocaoView
-from model.adocao import Adocao
-from exceptions.entidade_nao_encontrada_exception import EntidadeNaoEncontradaException
-from exceptions.opcao_invalida_exception import OpcaoInvalidaException
+from views import AdocaoView
+from model import Adocao
+from exceptions import EntidadeNaoEncontradaException, OpcaoInvalidaException
 from datetime import date
 
 

@@ -1,5 +1,5 @@
 from exceptions import OpcaoInvalidaException
-from model import TIPO_CACHORRO, TIPO_GATO
+from model import TIPO_CACHORRO
 
 
 class AnimalView:
