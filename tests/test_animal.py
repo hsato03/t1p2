@@ -15,15 +15,15 @@ class AnimalTest(unittest.TestCase):
         self.numero_chip_invalido = "100"
         self.nome = "nome"
         self.nome_atualizado = "nomeAtualizado"
-        self.tipo_cachorro = "1"
-        self.tipo_gato = "2"
-        self.tipo_animal_invalido = "100"
+        self.tipo_cachorro = 1
+        self.tipo_gato = 2
+        self.tipo_animal_invalido = 100
         self.raca = "raca"
         self.raca_atualizada = "racaAtualizada"
-        self.tamanho_cachorro_pequeno = "1"
+        self.tamanho_cachorro_pequeno = 1
         self.tamanho_cachorro_medio = 2
-        self.tamanho_cachorro_grande = "3"
-        self.tamanho_cachorro_invalido = "100"
+        self.tamanho_cachorro_grande = 3
+        self.tamanho_cachorro_invalido = 100
         self.cachorro_valido = [
             self.numero_chip,
             self.nome,
@@ -162,11 +162,15 @@ class AnimalTest(unittest.TestCase):
             try:
                 self.controlador_animais.alterar_animal()
             except EntidadeNaoEncontradaException:
-                self.fail("Ocorreu um erro ao alterar cachorro! Entidade nao encontrada.")
+                self.fail(
+                    "Ocorreu um erro ao alterar cachorro! Entidade nao encontrada."
+                )
 
         try:
-            cachorro_atualizado = self.controlador_animais.buscar_cachorro_por_numero_chip(
-                self.numero_chip_atualizado
+            cachorro_atualizado = (
+                self.controlador_animais.buscar_cachorro_por_numero_chip(
+                    self.numero_chip_atualizado
+                )
             )
         except EntidadeNaoEncontradaException:
             self.fail("Cachorro nao alterado.")
@@ -176,7 +180,9 @@ class AnimalTest(unittest.TestCase):
         self.assertEqual(dados_alteracao[4], cachorro_atualizado.raca)
         self.assertEqual(dados_alteracao[5], cachorro_atualizado.tamanho.value)
 
-    def test_alterar_cachorro_should_raise_exception_when_tamanho_cachorro_invalido(self):
+    def test_alterar_cachorro_should_raise_exception_when_tamanho_cachorro_invalido(
+        self,
+    ):
         self.incluir_cachorro_test(self.cachorro_valido)
 
         dados_alteracao = [
@@ -206,7 +212,9 @@ class AnimalTest(unittest.TestCase):
             try:
                 self.controlador_animais.alterar_animal()
             except EntidadeNaoEncontradaException:
-                self.fail("Ocorreu um erro ao alterar cachorro! Entidade nao encontrada.")
+                self.fail(
+                    "Ocorreu um erro ao alterar cachorro! Entidade nao encontrada."
+                )
 
         try:
             gato_atualizado = self.controlador_animais.buscar_gato_por_numero_chip(
@@ -223,5 +231,5 @@ class AnimalTest(unittest.TestCase):
         self.incluir_gato_test(self.gato_valido)
 
         with self.assertRaises(OpcaoInvalidaException):
-            sys.stdin = io.StringIO(self.tipo_animal_invalido)
+            sys.stdin = io.StringIO(str(self.tipo_animal_invalido))
             self.controlador_animais.alterar_animal()
