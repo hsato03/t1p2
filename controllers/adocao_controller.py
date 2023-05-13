@@ -1,5 +1,5 @@
 from views import AdocaoView
-from model import Adocao
+from model import Adocao, TIPO_CACHORRO
 from exceptions import EntidadeNaoEncontradaException, OpcaoInvalidaException
 from datetime import date
 
@@ -15,7 +15,7 @@ class AdocaoController:
 
     def buscar_adocao_por_identificador(self, identificador: str, tipo_id: int):
         for adocao in self.__adocoes:
-            if tipo_id == 1:
+            if tipo_id == TIPO_CPF:
                 if adocao.adotante.cpf == identificador:
                     return adocao
             else:
@@ -24,17 +24,25 @@ class AdocaoController:
         raise EntidadeNaoEncontradaException("ERRO: Adocao nao existente.")
 
     def incluir_adocao(self):
+        tipo_animal = self.__tela_adocao.telar_opcoes_tipo_animal()
         dados_adotante = self.__tela_adocao.pegar_dados_adocao()
 
         cpf_adotante = dados_adotante["cpf_adotante"]
+
+        numero_chip = dados_adotante["numero_chip"]
+        if tipo_animal == TIPO_CACHORRO:
+            animal = self.__controlador_principal.controlador_animais.buscar_cachorro_por_numero_chip(
+                numero_chip
+            )
+        else:
+            animal = self.__controlador_principal.controlador_animais.buscar_gato_por_numero_chip(
+                numero_chip
+            )
+
         adotante = (
             self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(
                 cpf_adotante
             )
-        )
-        numero_chip = dados_adotante["numero_chip"]
-        animal = self.__controlador_principal.controlador_animais.buscar_animal_por_numero_chip(
-            numero_chip
         )
 
         adocao = Adocao(
@@ -46,8 +54,7 @@ class AdocaoController:
         self.__adocoes.append(adocao)
 
     def alterar_adocao(self):
-        if len(self.__adocoes) <= 0:
-            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
+        if self.verificar_nenhuma_adocao_cadastrada():
             return
 
         self.listar_adocoes()
@@ -82,8 +89,7 @@ class AdocaoController:
         adocao.termo_assinado = novos_dados_adocao["termo_assinado"]
 
     def listar_adocoes(self):
-        if len(self.__adocoes) <= 0:
-            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
+        if self.verificar_nenhuma_adocao_cadastrada():
             return
 
         for i in range(len(self.__adocoes)):
@@ -99,8 +105,7 @@ class AdocaoController:
             )
 
     def excluir_adocao(self):
-        if len(self.__adocoes) <= 0:
-            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
+        if self.verificar_nenhuma_adocao_cadastrada():
             return
 
         self.listar_adocoes()
@@ -120,8 +125,7 @@ class AdocaoController:
         self.__tela_adocao.mostrar_mensagem("Adocao removida com sucesso.")
 
     def listar_adocao_por_identificador(self):
-        if len(self.__adocoes) <= 0:
-            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
+        if self.verificar_nenhuma_adocao_cadastrada():
             return
 
         while True:
@@ -145,6 +149,11 @@ class AdocaoController:
                 "termo_assinado": True if adocao.termo_assinado == 1 else False,
             }
         )
+
+    def verificar_nenhuma_adocao_cadastrada(self):
+        if len(self.__adocoes) <= 0:
+            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
+            return True
 
     def retornar(self):
         self.__controlador_principal.abrir_tela()

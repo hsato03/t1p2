@@ -111,7 +111,7 @@ class AdotanteView:
     def mostrar_adotante(self, dados_adotante: dict):
         print("\t- CPF:", dados_adotante["cpf"])
         print("\t- NOME:", dados_adotante["nome"])
-        print("\t- DATA DE NASCIMENTO:", dados_adotante["data_nascimento"])
+        print("\t- DATA DE NASCIMENTO:", dados_adotante["data_nascimento"].strftime('%d/%m/%Y'))
         print("\t- TIPO DE HABITACAO:", dados_adotante["tipo_habitacao"].name)
         print(
             "\t- TAMANHO DE HABITACAO:",

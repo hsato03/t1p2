@@ -37,6 +37,17 @@ class AdocaoView:
 
         return opcao
 
+    def telar_opcoes_tipo_animal(self):
+        print("TIPO DO ANIMAL QUE DESEJA ADOTAR:")
+        print("\t[1] -> Cachorro")
+        print("\t[2] -> Gato")
+
+        opcao = int(input("Escolha a opcao: "))
+        if opcao not in range(1, 3):
+            raise OpcaoInvalidaException()
+
+        return opcao
+
     def pegar_dados_adocao(self):
         print("\n-------- DADOS ADOCAO ----------")
         cpf_adotante = input("CPF (adotante): ")
@@ -62,7 +73,7 @@ class AdocaoView:
     def mostrar_adocao(self, dados_adocao: dict):
         print("\t - CPF ADOTANTE: ", dados_adocao["cpf_adotante"])
         print("\t - N° CHIP ANIMAL: ", dados_adocao["numero_chip"])
-        print("\t - DATA DE ADOCAO: ", dados_adocao["data"])
+        print("\t - DATA DE ADOCAO: ", dados_adocao["data"].strftime('%d/%m/%Y'))
         print("\t - TERMO ASSINADO: ", dados_adocao["termo_assinado"])
 
     def selecionar_adocao(self, tipo_id: int):

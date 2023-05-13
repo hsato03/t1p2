@@ -164,7 +164,6 @@ class AdotanteTest(unittest.TestCase):
             with self.assertRaises(StopIteration):
                 self.controlador_adotantes.incluir_adotante()
 
-    # TODO: Alterar
     def test_excluir_adotante_should_work_when_correct_data(self):
         self.incluir_adotante_test(self.adotante_valido)
 
