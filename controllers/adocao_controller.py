@@ -6,6 +6,7 @@ from datetime import date
 TIPO_CPF = 1
 TIPO_N_CHIP = 2
 
+
 class AdocaoController:
     def __init__(self, controlador_sistema):
         self.__adocoes = []
@@ -26,8 +27,10 @@ class AdocaoController:
         dados_adotante = self.__tela_adocao.pega_dados_adocao()
 
         cpf_adotante = dados_adotante["cpf_adotante"]
-        adotante = self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(
-            cpf_adotante
+        adotante = (
+            self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(
+                cpf_adotante
+            )
         )
         numero_chip = dados_adotante["numero_chip"]
         animal = self.__controlador_principal.controlador_animais.buscar_animal_por_numero_chip(
@@ -55,17 +58,17 @@ class AdocaoController:
             except OpcaoInvalidaException as e:
                 self.__tela_adocao.mostra_mensagem(e)
             except ValueError:
-                self.__tela_adocao.mostra_mensagem(
-                    "Somente numeros. Tente novamente."
-                )
+                self.__tela_adocao.mostra_mensagem("Somente numeros. Tente novamente.")
 
         identificador = self.__tela_adocao.seleciona_adocao(tipo_id)
         adocao = self.buscar_adocao_por_identificador(identificador, tipo_id)
         novos_dados_adocao = self.__tela_adocao.pega_dados_adocao()
 
         cpf_adotante = novos_dados_adocao["cpf_adotante"]
-        adotante = self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(
-            cpf_adotante
+        adotante = (
+            self.__controlador_principal.controlador_adotantes.buscar_adotante_por_cpf(
+                cpf_adotante
+            )
         )
 
         numero_chip = novos_dados_adocao["numero_chip"]
@@ -77,7 +80,6 @@ class AdocaoController:
         adocao.animal = animal
         adocao.data = novos_dados_adocao["data"]
         adocao.termo_assinado = novos_dados_adocao["termo_assinado"]
-
 
     def listar_adocoes(self):
         if len(self.__adocoes) <= 0:
@@ -117,7 +119,6 @@ class AdocaoController:
         self.__adocoes.remove(adocao)
         self.__tela_adocao.mostra_mensagem("Adocao removida com sucesso.")
 
-
     def listar_adocao_por_identificador(self):
         if len(self.__adocoes) <= 0:
             self.__tela_adocao.mostra_mensagem("Nenhuma adocao cadastrada.")
@@ -144,7 +145,6 @@ class AdocaoController:
                 "termo_assinado": True if adocao.termo_assinado == 1 else False,
             }
         )
-
 
     def retornar(self):
         self.__controlador_principal.abre_tela()

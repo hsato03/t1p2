@@ -43,9 +43,7 @@ class AdotanteController:
         adotante.nome = novos_dados_adotante["nome"]
         adotante.cpf = novos_dados_adotante["cpf"]
         adotante.data_nascimento = novos_dados_adotante["data_nascimento"]
-        adotante.tipo_habitacao = TipoHabitacao(
-            novos_dados_adotante["tipo_habitacao"]
-        )
+        adotante.tipo_habitacao = TipoHabitacao(novos_dados_adotante["tipo_habitacao"])
         adotante.tamanho_habitacao = TamanhoHabitacao(
             novos_dados_adotante["tamanho_habitacao"]
         )
@@ -56,8 +54,6 @@ class AdotanteController:
             novos_dados_adotante["logradouro"], novos_dados_adotante["numero"]
         )
         self.listar_adotantes()
-
-
 
     def listar_adotantes(self):
         if len(self.__adotantes) <= 0:
@@ -89,7 +85,6 @@ class AdotanteController:
 
         self.__adotantes.remove(adotante)
         self.__tela_adotante.mostra_mensagem("Adotante removido com sucesso.")
-
 
     def listar_adotante_por_cpf(self):
         if len(self.__adotantes) <= 0:

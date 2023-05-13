@@ -80,7 +80,9 @@ class AdotanteTest(unittest.TestCase):
             except StopIteration:
                 self.fail("Ocorreu um erro ao incluir uma pessoa")
 
-    def test_incluir_adotante_should_throw_exception_when_data_nascimento_invalida(self):
+    def test_incluir_adotante_should_throw_exception_when_data_nascimento_invalida(
+        self,
+    ):
         adotante = [
             self.cpf,
             self.nome,
@@ -97,7 +99,7 @@ class AdotanteTest(unittest.TestCase):
                 self.controlador_adotantes.incluir_adotante()
 
     def test_incluir_adotante_should_raise_exception_when_tipo_habitacao_invalido(
-            self,
+        self,
     ):
         adotante = [
             self.cpf,
@@ -115,7 +117,7 @@ class AdotanteTest(unittest.TestCase):
                 self.controlador_adotantes.incluir_adotante()
 
     def test_incluir_adotante_should_raise_exception_when_tamanho_habitacao_invalido(
-            self,
+        self,
     ):
         adotante = [
             self.cpf,
@@ -133,7 +135,7 @@ class AdotanteTest(unittest.TestCase):
                 self.controlador_adotantes.incluir_adotante()
 
     def test_incluir_adotante_should_raise_exception_when_possui_animal_invalido(
-            self,
+        self,
     ):
         adotante = [
             self.cpf,
@@ -179,7 +181,7 @@ class AdotanteTest(unittest.TestCase):
             self.controlador_adotantes.buscar_adotante_por_cpf(self.cpf)
 
     def test_excluir_adotante_should_raise_exception_when_cpf_invalido(
-            self,
+        self,
     ):
         adotante = [
             self.cpf,

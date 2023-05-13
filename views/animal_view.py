@@ -95,6 +95,7 @@ class AnimalView:
                 try:
                     tamanho_cachorro = self.tela_opcoes_tamanho_cachorro()
                     dados_animal["tamanho_cachorro"] = tamanho_cachorro
+                    break
                 except OpcaoInvalidaException as e:
                     print(e)
                 except ValueError:

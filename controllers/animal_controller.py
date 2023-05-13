@@ -10,28 +10,17 @@ class AnimalController:
         self.__controlador_principal = controlador_sistema
         self.__tela_animal = AnimalView()
 
-    def buscar_animal_por_numero_chip(self, numero_chip: str):
-        gato = self.buscar_gato_por_numero_chip(numero_chip)
-        if gato is not None:
-            return gato
-
-        cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
-        if cachorro is not None:
-            return cachorro
-
-        raise EntidadeNaoEncontradaException("ERRO: Animal nao existente")
-
     def buscar_gato_por_numero_chip(self, numero_chip: str):
         for gato in self.__gatos:
             if gato.numero_chip == numero_chip:
                 return gato
-        return None
+        raise EntidadeNaoEncontradaException("ERRO: Gato nao existente")
 
     def buscar_cachorro_por_numero_chip(self, numero_chip: str):
         for cachorro in self.__cachorros:
             if cachorro.numero_chip == numero_chip:
                 return cachorro
-        return None
+        raise EntidadeNaoEncontradaException("ERRO: Cachorro nao existente")
 
     def incluir_animal(self):
         dados_animal = self.__tela_animal.pega_dados_animal()
@@ -62,8 +51,7 @@ class AnimalController:
             self.listar_gatos()
 
     def listar_cachorros(self):
-        if len(self.__cachorros) <= 0:
-            self.__tela_animal.mostra_mensagem("Nenhum cachorro cadastrado.")
+        if self.verifica_nenhum_cachorro_cadastrado():
             return
 
         for i in range(len(self.__cachorros)):
@@ -80,8 +68,7 @@ class AnimalController:
             )
 
     def listar_gatos(self):
-        if len(self.__gatos) <= 0:
-            self.__tela_animal.mostra_mensagem("Nenhum gato cadastrado.")
+        if self.verifica_nenhum_gato_cadastrado():
             return
 
         for i in range(len(self.__gatos)):
@@ -102,38 +89,39 @@ class AnimalController:
         numero_chip = self.__tela_animal.seleciona_animal()
 
         if tipo_animal == TIPO_CACHORRO:
-            if len(self.__cachorros) <= 0:
-                self.__tela_animal.mostra_mensagem("Nenhum cachorro cadastrado.")
+            if self.verifica_nenhum_cachorro_cadastrado():
                 return
 
-            cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
-            dados_novos_cachorro = self.__tela_animal.pega_dados_animal_alterar(
-                tipo_animal
-            )
-            cachorro.numero_chip = dados_novos_cachorro["numero_chip"]
-            cachorro.nome = dados_novos_cachorro["nome"]
-            cachorro.raca = dados_novos_cachorro["raca"]
-            cachorro.tamanho_cachorro = dados_novos_cachorro["tamanho_cachorro"]
+            self.alterar_cachorro(numero_chip)
         else:
-            if len(self.__gatos) <= 0:
-                self.__tela_animal.mostra_mensagem("Nenhum gato cadastrado.")
+            if self.verifica_nenhum_gato_cadastrado():
                 return
 
-            gato = self.buscar_gato_por_numero_chip(numero_chip)
-            dados_novos_gato = self.__tela_animal.pega_dados_animal_alterar(
-                tipo_animal
-            )
-            gato.numero_chip = dados_novos_gato["numero_chip"]
-            gato.nome = dados_novos_gato["nome"]
-            gato.raca = dados_novos_gato["raca"]
+            self.alterar_gato(numero_chip)
+
+    def alterar_cachorro(self, numero_chip: str):
+        cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
+        dados_novos_cachorro = self.__tela_animal.pega_dados_animal_alterar(
+            TIPO_CACHORRO
+        )
+        cachorro.numero_chip = dados_novos_cachorro["numero_chip"]
+        cachorro.nome = dados_novos_cachorro["nome"]
+        cachorro.raca = dados_novos_cachorro["raca"]
+        cachorro.tamanho = TamanhoCachorro(dados_novos_cachorro["tamanho_cachorro"])
+
+    def alterar_gato(self, numero_chip: str):
+        gato = self.buscar_gato_por_numero_chip(numero_chip)
+        dados_novos_gato = self.__tela_animal.pega_dados_animal_alterar(TIPO_GATO)
+        gato.numero_chip = dados_novos_gato["numero_chip"]
+        gato.nome = dados_novos_gato["nome"]
+        gato.raca = dados_novos_gato["raca"]
 
     def excluir_animal(self):
         tipo_animal = self.__tela_animal.tela_opcoes_tipo_animal()
         numero_chip = self.__tela_animal.seleciona_animal()
 
         if tipo_animal == TIPO_CACHORRO:
-            if len(self.__cachorros) <= 0:
-                self.__tela_animal.mostra_mensagem("Nenhum cachorro cadastrado.")
+            if self.verifica_nenhum_cachorro_cadastrado():
                 return
 
             self.listar_cachorros()
@@ -141,29 +129,47 @@ class AnimalController:
             self.__cachorros.remove(cachorro)
             self.__tela_animal.mostra_mensagem("Cachorro removido com sucesso.")
         else:
-            if len(self.__gatos) <= 0:
-                self.__tela_animal.mostra_mensagem("Nenhum gato cadastrado")
-                return
+            if self.verifica_nenhum_gato_cadastrado():
+                return True
 
             self.listar_gatos()
             gato = self.buscar_gato_por_numero_chip(numero_chip)
             self.__gatos.remove(gato)
             self.__tela_animal.mostra_mensagem("Gato removido com sucesso.")
 
-    def listar_animal_por_numero_chip(self):
-        numero_chip = self.__tela_animal.seleciona_animal()
-        animal = self.buscar_animal_por_numero_chip(numero_chip)
-        dados_animal = {
-            "numero_chip": animal.numero_chip,
-            "nome": animal.nome,
-            "raca": animal.raca,
-        }
+    def verifica_nenhum_cachorro_cadastrado(self):
+        if len(self.__cachorros) <= 0:
+            self.__tela_animal.mostra_mensagem("Nenhum cachorro cadastrado.")
+            return True
 
-        if isinstance(animal, Cachorro):
-            dados_animal["tipo_animal"] = 1
-            dados_animal["tamanho_cachorro"] = animal.tamanho
+    def verifica_nenhum_gato_cadastrado(self):
+        if len(self.__gatos) <= 0:
+            self.__tela_animal.mostra_mensagem("Nenhum gato cadastrado.")
+            return True
+
+    def listar_animal_por_numero_chip(self):
+        tipo_animal = self.__tela_animal.tela_opcoes_tipo_animal()
+
+        if tipo_animal == TIPO_CACHORRO:
+            numero_chip = self.__tela_animal.seleciona_animal()
+            cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
+
+            dados_animal = {
+                "numero_chip": cachorro.numero_chip,
+                "nome": cachorro.nome,
+                "raca": cachorro.raca,
+                "tamanho_cachorro": cachorro.tamanho,
+                "tipo_animal": TIPO_CACHORRO,
+            }
         else:
-            dados_animal["tipo_animal"] = 2
+            numero_chip = self.__tela_animal.seleciona_animal()
+            gato = self.buscar_gato_por_numero_chip(numero_chip)
+            dados_animal = {
+                "numero_chip": gato.numero_chip,
+                "nome": gato.nome,
+                "raca": gato.raca,
+                "tipo_animal": TIPO_GATO,
+            }
 
         self.__tela_animal.mostra_animal(dados_animal)
 
@@ -185,5 +191,3 @@ class AnimalController:
                 lista_opcoes[self.__tela_animal.tela_opcoes()]()
             except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
                 self.__tela_animal.mostra_mensagem(e)
-            except ValueError:
-                self.__tela_animal.mostra_mensagem("Somente numeros. Tente novamente.")
