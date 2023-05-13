@@ -153,8 +153,8 @@ class AdocaoController:
         lista_opcoes = {
             1: self.incluir_adocao,
             2: self.alterar_adocao,
-            3: self.excluir_adocao,
-            4: self.listar_adocoes,
+            3: self.listar_adocoes,
+            4: self.excluir_adocao,
             5: self.listar_adocao_por_identificador,
             0: self.retornar,
         }

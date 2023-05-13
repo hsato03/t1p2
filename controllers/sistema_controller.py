@@ -1,5 +1,5 @@
 from views import SistemaView
-from controllers import AdotanteController, AdocaoController, AnimalController
+from controllers import AdotanteController, AdocaoController, AnimalController, DoadorController
 from exceptions import OpcaoInvalidaException
 
 
@@ -8,6 +8,7 @@ class SistemaController:
         self.__controlador_adotantes = AdotanteController(self)
         self.__controlador_adocoes = AdocaoController(self)
         self.__controlador_animais = AnimalController(self)
+        self.__controlador_doadores = DoadorController(self)
         self.__tela_sistema = SistemaView()
 
     @property
@@ -22,6 +23,10 @@ class SistemaController:
     def controlador_animais(self):
         return self.__controlador_animais
 
+    @property
+    def controlador_doadores(self):
+        return self.__controlador_doadores
+
     def inicializar_sistema(self):
         self.abrir_tela()
 
@@ -34,11 +39,15 @@ class SistemaController:
     def cadastrar_animais(self):
         self.__controlador_animais.abrir_tela()
 
+    def cadastrar_doadores(self):
+        self.__controlador_doadores.abrir_tela()
+
     def encerrar_sistema(self):
         exit(0)
 
     def abrir_tela(self):
         lista_opcoes = {
+            4: self.cadastrar_doadores,
             3: self.cadastrar_animais,
             2: self.cadastrar_adocoes,
             1: self.cadastrar_adotantes,

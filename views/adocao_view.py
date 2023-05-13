@@ -7,8 +7,8 @@ class AdocaoView:
         print("\n---------- ADOCOES ----------")
         print("[1] -> Incluir Adocao")
         print("[2] -> Alterar Adocao")
-        print("[3] -> Excluir Adocao")
-        print("[4] -> Listar Adocoes")
+        print("[3] -> Listar Adocoes")
+        print("[4] -> Excluir Adocao")
         print("[5] -> Listar Adocao por id")
         print("[0] -> Retornar")
 

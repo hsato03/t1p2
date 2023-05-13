@@ -7,7 +7,7 @@ class DoadorView:
         print("\n---------- DOADORES ----------")
         print("[1] -> Incluir Doador")
         print("[2] -> Alterar Doador")
-        print("[3] -> Listar Doadors")
+        print("[3] -> Listar Doadores")
         print("[4] -> Excluir Doador")
         print("[5] -> Buscar Doador por CPF")
         print("[0] -> Retornar")

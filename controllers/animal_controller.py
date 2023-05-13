@@ -180,8 +180,8 @@ class AnimalController:
         lista_opcoes = {
             1: self.incluir_animal,
             2: self.alterar_animal,
-            3: self.excluir_animal,
-            4: self.listar_animais,
+            3: self.listar_animais,
+            4: self.excluir_animal,
             5: self.listar_animal_por_numero_chip,
             0: self.retornar,
         }

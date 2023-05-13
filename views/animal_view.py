@@ -7,8 +7,8 @@ class AnimalView:
         print("\n---------- ANIMAIS ----------")
         print("[1] -> Incluir Animal")
         print("[2] -> Alterar Animal")
-        print("[3] -> Excluir Animal")
-        print("[4] -> Listar Animais")
+        print("[3] -> Listar Animais")
+        print("[4] -> Excluir Animal")
         print("[5] -> Buscar Animal por N° chip")
         print("[0] -> Retornar")
 
