@@ -3,7 +3,7 @@ from exceptions import OpcaoInvalidaException
 
 
 class AdocaoView:
-    def tela_opcoes(self):
+    def telar_opcoes(self):
         print("\n---------- ADOCOES ----------")
         print("[1] -> Incluir Adocao")
         print("[2] -> Alterar Adocao")
@@ -18,7 +18,7 @@ class AdocaoView:
 
         return opcao
 
-    def tela_opcoes_termo(self):
+    def telar_opcoe_termo(self):
         print("ASSINAR TERMO?")
         print("\t[1] - Sim")
         print("\t[2] - Nao")
@@ -26,7 +26,7 @@ class AdocaoView:
         opcao = int(input("Escolha a opcao: "))
         return opcao
 
-    def tela_opcoes_identificador(self):
+    def telar_opcoes_identificador(self):
         print("BUSCAR POR:")
         print("\t[1] -> CPF")
         print("\t[2] -> N° chip")
@@ -37,7 +37,7 @@ class AdocaoView:
 
         return opcao
 
-    def pega_dados_adocao(self):
+    def pegar_dados_adocao(self):
         print("\n-------- DADOS ADOCAO ----------")
         cpf_adotante = input("CPF (adotante): ")
         numero_chip = input("N° Chip (animal): ")
@@ -45,7 +45,7 @@ class AdocaoView:
 
         while True:
             try:
-                termo_assinado = self.tela_opcoes_termo()
+                termo_assinado = self.telar_opcoe_termo()
                 break
             except OpcaoInvalidaException as e:
                 print(e)
@@ -59,18 +59,18 @@ class AdocaoView:
             "termo_assinado": termo_assinado,
         }
 
-    def mostra_adocao(self, dados_adocao: dict):
+    def mostrar_adocao(self, dados_adocao: dict):
         print("\t - CPF ADOTANTE: ", dados_adocao["cpf_adotante"])
         print("\t - N° CHIP ANIMAL: ", dados_adocao["numero_chip"])
         print("\t - DATA DE ADOCAO: ", dados_adocao["data"])
         print("\t - TERMO ASSINADO: ", dados_adocao["termo_assinado"])
 
-    def seleciona_adocao(self, tipo_id: int):
+    def selecionar_adocao(self, tipo_id: int):
         if tipo_id == 1:
             id = input("CPF da adocao que deseja selecionar: ")
         else:
             id = input("N° Chip da adocao que deseja selecionar: ")
         return id
 
-    def mostra_mensagem(self, msg: str):
+    def mostrar_mensagem(self, msg: str):
         print(msg)

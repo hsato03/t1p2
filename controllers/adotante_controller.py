@@ -16,7 +16,7 @@ class AdotanteController:
         raise EntidadeNaoEncontradaException("ERRO: Adotante nao existente.")
 
     def incluir_adotante(self):
-        dados_adotante = self.__tela_adotante.pega_dados_adotante()
+        dados_adotante = self.__tela_adotante.pegar_dados_adotante()
 
         adotante = Adotante(
             dados_adotante["cpf"],
@@ -32,13 +32,13 @@ class AdotanteController:
 
     def alterar_adotante(self):
         if len(self.__adotantes) <= 0:
-            self.__tela_adotante.mostra_mensagem("Nenhum adotante cadastrado.")
+            self.__tela_adotante.mostrar_mensagem("Nenhum adotante cadastrado.")
             return
 
         self.listar_adotantes()
-        cpf_adotante = self.__tela_adotante.seleciona_adotante()
+        cpf_adotante = self.__tela_adotante.selecionar_adotante()
         adotante = self.buscar_adotante_por_cpf(cpf_adotante)
-        novos_dados_adotante = self.__tela_adotante.pega_dados_adotante()
+        novos_dados_adotante = self.__tela_adotante.pegar_dados_adotante()
 
         adotante.nome = novos_dados_adotante["nome"]
         adotante.cpf = novos_dados_adotante["cpf"]
@@ -61,8 +61,8 @@ class AdotanteController:
 
         for i in range(len(self.__adotantes)):
             adotante = self.__adotantes[i]
-            self.__tela_adotante.mostra_mensagem(f"ADOTANTE #{i + 1:02d}")
-            self.__tela_adotante.mostra_adotante(
+            self.__tela_adotante.mostrar_mensagem(f"ADOTANTE #{i + 1:02d}")
+            self.__tela_adotante.mostrar_adotante(
                 {
                     "cpf": adotante.cpf,
                     "nome": adotante.nome,
@@ -76,25 +76,25 @@ class AdotanteController:
 
     def excluir_adotante(self):
         if len(self.__adotantes) <= 0:
-            self.__tela_adotante.mostra_mensagem("Nenhum adotante cadastrado.")
+            self.__tela_adotante.mostrar_mensagem("Nenhum adotante cadastrado.")
             return
 
         self.listar_adotantes()
-        cpf_adotante = self.__tela_adotante.seleciona_adotante()
+        cpf_adotante = self.__tela_adotante.selecionar_adotante()
         adotante = self.buscar_adotante_por_cpf(cpf_adotante)
 
         self.__adotantes.remove(adotante)
-        self.__tela_adotante.mostra_mensagem("Adotante removido com sucesso.")
+        self.__tela_adotante.mostrar_mensagem("Adotante removido com sucesso.")
 
     def listar_adotante_por_cpf(self):
         if len(self.__adotantes) <= 0:
-            self.__tela_adotante.mostra_mensagem("Nenhum adotante cadastrado.")
+            self.__tela_adotante.mostrar_mensagem("Nenhum adotante cadastrado.")
             return
 
-        cpf_adotante = self.__tela_adotante.seleciona_adotante()
+        cpf_adotante = self.__tela_adotante.selecionar_adotante()
         adotante = self.buscar_adotante_por_cpf(cpf_adotante)
 
-        self.__tela_adotante.mostra_adotante(
+        self.__tela_adotante.mostrar_adotante(
             {
                 "cpf": adotante.cpf,
                 "nome": adotante.nome,
@@ -107,9 +107,9 @@ class AdotanteController:
         )
 
     def retornar(self):
-        self.__controlador_principal.abre_tela()
+        self.__controlador_principal.abrir_tela()
 
-    def abre_tela(self):
+    def abrir_tela(self):
         lista_opcoes = {
             1: self.incluir_adotante,
             2: self.alterar_adotante,
@@ -121,10 +121,10 @@ class AdotanteController:
 
         while True:
             try:
-                lista_opcoes[self.__tela_adotante.tela_opcoes()]()
+                lista_opcoes[self.__tela_adotante.telar_opcoes()]()
             except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
-                self.__tela_adotante.mostra_mensagem(e)
+                self.__tela_adotante.mostrar_mensagem(e)
             except ValueError:
-                self.__tela_adotante.mostra_mensagem(
+                self.__tela_adotante.mostrar_mensagem(
                     "Somente numeros. Tente novamente."
                 )

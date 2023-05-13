@@ -24,7 +24,7 @@ class AdocaoController:
         raise EntidadeNaoEncontradaException("ERRO: Adocao nao existente.")
 
     def incluir_adocao(self):
-        dados_adotante = self.__tela_adocao.pega_dados_adocao()
+        dados_adotante = self.__tela_adocao.pegar_dados_adocao()
 
         cpf_adotante = dados_adotante["cpf_adotante"]
         adotante = (
@@ -47,22 +47,22 @@ class AdocaoController:
 
     def alterar_adocao(self):
         if len(self.__adocoes) <= 0:
-            self.__tela_adocao.mostra_mensagem("Nenhuma adocao cadastrada.")
+            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
             return
 
         self.listar_adocoes()
         while True:
             try:
-                tipo_id = self.__tela_adocao.tela_opcoes_identificador()
+                tipo_id = self.__tela_adocao.telar_opcoes_identificador()
                 break
             except OpcaoInvalidaException as e:
-                self.__tela_adocao.mostra_mensagem(e)
+                self.__tela_adocao.mostrar_mensagem(e)
             except ValueError:
-                self.__tela_adocao.mostra_mensagem("Somente numeros. Tente novamente.")
+                self.__tela_adocao.mostrar_mensagem("Somente numeros. Tente novamente.")
 
-        identificador = self.__tela_adocao.seleciona_adocao(tipo_id)
+        identificador = self.__tela_adocao.selecionar_adocao(tipo_id)
         adocao = self.buscar_adocao_por_identificador(identificador, tipo_id)
-        novos_dados_adocao = self.__tela_adocao.pega_dados_adocao()
+        novos_dados_adocao = self.__tela_adocao.pegar_dados_adocao()
 
         cpf_adotante = novos_dados_adocao["cpf_adotante"]
         adotante = (
@@ -83,13 +83,13 @@ class AdocaoController:
 
     def listar_adocoes(self):
         if len(self.__adocoes) <= 0:
-            self.__tela_adocao.mostra_mensagem("Nenhuma adocao cadastrada.")
+            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
             return
 
         for i in range(len(self.__adocoes)):
-            self.__tela_adocao.mostra_mensagem(f"ADOCAO #{i + 1:02d}")
+            self.__tela_adocao.mostrar_mensagem(f"ADOCAO #{i + 1:02d}")
             adocao = self.__adocoes[i]
-            self.__tela_adocao.mostra_adocao(
+            self.__tela_adocao.mostrar_adocao(
                 {
                     "cpf_adotante": adocao.adotante.cpf,
                     "numero_chip": adocao.animal.numero_chip,
@@ -100,44 +100,44 @@ class AdocaoController:
 
     def excluir_adocao(self):
         if len(self.__adocoes) <= 0:
-            self.__tela_adocao.mostra_mensagem("Nenhuma adocao cadastrada.")
+            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
             return
 
         self.listar_adocoes()
 
         while True:
             try:
-                tipo_id = self.__tela_adocao.tela_opcoes_identificador()
+                tipo_id = self.__tela_adocao.telar_opcoes_identificador()
                 break
             except OpcaoInvalidaException as e:
-                self.__tela_adocao.mostra_mensagem(e)
+                self.__tela_adocao.mostrar_mensagem(e)
             except ValueError:
-                self.__tela_adocao.mostra_mensagem("Somente numeros. Tente novamente.")
+                self.__tela_adocao.mostrar_mensagem("Somente numeros. Tente novamente.")
 
-        identificador = self.__tela_adocao.seleciona_adocao(tipo_id)
+        identificador = self.__tela_adocao.selecionar_adocao(tipo_id)
         adocao = self.buscar_adocao_por_identificador(identificador, tipo_id)
         self.__adocoes.remove(adocao)
-        self.__tela_adocao.mostra_mensagem("Adocao removida com sucesso.")
+        self.__tela_adocao.mostrar_mensagem("Adocao removida com sucesso.")
 
     def listar_adocao_por_identificador(self):
         if len(self.__adocoes) <= 0:
-            self.__tela_adocao.mostra_mensagem("Nenhuma adocao cadastrada.")
+            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
             return
 
         while True:
             try:
-                tipo_id = self.__tela_adocao.tela_opcoes_identificador()
+                tipo_id = self.__tela_adocao.telar_opcoes_identificador()
                 break
             except OpcaoInvalidaException as e:
-                self.__tela_adocao.mostra_mensagem(e)
+                self.__tela_adocao.mostrar_mensagem(e)
             except ValueError:
-                self.__tela_adocao.mostra_mensagem("Somente numeros. Tente novamente.")
+                self.__tela_adocao.mostrar_mensagem("Somente numeros. Tente novamente.")
 
-        identificador = self.__tela_adocao.seleciona_adocao(tipo_id)
+        identificador = self.__tela_adocao.selecionar_adocao(tipo_id)
 
         adocao = self.buscar_adocao_por_identificador(identificador, tipo_id)
 
-        self.__tela_adocao.mostra_adocao(
+        self.__tela_adocao.mostrar_adocao(
             {
                 "cpf_adotante": adocao.adotante.cpf,
                 "numero_chip": adocao.animal.numero_chip,
@@ -147,9 +147,9 @@ class AdocaoController:
         )
 
     def retornar(self):
-        self.__controlador_principal.abre_tela()
+        self.__controlador_principal.abrir_tela()
 
-    def abre_tela(self):
+    def abrir_tela(self):
         lista_opcoes = {
             1: self.incluir_adocao,
             2: self.alterar_adocao,
@@ -161,8 +161,8 @@ class AdocaoController:
 
         while True:
             try:
-                lista_opcoes[self.__tela_adocao.tela_opcoes()]()
+                lista_opcoes[self.__tela_adocao.telar_opcoes()]()
             except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
-                self.__tela_adocao.mostra_mensagem(e)
+                self.__tela_adocao.mostrar_mensagem(e)
             except ValueError:
-                self.__tela_adocao.mostra_mensagem("Somente numeros. Tente novamente")
+                self.__tela_adocao.mostrar_mensagem("Somente numeros. Tente novamente")

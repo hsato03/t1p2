@@ -23,21 +23,21 @@ class SistemaController:
         return self.__controlador_animais
 
     def inicializar_sistema(self):
-        self.abre_tela()
+        self.abrir_tela()
 
     def cadastrar_adotantes(self):
-        self.__controlador_adotantes.abre_tela()
+        self.__controlador_adotantes.abrir_tela()
 
     def cadastrar_adocoes(self):
-        self.__controlador_adocoes.abre_tela()
+        self.__controlador_adocoes.abrir_tela()
 
     def cadastrar_animais(self):
-        self.__controlador_animais.abre_tela()
+        self.__controlador_animais.abrir_tela()
 
     def encerrar_sistema(self):
         exit(0)
 
-    def abre_tela(self):
+    def abrir_tela(self):
         lista_opcoes = {
             3: self.cadastrar_animais,
             2: self.cadastrar_adocoes,
@@ -47,7 +47,7 @@ class SistemaController:
 
         while True:
             try:
-                opcao_escolhida = self.__tela_sistema.tela_opcoes()
+                opcao_escolhida = self.__tela_sistema.telar_opcoes()
                 funcao_escolhida = lista_opcoes[opcao_escolhida]
                 funcao_escolhida()
             except OpcaoInvalidaException as e:

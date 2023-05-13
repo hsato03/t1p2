@@ -3,7 +3,7 @@ from model import TIPO_CACHORRO
 
 
 class AnimalView:
-    def tela_opcoes(self):
+    def telar_opcoes(self):
         print("\n---------- ANIMAIS ----------")
         print("[1] -> Incluir Animal")
         print("[2] -> Alterar Animal")
@@ -18,7 +18,7 @@ class AnimalView:
 
         return opcao
 
-    def tela_opcoes_tipo_animal(self):
+    def telar_opcoes_tipo_animal(self):
         print("TIPO ANIMAL:")
         print("\t[1] -> Cachorro")
         print("\t[2] -> Gato")
@@ -29,7 +29,7 @@ class AnimalView:
 
         return opcao
 
-    def tela_opcoes_tamanho_cachorro(self):
+    def telar_opcoes_tamanho_cachorro(self):
         print("TAMANHO CACHORRO:")
         print("\t[1] - Pequeno")
         print("\t[2] - Medio")
@@ -41,7 +41,7 @@ class AnimalView:
 
         return opcao
 
-    def pega_dados_animal(self):
+    def pegar_dados_animal(self):
         print("\n-------- DADOS ANIMAL ----------")
         numero_chip = input("N° chip: ")
         nome = input("Nome: ")
@@ -53,7 +53,7 @@ class AnimalView:
 
         while True:
             try:
-                tipo_animal = self.tela_opcoes_tipo_animal()
+                tipo_animal = self.telar_opcoes_tipo_animal()
                 dados_animal["tipo_animal"] = tipo_animal
                 break
             except OpcaoInvalidaException as e:
@@ -67,7 +67,7 @@ class AnimalView:
         if tipo_animal == TIPO_CACHORRO:
             while True:
                 try:
-                    tamanho_cachorro = self.tela_opcoes_tamanho_cachorro()
+                    tamanho_cachorro = self.telar_opcoes_tamanho_cachorro()
                     dados_animal["tamanho_cachorro"] = tamanho_cachorro
                     break
                 except OpcaoInvalidaException as e:
@@ -77,7 +77,7 @@ class AnimalView:
 
         return dados_animal
 
-    def pega_dados_animal_alterar(self, tipo_animal: int):
+    def pegar_dados_animal_alterar(self, tipo_animal: int):
         print("\n-------- DADOS ANIMAL ----------")
         numero_chip = input("N° chip: ")
         nome = input("Nome: ")
@@ -93,7 +93,7 @@ class AnimalView:
         if tipo_animal == TIPO_CACHORRO:
             while True:
                 try:
-                    tamanho_cachorro = self.tela_opcoes_tamanho_cachorro()
+                    tamanho_cachorro = self.telar_opcoes_tamanho_cachorro()
                     dados_animal["tamanho_cachorro"] = tamanho_cachorro
                     break
                 except OpcaoInvalidaException as e:
@@ -103,7 +103,7 @@ class AnimalView:
 
         return dados_animal
 
-    def mostra_animal(self, dados_animal: dict):
+    def mostrar_animal(self, dados_animal: dict):
         print(f"\t- N° CHIP: {dados_animal['numero_chip']}")
         print(f"\t- NOME: {dados_animal['nome']}")
         print(f"\t- RACA: {dados_animal['raca']}")
@@ -111,9 +111,9 @@ class AnimalView:
         if dados_animal["tipo_animal"] == TIPO_CACHORRO:
             print(f"\t- TAMANHO CACHORRO: {dados_animal['tamanho_cachorro'].name}")
 
-    def seleciona_animal(self):
+    def selecionar_animal(self):
         numero_chip = input("N° chip do animal que deseja selecionar: ")
         return numero_chip
 
-    def mostra_mensagem(self, msg: str):
+    def mostrar_mensagem(self, msg: str):
         print(msg)

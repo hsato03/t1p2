@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class AdotanteView:
-    def tela_opcoes(self):
+    def telar_opcoes(self):
         print("\n---------- ADOTANTES ----------")
         print("[1] -> Incluir Adotante")
         print("[2] -> Alterar Adotante")
@@ -18,7 +18,7 @@ class AdotanteView:
 
         return opcao
 
-    def tela_opcoes_tipo_habitacao(self):
+    def telar_opcoes_tipo_habitacao(self):
         print("TIPO HABITACAO:")
         print("\t[1] -> Casa")
         print("\t[2] -> Apartamento")
@@ -29,7 +29,7 @@ class AdotanteView:
 
         return opcao
 
-    def tela_opcoes_tamanho_habitacao(self):
+    def telar_opcoes_tamanho_habitacao(self):
         print("TAMANHO HABITACAO:")
         print("\t[1] -> Pequeno")
         print("\t[2] -> Medio")
@@ -41,7 +41,7 @@ class AdotanteView:
 
         return opcao
 
-    def tela_opcoes_possui_animal(self):
+    def telar_opcoes_possui_animal(self):
         print("POSSUI ANIMAL:")
         print("\t[1] -> Sim")
         print("\t[2] -> Nao")
@@ -52,7 +52,7 @@ class AdotanteView:
 
         return opcao
 
-    def pega_dados_adotante(self):
+    def pegar_dados_adotante(self):
         tipo_habitacao, tamanho_habitacao, possui_animal = (
             None,
             None,
@@ -73,17 +73,17 @@ class AdotanteView:
         while True:
             try:
                 tipo_habitacao = (
-                    self.tela_opcoes_tipo_habitacao()
+                    self.telar_opcoes_tipo_habitacao()
                     if tipo_habitacao is None
                     else tipo_habitacao
                 )
                 tamanho_habitacao = (
-                    self.tela_opcoes_tamanho_habitacao()
+                    self.telar_opcoes_tamanho_habitacao()
                     if tamanho_habitacao is None
                     else tamanho_habitacao
                 )
                 possui_animal = (
-                    self.tela_opcoes_possui_animal()
+                    self.telar_opcoes_possui_animal()
                     if possui_animal is None
                     else possui_animal
                 )
@@ -108,7 +108,7 @@ class AdotanteView:
             "numero": numero,
         }
 
-    def mostra_adotante(self, dados_adotante: dict):
+    def mostrar_adotante(self, dados_adotante: dict):
         print("\t- CPF:", dados_adotante["cpf"])
         print("\t- NOME:", dados_adotante["nome"])
         print("\t- DATA DE NASCIMENTO:", dados_adotante["data_nascimento"])
@@ -121,9 +121,9 @@ class AdotanteView:
         print(f"\t- ENDERECO: {dados_adotante['endereco']}\n")
 
     # fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado
-    def seleciona_adotante(self):
+    def selecionar_adotante(self):
         cpf = input("CPF do adotante que deseja selecionar: ")
         return cpf
 
-    def mostra_mensagem(self, msg: str):
+    def mostrar_mensagem(self, msg: str):
         print(msg)

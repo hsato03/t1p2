@@ -2,7 +2,7 @@ from exceptions import OpcaoInvalidaException
 
 
 class SistemaView:
-    def tela_opcoes(self):
+    def telar_opcoes(self):
         print("\n---------- MENU PRINCIPAL ----------")
         print("[1] -> Adotantes")
         print("[2] -> Adocoes")
