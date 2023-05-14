@@ -2,36 +2,22 @@ import io
 import sys
 import unittest
 from unittest.mock import patch
+from tests.test_variables import *
 from controllers import AnimalController
 from exceptions import EntidadeNaoEncontradaException, OpcaoInvalidaException
 
 
 class AnimalTest(unittest.TestCase):
-    # TODO: Refatorar input com variaveis no setUp
     def setUp(self):
         self.controlador_animais = AnimalController(None)
-        self.numero_chip = "1"
-        self.numero_chip_atualizado = "10"
-        self.numero_chip_invalido = "100"
-        self.nome = "nome"
-        self.nome_atualizado = "nomeAtualizado"
-        self.tipo_cachorro = 1
-        self.tipo_gato = 2
-        self.tipo_animal_invalido = 100
-        self.raca = "raca"
-        self.raca_atualizada = "racaAtualizada"
-        self.tamanho_cachorro_pequeno = 1
-        self.tamanho_cachorro_medio = 2
-        self.tamanho_cachorro_grande = 3
-        self.tamanho_cachorro_invalido = 100
         self.cachorro_valido = [
-            self.numero_chip,
-            self.nome,
-            self.tipo_cachorro,
-            self.raca,
-            self.tamanho_cachorro_pequeno,
+            numero_chip,
+            nome,
+            tipo_cachorro,
+            raca,
+            tamanho_cachorro_pequeno,
         ]
-        self.gato_valido = [self.numero_chip, self.nome, self.tipo_gato, self.raca]
+        self.gato_valido = [numero_chip, nome, tipo_gato, raca]
 
     def incluir_cachorro_test(self, dados_cachorro):
         with patch("builtins.input", side_effect=dados_cachorro):
@@ -49,31 +35,31 @@ class AnimalTest(unittest.TestCase):
 
     def test_incluir_cachorro_pequeno_should_work_when_valid_data(self):
         cachorro = [
-            self.numero_chip,
-            self.nome,
-            self.tipo_cachorro,
-            self.raca,
-            self.tamanho_cachorro_pequeno,
+            numero_chip,
+            nome,
+            tipo_cachorro,
+            raca,
+            tamanho_cachorro_pequeno,
         ]
         self.incluir_gato_test(cachorro)
 
     def test_incluir_cachorro_medio_should_work_when_valid_data(self):
         cachorro = [
-            self.numero_chip,
-            self.nome,
-            self.tipo_cachorro,
-            self.raca,
-            self.tamanho_cachorro_medio,
+            numero_chip,
+            nome,
+            tipo_cachorro,
+            raca,
+            tamanho_cachorro_medio,
         ]
         self.incluir_cachorro_test(cachorro)
 
     def test_incluir_cachorro_grande_should_work_when_valid_data(self):
         cachorro = [
-            self.numero_chip,
-            self.nome,
-            self.tipo_cachorro,
-            self.raca,
-            self.tamanho_cachorro_grande,
+            numero_chip,
+            nome,
+            tipo_cachorro,
+            raca,
+            tamanho_cachorro_grande,
         ]
         self.incluir_cachorro_test(cachorro)
 
@@ -81,22 +67,22 @@ class AnimalTest(unittest.TestCase):
         self,
     ):
         cachorro = [
-            self.numero_chip,
-            self.nome,
-            self.tipo_cachorro,
-            self.raca,
-            self.tamanho_cachorro_invalido,
+            numero_chip,
+            nome,
+            tipo_cachorro,
+            raca,
+            tamanho_cachorro_invalido,
         ]
         with patch("builtins.input", side_effect=cachorro):
             with self.assertRaises(StopIteration):
                 self.controlador_animais.incluir_animal()
 
     def test_incluir_gato_should_work_when_valid_data(self):
-        gato = [self.numero_chip, self.nome, self.tipo_gato, self.raca]
+        gato = [numero_chip, nome, tipo_gato, raca]
         self.incluir_gato_test(gato)
 
     def test_incluir_animal_should_raise_exception_when_tipo_animal_invalido(self):
-        animal = [self.numero_chip, self.nome, self.tipo_animal_invalido]
+        animal = [numero_chip, nome, tipo_animal_invalido]
         with patch("builtins.input", side_effect=animal):
             with self.assertRaises(StopIteration):
                 self.controlador_animais.incluir_animal()
@@ -104,7 +90,7 @@ class AnimalTest(unittest.TestCase):
     def test_excluir_cachorro_should_work_when_valid_data(self):
         self.incluir_cachorro_test(self.cachorro_valido)
 
-        dados_exclusao = [self.tipo_cachorro, self.numero_chip]
+        dados_exclusao = [tipo_cachorro, numero_chip]
         with patch("builtins.input", side_effect=dados_exclusao):
             try:
                 self.controlador_animais.excluir_animal()
@@ -116,7 +102,7 @@ class AnimalTest(unittest.TestCase):
     def test_excluir_cachorro_should_raise_exception_when_numero_chip_invalido(self):
         self.incluir_cachorro_test(self.cachorro_valido)
 
-        dados_exclusao = [self.tipo_cachorro, self.numero_chip_invalido]
+        dados_exclusao = [tipo_cachorro, numero_chip_invalido]
         with patch("builtins.input", side_effect=dados_exclusao):
             with self.assertRaises(EntidadeNaoEncontradaException):
                 self.controlador_animais.excluir_animal()
@@ -124,7 +110,7 @@ class AnimalTest(unittest.TestCase):
     def test_excluir_gato_should_work_when_valid_data(self):
         self.incluir_gato_test(self.gato_valido)
 
-        dados_exclusao = [self.tipo_gato, self.numero_chip]
+        dados_exclusao = [tipo_gato, numero_chip]
         with patch("builtins.input", side_effect=dados_exclusao):
             try:
                 self.controlador_animais.excluir_animal()
@@ -134,7 +120,7 @@ class AnimalTest(unittest.TestCase):
     def test_excluir_gato_should_raise_exception_when_numero_chip_invalido(self):
         self.incluir_gato_test(self.gato_valido)
 
-        dados_exclusao = [self.tipo_gato, self.numero_chip_invalido]
+        dados_exclusao = [tipo_gato, numero_chip_invalido]
         with patch("builtins.input", side_effect=dados_exclusao):
             with self.assertRaises(EntidadeNaoEncontradaException):
                 self.controlador_animais.excluir_animal()
@@ -142,7 +128,7 @@ class AnimalTest(unittest.TestCase):
     def test_excluir_animal_should_raise_exception_when_tipo_animal_invalido(self):
         self.incluir_gato_test(self.gato_valido)
 
-        dados_exclusao = [self.tipo_animal_invalido, self.numero_chip]
+        dados_exclusao = [tipo_animal_invalido, numero_chip]
         with patch("builtins.input", side_effect=dados_exclusao):
             with self.assertRaises(OpcaoInvalidaException):
                 self.controlador_animais.excluir_animal()
@@ -151,12 +137,12 @@ class AnimalTest(unittest.TestCase):
         self.incluir_cachorro_test(self.cachorro_valido)
 
         dados_alteracao = [
-            self.tipo_cachorro,
-            self.numero_chip,
-            self.numero_chip_atualizado,
-            self.nome_atualizado,
-            self.raca_atualizada,
-            self.tamanho_cachorro_medio,
+            tipo_cachorro,
+            numero_chip,
+            numero_chip_atualizado,
+            nome_atualizado,
+            raca_atualizada,
+            tamanho_cachorro_medio,
         ]
         with patch("builtins.input", side_effect=dados_alteracao):
             try:
@@ -169,7 +155,7 @@ class AnimalTest(unittest.TestCase):
         try:
             cachorro_atualizado = (
                 self.controlador_animais.buscar_cachorro_por_numero_chip(
-                    self.numero_chip_atualizado
+                    numero_chip_atualizado
                 )
             )
         except EntidadeNaoEncontradaException:
@@ -186,12 +172,12 @@ class AnimalTest(unittest.TestCase):
         self.incluir_cachorro_test(self.cachorro_valido)
 
         dados_alteracao = [
-            self.tipo_cachorro,
-            self.numero_chip,
-            self.numero_chip_atualizado,
-            self.nome_atualizado,
-            self.raca_atualizada,
-            self.tamanho_cachorro_invalido,
+            tipo_cachorro,
+            numero_chip,
+            numero_chip_atualizado,
+            nome_atualizado,
+            raca_atualizada,
+            tamanho_cachorro_invalido,
         ]
         with patch("builtins.input", side_effect=dados_alteracao):
             with self.assertRaises(StopIteration):
@@ -201,11 +187,11 @@ class AnimalTest(unittest.TestCase):
         self.incluir_gato_test(self.gato_valido)
 
         dados_alteracao = [
-            self.tipo_gato,
-            self.numero_chip,
-            self.numero_chip_atualizado,
-            self.nome_atualizado,
-            self.raca_atualizada,
+            tipo_gato,
+            numero_chip,
+            numero_chip_atualizado,
+            nome_atualizado,
+            raca_atualizada,
         ]
 
         with patch("builtins.input", side_effect=dados_alteracao):
@@ -218,7 +204,7 @@ class AnimalTest(unittest.TestCase):
 
         try:
             gato_atualizado = self.controlador_animais.buscar_gato_por_numero_chip(
-                self.numero_chip_atualizado
+                numero_chip_atualizado
             )
         except EntidadeNaoEncontradaException:
             self.fail("Gato nao alterado.")
@@ -231,5 +217,5 @@ class AnimalTest(unittest.TestCase):
         self.incluir_gato_test(self.gato_valido)
 
         with self.assertRaises(OpcaoInvalidaException):
-            sys.stdin = io.StringIO(str(self.tipo_animal_invalido))
+            sys.stdin = io.StringIO(str(tipo_animal_invalido))
             self.controlador_animais.alterar_animal()

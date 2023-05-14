@@ -1,127 +1,88 @@
 import unittest
-from unittest.mock import patch, Mock
-from controllers import AdocaoController
-from model import TIPO_CACHORRO, TIPO_GATO, TIPO_CPF, TIPO_N_CHIP
+from unittest.mock import patch
+from tests.test_variables import *
+from model import TIPO_GATO, TIPO_CPF
 from exceptions import EntidadeNaoEncontradaException
+from controllers import AdocaoController, SistemaController
 
 
-class TestAdocao(unittest.TestCase):
+class AdocaoTest(unittest.TestCase):
     def setUp(self):
-        def buscar_adotante_mock(cpf):
-            if cpf == "1" or cpf == "2":
-                return self.adotante
-            else:
-                raise EntidadeNaoEncontradaException("Adotante nao encontrado")
+        self.controlador_sistema = SistemaController()
 
-        def buscar_animal_mock(numero_chip):
-            if numero_chip == "1" or numero_chip == "2":
-                return self.animal
-            else:
-                raise EntidadeNaoEncontradaException("Animal nao encontrado")
+        self.controlador_adocoes = AdocaoController(self.controlador_sistema)
 
-        def buscar_adocao_por_identificador_mock(identificador, tipo_id):
-            if tipo_id == TIPO_CPF:
-                if identificador == "1" or identificador == "2":
-                    return (
-                        self.adocao
-                        if identificador == "1"
-                        else self.adocao_atualizada
-                    )
-                else:
-                    raise EntidadeNaoEncontradaException("Entidade nao encontrada")
-            else:
-                if identificador == "1" or identificador == "2":
-                    return (
-                        self.adocao
-                        if identificador == "1"
-                        else self.adocao_atualizada
-                    )
-                else:
-                    raise EntidadeNaoEncontradaException("Entidade nao encontrada")
+        self.adocao_valida = [TIPO_GATO, cpf, numero_chip, termo_assinado]
 
-        self.controlador_sistema = Mock()
-        self.controlador_sistema.controlador_animais = Mock()
-        self.controlador_sistema.controlador_adotantes = Mock()
+        self.adocao_atualizada = [cpf_atualizado, numero_chip_atualizado, termo_assinado]
 
-        self.controlador_adocoes = Mock()
+        self.adocao_adotante_invalido = [TIPO_GATO, cpf_invalido, numero_chip, termo_assinado]
 
-        self.adotante = Mock()
-        self.adotante.cpf = "1"
+        self.adocao_animal_invalido = [TIPO_GATO, cpf, numero_chip_invalido, termo_assinado]
 
-        self.adotante_atualizado = Mock()
-        self.adotante_atualizado.cpf = "2"
+        self.adocao_termo_assinado_invalido = [TIPO_GATO, cpf, numero_chip, termo_assinado_invalido]
 
-        self.animal = Mock()
-        self.animal.numero_chip = "1"
-
-        self.animal_atualizado = Mock()
-        self.animal_atualizado.cpf = "2"
-
-        self.controlador_adocoes.buscar_adocao_por_identificador.side_effect = (
-            buscar_adocao_por_identificador_mock
-        )
-        self.controlador_sistema.controlador_adotantes.buscar_adotante_por_cpf.side_effect = (
-            buscar_adotante_mock
-        )
-        self.controlador_sistema.controlador_animais.buscar_cachorro_por_numero_chip.side_effect = (
-            buscar_animal_mock
-        )
-        self.controlador_sistema.controlador_animais.buscar_gato_por_numero_chip.side_effect = (
-            buscar_animal_mock
-        )
-
-        self.assinar_termo = 1
-        self.nao_assinar_termo = 2
-        self.assinar_termo_invalido = 3
-        self.identificador_invalido = "100"
-
-        self.adocao = Mock()
-        self.adocao.adotante = self.adotante
-        self.adocao.animal = self.animal
-        self.termo_assinado = self.assinar_termo
-
-        self.adocao_atualizada = Mock()
-        self.adocao_atualizada.adotante = self.adotante_atualizado
-        self.adocao_atualizada.animal = self.animal_atualizado
-        self.termo_assinado = self.nao_assinar_termo
-
-        self.adocao_valida = [
-            TIPO_CACHORRO,
-            self.adotante.cpf,
-            self.animal.numero_chip,
-            self.assinar_termo,
+        self.adotante_valido = [
+            cpf,
+            nome,
+            data_nascimento,
+            tipo_habitacao_casa,
+            tamanho_habitacao_pequeno,
+            possui_animal,
+            logradouro,
+            numero,
         ]
-        self.adocao_valida_atualizada = [
-            TIPO_CACHORRO,
-            self.adotante_atualizado,
-            self.animal_atualizado,
-            self.nao_assinar_termo,
+
+        self.adotante_atualizado = [
+            cpf_atualizado,
+            nome,
+            data_nascimento,
+            tipo_habitacao_casa,
+            tamanho_habitacao_pequeno,
+            possui_animal,
+            logradouro,
+            numero,
         ]
-        self.adocao_cpf_invalido = [
-            TIPO_CACHORRO,
-            self.identificador_invalido,
-            self.animal.numero_chip,
-            self.assinar_termo,
+
+        self.adotante_invalido = [
+            cpf_invalido,
+            nome,
+            data_nascimento,
+            tipo_habitacao_casa,
+            tamanho_habitacao_pequeno,
+            possui_animal,
+            logradouro,
+            numero,
         ]
-        self.adocao_assinar_termo_invalido = [
-            TIPO_CACHORRO,
-            self.adotante.cpf,
-            self.animal.numero_chip,
-            self.assinar_termo_invalido,
-        ]
-        self.adocao_numero_chip_invalido = [
-            TIPO_CACHORRO,
-            self.adotante.cpf,
-            self.identificador_invalido,
-            self.assinar_termo,
-        ]
+
+        self.animal_valido = [numero_chip, nome, tipo_gato, raca]
+
+        self.animal_invalido = [numero_chip_invalido, nome, tipo_gato, raca]
+
+        self.animal_atualizado = [numero_chip_atualizado, nome, tipo_gato, raca]
+
+        self.incluir_adotante_animal_test(self.adotante_valido, self.animal_valido)
+        self.incluir_adotante_animal_test(self.adotante_atualizado, self.animal_atualizado)
+
+    def incluir_adotante_animal_test(self, dados_adotante, dados_animal):
+        with patch("builtins.input", side_effect=dados_adotante):
+            try:
+                self.controlador_sistema.controlador_adotantes.incluir_adotante()
+            except EntidadeNaoEncontradaException:
+                self.fail("Adotante nao encontrado")
+
+        with patch("builtins.input", side_effect=dados_animal):
+            try:
+                self.controlador_sistema.controlador_animais.incluir_animal()
+            except EntidadeNaoEncontradaException:
+                self.fail("Animal nao encontrado")
 
     def incluir_adocao_test(self, dados_adocao):
         with patch("builtins.input", side_effect=dados_adocao):
             try:
                 self.controlador_adocoes.incluir_adocao()
             except StopIteration:
-                self.fail("Ocorreu um erro ao incluir Adocao.")
+                self.fail("Ocorreu um erro ao incluir Adocao")
 
     def test_incluir_adocao_should_work_when_valid_data_1(self):
         self.incluir_adocao_test(self.adocao_valida)
@@ -129,46 +90,98 @@ class TestAdocao(unittest.TestCase):
     def test_incluir_adocao_should_work_when_valid_data_2(self):
         dados_adocao = [
             TIPO_GATO,
-            self.adotante.cpf,
-            self.animal.numero_chip,
-            self.nao_assinar_termo,
+            cpf,
+            numero_chip,
+            termo_nao_assinado,
         ]
         self.incluir_adocao_test(dados_adocao)
 
-    def test_incluir_adocao_should_throw_exception_when_cpf_invalido(self):
-        with patch("builtins.input", side_effect=self.adocao_cpf_invalido):
+    def test_incluir_adocao_should_raise_exception_when_cpf_invalido(self):
+        with patch("builtins.input", side_effect=self.adocao_adotante_invalido):
             with self.assertRaises(EntidadeNaoEncontradaException):
                 self.controlador_adocoes.incluir_adocao()
 
-    def test_incluir_adocao_should_throw_exception_when_numero_chip_invalido(self):
-        with patch("builtins.input", side_effect=self.adocao_numero_chip_invalido):
+    def test_incluir_adocao_should_raise_exception_when_numero_chip_invalido(self):
+        with patch("builtins.input", side_effect=self.adocao_animal_invalido):
             with self.assertRaises(EntidadeNaoEncontradaException):
                 self.controlador_adocoes.incluir_adocao()
 
-    def test_incluir_adocao_should_throw_exception_when_assinar_termo_invalido(self):
-        with patch("builtins.input", side_effect=self.adocao_assinar_termo_invalido):
+    def test_incluir_adocao_should_raise_exception_when_assinar_termo_invalido(self):
+        with patch("builtins.input", side_effect=self.adocao_termo_assinado_invalido):
             with self.assertRaises(StopIteration):
                 self.controlador_adocoes.incluir_adocao()
 
     # TODO: alterar e excluir
+    def test_excluir_adocao_should_work_when_valid_data(self):
+        self.incluir_adocao_test(self.adocao_valida)
+        dados_exclusao = [TIPO_CPF, cpf]
+        with patch("builtins.input", side_effect=dados_exclusao):
+            try:
+                self.controlador_adocoes.excluir_adocao()
+            except EntidadeNaoEncontradaException:
+                self.fail("Ocorreu um erro excluir Adocao: entidade nao encontrada")
+
+    def test_excluir_adocao_should_raise_exception_when_cpf_invalido(self):
+        self.incluir_adocao_test(self.adocao_valida)
+        dados_exclusao = [TIPO_CPF, cpf_invalido]
+        with patch("builtins.input", side_effect=dados_exclusao):
+            with self.assertRaises(EntidadeNaoEncontradaException):
+                self.controlador_adocoes.excluir_adocao()
+
+    def test_excluir_adocao_should_raise_exception_when_numero_chip_invalido(self):
+        self.incluir_adocao_test(self.adocao_valida)
+        dados_exclusao = [TIPO_CPF, cpf_invalido]
+        with patch("builtins.input", side_effect=dados_exclusao):
+            with self.assertRaises(EntidadeNaoEncontradaException):
+                self.controlador_adocoes.excluir_adocao()
+
+    def test_excluir_adocao_should_raise_exception_when_tipo_id_invalido(self):
+        self.incluir_adocao_test(self.adocao_valida)
+        dados_exclusao = [100, cpf]
+        with patch("builtins.input", side_effect=dados_exclusao):
+            with self.assertRaises(StopIteration):
+                self.controlador_adocoes.excluir_adocao()
+
     def test_alterar_adocao_should_work_when_valid_data(self):
         self.incluir_adocao_test(self.adocao_valida)
-
-        with patch("builtins.input", side_effect=self.adocao_valida_atualizada):
+        with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_atualizada):
             try:
                 self.controlador_adocoes.alterar_adocao()
             except EntidadeNaoEncontradaException:
-                self.fail("Ocorreu um erro ao alterar Adocao! Entidade nao encontrada")
+                self.fail("Ocorreu um erro ao alterar Adocao: entidade nao encontrada")
 
         try:
             adoacao_atualizada = (
                 self.controlador_adocoes.buscar_adocao_por_identificador(
-                    self.adotante_atualizado.cpf, TIPO_CPF
+                    cpf_atualizado, TIPO_CPF
                 )
             )
         except EntidadeNaoEncontradaException:
-            self.fail("Doador nao alterado.")
+            self.fail("Adocao nao alterada.")
 
-        self.assertEqual(self.adocao_valida_atualizada[1].cpf, adoacao_atualizada.adotante.cpf)
-        self.assertEqual(self.adocao_valida_atualizada[2].numero_chip, adoacao_atualizada.animal.numero_chip)
-        self.assertEqual(self.adocao_atualizada.termo_assinado, adoacao_atualizada.termo_assinado)
+        self.assertEqual(cpf_atualizado, adoacao_atualizada.adotante.cpf)
+        self.assertEqual(numero_chip_atualizado, adoacao_atualizada.animal.numero_chip)
+
+    def test_alterar_adocao_should_raise_execption_when_cpf_invalido(self):
+        self.incluir_adocao_test(self.adocao_valida)
+        with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_adotante_invalido):
+            with self.assertRaises(EntidadeNaoEncontradaException):
+                self.controlador_adocoes.alterar_adocao()
+
+    def test_alterar_adocao_should_raise_execption_when_numero_chip_invalido(self):
+        self.incluir_adocao_test(self.adocao_valida)
+        with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_animal_invalido):
+            with self.assertRaises(EntidadeNaoEncontradaException):
+                self.controlador_adocoes.alterar_adocao()
+
+    def test_alterar_adocao_should_raise_exception_when_termo_assinado_invalido(self):
+        self.incluir_adocao_test(self.adocao_valida)
+        with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_animal_invalido):
+            with self.assertRaises(EntidadeNaoEncontradaException):
+                self.controlador_adocoes.alterar_adocao()
+
+    def test_alterar_adocao_should_raise_exception_when_tipo_id_invalido(self):
+        self.incluir_adocao_test(self.adocao_valida)
+        with patch("builtins.input", side_effect=[100, cpf] + self.adocao_atualizada):
+            with self.assertRaises(StopIteration):
+                self.controlador_adocoes.alterar_adocao()

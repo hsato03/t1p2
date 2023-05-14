@@ -3,6 +3,7 @@ import sys
 import unittest
 from unittest.mock import patch
 from datetime import datetime
+from tests.test_variables import *
 from controllers import DoadorController
 from exceptions import EntidadeNaoEncontradaException
 
@@ -10,33 +11,21 @@ from exceptions import EntidadeNaoEncontradaException
 class DoadorTest(unittest.TestCase):
     def setUp(self):
         self.controlador_doadores = DoadorController(None)
-        self.cpf = "27797914036"
-        self.cpf_invalido = "1234567890"
-        self.cpf_atualizado = "78472414043"
-        self.nome = "nome"
-        self.nome_atualizado = "nomeAtualizado"
-        self.data_nascimento = "03/03/2003"
-        self.data_nascimento_atualizada = "02/02/2002"
-        self.data_nascimento_invalida = "10-10-1000"
-        self.logradouro = "Rua das Flores"
-        self.logradouro_atualizado = "Rua Atualizada"
-        self.numero = "123A"
-        self.numero_atualizado = "321B"
 
         self.doador_valido = [
-            self.cpf,
-            self.nome,
-            self.data_nascimento,
-            self.logradouro,
-            self.numero,
+            cpf,
+            nome,
+            data_nascimento,
+            logradouro,
+            numero,
         ]
 
         self.doador_data_nascimento_invalida = [
-            self.cpf,
-            self.nome,
-            self.data_nascimento_invalida,
-            self.logradouro,
-            self.numero,
+            cpf,
+            nome,
+            data_nascimento_invalida,
+            logradouro,
+            numero,
         ]
 
     def incluir_doador_test(self, dados_doador):
@@ -60,13 +49,13 @@ class DoadorTest(unittest.TestCase):
         self.incluir_doador_test(self.doador_valido)
 
         try:
-            sys.stdin = io.StringIO(self.cpf)
+            sys.stdin = io.StringIO(cpf)
             self.controlador_doadores.excluir_doador()
         except EntidadeNaoEncontradaException:
             self.fail("Ocorreu um erro ao excluir uma pessoa")
 
         with self.assertRaises(EntidadeNaoEncontradaException):
-            self.controlador_doadores.buscar_doador_por_cpf(self.cpf)
+            self.controlador_doadores.buscar_doador_por_cpf(cpf)
 
     def test_excluir_doador_should_raise_exception_when_cpf_invalido(
         self,
@@ -74,19 +63,19 @@ class DoadorTest(unittest.TestCase):
         self.incluir_doador_test(self.doador_valido)
 
         with self.assertRaises(EntidadeNaoEncontradaException):
-            sys.stdin = io.StringIO(self.cpf_invalido)
+            sys.stdin = io.StringIO(cpf_invalido)
             self.controlador_doadores.excluir_doador()
 
     def test_alterar_doador_should_work_when_correct_data(self):
         self.incluir_doador_test(self.doador_valido)
 
         dados_alteracao = [
-            self.cpf,
-            self.cpf_atualizado,
-            self.nome_atualizado,
-            self.data_nascimento_atualizada,
-            self.logradouro_atualizado,
-            self.numero_atualizado,
+            cpf,
+            cpf_atualizado,
+            nome_atualizado,
+            data_nascimento_atualizada,
+            logradouro_atualizado,
+            numero_atualizado,
         ]
 
         with patch("builtins.input", side_effect=dados_alteracao):
@@ -97,7 +86,7 @@ class DoadorTest(unittest.TestCase):
 
         try:
             doador_atualizado = self.controlador_doadores.buscar_doador_por_cpf(
-                self.cpf_atualizado
+                cpf_atualizado
             )
         except EntidadeNaoEncontradaException:
             self.fail("Doador nao alterado.")
@@ -117,7 +106,7 @@ class DoadorTest(unittest.TestCase):
         self.incluir_doador_test(self.doador_valido)
 
         with self.assertRaises(EntidadeNaoEncontradaException):
-            sys.stdin = io.StringIO(self.cpf_invalido)
+            sys.stdin = io.StringIO(cpf_invalido)
             self.controlador_doadores.alterar_doador()
 
     def test_alterar_doador_should_throw_exception_when_data_nascimento_invalida(self):

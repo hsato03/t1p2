@@ -22,11 +22,11 @@ class AdocaoController:
 
     def incluir_adocao(self):
         tipo_animal = self.__tela_adocao.telar_opcoes_tipo_animal()
-        dados_adotante = self.__tela_adocao.pegar_dados_adocao()
+        dados_adocao = self.__tela_adocao.pegar_dados_adocao()
 
-        cpf_adotante = dados_adotante["cpf_adotante"]
+        cpf_adotante = dados_adocao["cpf_adotante"]
 
-        numero_chip = dados_adotante["numero_chip"]
+        numero_chip = dados_adocao["numero_chip"]
         if tipo_animal == TIPO_CACHORRO:
             animal = self.__controlador_principal.controlador_animais.buscar_cachorro_por_numero_chip(
                 numero_chip
@@ -46,7 +46,7 @@ class AdocaoController:
             adotante,
             animal,
             date.today(),
-            True if dados_adotante["termo_assinado"] == 1 else False,
+            True if dados_adocao["termo_assinado"] == 1 else False,
         )
         self.__adocoes.append(adocao)
 
