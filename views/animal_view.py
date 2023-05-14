@@ -44,7 +44,7 @@ class AnimalView:
 
     def pegar_dados_animal(self):
         print("\n-------- DADOS ANIMAL ----------")
-        numero_chip = input("N° chip: ")
+        numero_chip = self.pegar_numero_chip()
         nome = input("Nome: ")
 
         dados_animal = {
@@ -80,7 +80,7 @@ class AnimalView:
 
     def pegar_dados_animal_alterar(self, tipo_animal: int):
         print("\n-------- DADOS ANIMAL ----------")
-        numero_chip = input("N° chip: ")
+        numero_chip = self.pegar_numero_chip()
         nome = input("Nome: ")
 
         dados_animal = {
@@ -115,6 +115,14 @@ class AnimalView:
             except ValueError:
                 print("ERRO: Data em formato invalido! Tente novamente.")
 
+    def pegar_numero_chip(self):
+        while True:
+            try:
+                numero_chip = int(input("N° chip: "))
+                return numero_chip
+            except ValueError:
+                print("Somente numeros. Tente novamente")
+
     def mostrar_animal(self, dados_animal: dict):
         print(f"\t- N° CHIP: {dados_animal['numero_chip']}")
         print(f"\t- NOME: {dados_animal['nome']}")
@@ -132,8 +140,11 @@ class AnimalView:
             print("\tNenhuma vacina aplicada")
 
     def selecionar_animal(self):
-        numero_chip = input("N° chip do animal que deseja selecionar: ")
-        return numero_chip
+        try:
+            numero_chip = int(input("N° chip do animal que deseja selecionar: "))
+            return numero_chip
+        except ValueError:
+            print("Somente numeros. Tente novamente")
 
     def mostrar_mensagem(self, msg: str):
         print(msg)

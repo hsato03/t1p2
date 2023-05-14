@@ -7,7 +7,7 @@ TIPO_GATO = 2
 
 class Animal(ABC):
     @abstractmethod
-    def __init__(self, numero_chip: str, nome: str, raca: str):
+    def __init__(self, numero_chip: int, nome: str, raca: str):
         self.__numero_chip = numero_chip
         self.__nome = nome
         self.__raca = raca
@@ -18,7 +18,7 @@ class Animal(ABC):
         return self.__numero_chip
 
     @numero_chip.setter
-    def numero_chip(self, numero_chip: str):
+    def numero_chip(self, numero_chip: int):
         self.__numero_chip = numero_chip
 
     @property

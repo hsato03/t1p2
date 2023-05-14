@@ -42,7 +42,7 @@ class AdotanteController:
 
         adotante.nome = novos_dados_adotante["nome"]
         adotante.cpf = novos_dados_adotante["cpf"]
-        adotante.data_nascimento = novos_dados_adotante["data_nascimento"]
+        adotante.data = novos_dados_adotante["data_nascimento"]
         adotante.tipo_habitacao = TipoHabitacao(novos_dados_adotante["tipo_habitacao"])
         adotante.tamanho_habitacao = TamanhoHabitacao(
             novos_dados_adotante["tamanho_habitacao"]

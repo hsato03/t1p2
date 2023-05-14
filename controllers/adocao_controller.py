@@ -10,13 +10,13 @@ class AdocaoController:
         self.__tela_adocao = AdocaoView()
         self.__controlador_sistema = controlador_sistema
 
-    def buscar_adocao_por_identificador(self, identificador: str, tipo_id: int):
+    def buscar_adocao_por_identificador(self, identificador, tipo_id: int):
         for adocao in self.__adocoes:
             if tipo_id == TIPO_CPF:
                 if adocao.adotante.cpf == identificador:
                     return adocao
             else:
-                if adocao.animal.numero_chip == identificador:
+                if adocao.animal.numero_chip == int(identificador):
                     return adocao
         raise EntidadeNaoEncontradaException("ERRO: Adocao nao existente.")
 
@@ -45,7 +45,7 @@ class AdocaoController:
         adocao = Adocao(
             adotante,
             animal,
-            date.today(),
+            dados_adocao["data"],
             True if dados_adocao["termo_assinado"] == 1 else False,
         )
         self.__adocoes.append(adocao)

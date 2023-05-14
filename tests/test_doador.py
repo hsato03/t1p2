@@ -15,7 +15,7 @@ class DoadorTest(unittest.TestCase):
         self.doador_valido = [
             cpf,
             nome,
-            data_nascimento,
+            data,
             logradouro,
             numero,
         ]
@@ -23,7 +23,7 @@ class DoadorTest(unittest.TestCase):
         self.doador_data_nascimento_invalida = [
             cpf,
             nome,
-            data_nascimento_invalida,
+            data_invalida,
             logradouro,
             numero,
         ]
@@ -73,7 +73,7 @@ class DoadorTest(unittest.TestCase):
             cpf,
             cpf_atualizado,
             nome_atualizado,
-            data_nascimento_atualizada,
+            data_atualizada,
             logradouro_atualizado,
             numero_atualizado,
         ]
@@ -95,7 +95,7 @@ class DoadorTest(unittest.TestCase):
         self.assertEqual(dados_alteracao[2], doador_atualizado.nome)
         self.assertEqual(
             datetime.strptime(dados_alteracao[3], "%d/%m/%Y").date(),
-            doador_atualizado.data_nascimento,
+            doador_atualizado.data,
         )
         self.assertEqual(dados_alteracao[4], doador_atualizado.endereco.logradouro)
         self.assertEqual(dados_alteracao[5], doador_atualizado.endereco.numero)

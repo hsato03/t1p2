@@ -15,7 +15,7 @@ class AdotanteTest(unittest.TestCase):
         self.adotante_valido = [
             cpf,
             nome,
-            data_nascimento,
+            data,
             tipo_habitacao_casa,
             tamanho_habitacao_pequeno,
             possui_animal,
@@ -26,7 +26,7 @@ class AdotanteTest(unittest.TestCase):
         self.adotante_data_nascimento_invalida = [
             cpf,
             nome,
-            data_nascimento_invalida,
+            data_invalida,
             tipo_habitacao_casa,
             tamanho_habitacao_pequeno,
             possui_animal,
@@ -37,7 +37,7 @@ class AdotanteTest(unittest.TestCase):
         self.adotante_tipo_habitacao_invalido = [
             cpf,
             nome,
-            data_nascimento,
+            data,
             tipo_habitacao_invalido,
             tamanho_habitacao_pequeno,
             possui_animal,
@@ -48,7 +48,7 @@ class AdotanteTest(unittest.TestCase):
         self.adotante_tamanho_habitacao_invalido = [
             cpf,
             nome,
-            data_nascimento,
+            data,
             tipo_habitacao_casa,
             tamanho_habitacao_invalido,
             possui_animal,
@@ -59,7 +59,7 @@ class AdotanteTest(unittest.TestCase):
         self.adotante_possui_animal_invalido = [
             cpf,
             nome,
-            data_nascimento,
+            data,
             tipo_habitacao_casa,
             tamanho_habitacao_pequeno,
             possui_animal_invalido,
@@ -80,7 +80,7 @@ class AdotanteTest(unittest.TestCase):
         adotante = [
             cpf,
             nome,
-            data_nascimento,
+            data,
             tipo_habitacao_casa,
             tamanho_habitacao_pequeno,
             possui_animal,
@@ -93,7 +93,7 @@ class AdotanteTest(unittest.TestCase):
         adotante = [
             cpf,
             nome,
-            data_nascimento,
+            data,
             tipo_habitacao_apartamento,
             tamanho_habitacao_medio,
             nao_possui_animal,
@@ -106,7 +106,7 @@ class AdotanteTest(unittest.TestCase):
         adotante = [
             cpf,
             nome,
-            data_nascimento,
+            data,
             tipo_habitacao_apartamento,
             tamanho_habitacao_grande,
             nao_possui_animal,
@@ -175,7 +175,7 @@ class AdotanteTest(unittest.TestCase):
             cpf,
             cpf_atualizado,
             nome_atualizado,
-            data_nascimento_atualizada,
+            data_atualizada,
             tipo_habitacao_apartamento,
             tamanho_habitacao_grande,
             nao_possui_animal,
@@ -202,7 +202,7 @@ class AdotanteTest(unittest.TestCase):
         self.assertEqual(dados_alteracao[2], adotante_atualizado.nome)
         self.assertEqual(
             datetime.strptime(dados_alteracao[3], "%d/%m/%Y").date(),
-            adotante_atualizado.data_nascimento,
+            adotante_atualizado.data,
         )
         self.assertEqual(dados_alteracao[4], adotante_atualizado.tipo_habitacao.value)
         self.assertEqual(

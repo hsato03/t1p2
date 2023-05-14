@@ -12,20 +12,20 @@ class AdocaoTest(unittest.TestCase):
 
         self.controlador_adocoes = AdocaoController(self.controlador_sistema)
 
-        self.adocao_valida = [TIPO_GATO, cpf, numero_chip, termo_assinado]
+        self.adocao_valida = [TIPO_GATO, cpf, numero_chip, data, termo_assinado]
 
-        self.adocao_atualizada = [cpf_atualizado, numero_chip_atualizado, termo_assinado]
+        self.adocao_atualizada = [cpf_atualizado, numero_chip_atualizado, data, termo_assinado]
 
-        self.adocao_adotante_invalido = [TIPO_GATO, cpf_invalido, numero_chip, termo_assinado]
+        self.adocao_adotante_invalido = [TIPO_GATO, cpf_invalido, numero_chip, data, termo_assinado]
 
-        self.adocao_animal_invalido = [TIPO_GATO, cpf, numero_chip_invalido, termo_assinado]
+        self.adocao_animal_invalido = [TIPO_GATO, cpf, numero_chip_invalido, data, termo_assinado]
 
-        self.adocao_termo_assinado_invalido = [TIPO_GATO, cpf, numero_chip, termo_assinado_invalido]
+        self.adocao_termo_assinado_invalido = [TIPO_GATO, cpf, numero_chip, data, termo_assinado_invalido]
 
         self.adotante_valido = [
             cpf,
             nome,
-            data_nascimento,
+            data,
             tipo_habitacao_casa,
             tamanho_habitacao_pequeno,
             possui_animal,
@@ -36,7 +36,7 @@ class AdocaoTest(unittest.TestCase):
         self.adotante_atualizado = [
             cpf_atualizado,
             nome,
-            data_nascimento,
+            data,
             tipo_habitacao_casa,
             tamanho_habitacao_pequeno,
             possui_animal,
@@ -47,7 +47,7 @@ class AdocaoTest(unittest.TestCase):
         self.adotante_invalido = [
             cpf_invalido,
             nome,
-            data_nascimento,
+            data,
             tipo_habitacao_casa,
             tamanho_habitacao_pequeno,
             possui_animal,
@@ -92,6 +92,7 @@ class AdocaoTest(unittest.TestCase):
             TIPO_GATO,
             cpf,
             numero_chip,
+            data,
             termo_nao_assinado,
         ]
         self.incluir_adocao_test(dados_adocao)
@@ -163,20 +164,23 @@ class AdocaoTest(unittest.TestCase):
 
     def test_alterar_adocao_should_raise_execption_when_cpf_invalido(self):
         self.incluir_adocao_test(self.adocao_valida)
+        self.adocao_adotante_invalido.pop(0)
         with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_adotante_invalido):
             with self.assertRaises(EntidadeNaoEncontradaException):
                 self.controlador_adocoes.alterar_adocao()
 
     def test_alterar_adocao_should_raise_execption_when_numero_chip_invalido(self):
         self.incluir_adocao_test(self.adocao_valida)
+        self.adocao_animal_invalido.pop(0)
         with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_animal_invalido):
             with self.assertRaises(EntidadeNaoEncontradaException):
                 self.controlador_adocoes.alterar_adocao()
 
     def test_alterar_adocao_should_raise_exception_when_termo_assinado_invalido(self):
         self.incluir_adocao_test(self.adocao_valida)
-        with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_animal_invalido):
-            with self.assertRaises(EntidadeNaoEncontradaException):
+        self.adocao_termo_assinado_invalido.pop(0)
+        with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_termo_assinado_invalido):
+            with self.assertRaises(StopIteration):
                 self.controlador_adocoes.alterar_adocao()
 
     def test_alterar_adocao_should_raise_exception_when_tipo_id_invalido(self):

@@ -10,13 +10,13 @@ class DoacaoController:
         self.__tela_doacao = DoacaoView()
         self.__controlador_sistema = controlador_sistema
 
-    def buscar_doacao_por_identificador(self, identificador: str, tipo_id: int):
+    def buscar_doacao_por_identificador(self, identificador, tipo_id: int):
         for doacao in self.__doacoes:
             if tipo_id == TIPO_CPF:
                 if doacao.doador.cpf == identificador:
                     return doacao
             else:
-                if doacao.animal.numero_chip == identificador:
+                if doacao.animal.numero_chip == int(identificador):
                     return doacao
         raise EntidadeNaoEncontradaException("ERRO: Doacao nao existente.")
 
@@ -45,7 +45,7 @@ class DoacaoController:
         doacao = Doacao(
             doador,
             animal,
-            date.today(),
+            dados_doacao["data"],
             dados_doacao["motivo"],
         )
         self.__doacoes.append(doacao)
@@ -123,8 +123,6 @@ class DoacaoController:
                 break
             except OpcaoInvalidaException as e:
                 self.__tela_doacao.mostrar_mensagem(e)
-            except ValueError:
-                self.__tela_doacao.mostrar_mensagem("Somente numeros. Tente novamente.")
 
         identificador = self.__tela_doacao.selecionar_doacao(tipo_id)
 

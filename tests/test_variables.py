@@ -4,18 +4,18 @@ cpf_invalido = "1234567890"
 cpf_atualizado = "78472414043"
 nome = "nome"
 nome_atualizado = "nomeAtualizado"
-data_nascimento = "03/03/2003"
-data_nascimento_atualizada = "02/02/2002"
-data_nascimento_invalida = "10-10-1000"
+data = "03/03/2003"
+data_atualizada = "02/02/2002"
+data_invalida = "10-10-1000"
 logradouro = "Rua das Flores"
 logradouro_atualizado = "Rua Atualizada"
 numero = "123A"
 numero_atualizado = "321B"
 
 # Animal variables
-numero_chip = "1"
-numero_chip_atualizado = "10"
-numero_chip_invalido = "100"
+numero_chip = 1
+numero_chip_atualizado = 10
+numero_chip_invalido = 100
 tipo_cachorro = 1
 tipo_gato = 2
 tipo_animal_invalido = 100

@@ -10,13 +10,13 @@ class AnimalController:
         self.__controlador_sistema = controlador_sistema
         self.__tela_animal = AnimalView()
 
-    def buscar_gato_por_numero_chip(self, numero_chip: str):
+    def buscar_gato_por_numero_chip(self, numero_chip: int):
         for gato in self.__gatos:
             if gato.numero_chip == numero_chip:
                 return gato
         raise EntidadeNaoEncontradaException("ERRO: Gato nao existente")
 
-    def buscar_cachorro_por_numero_chip(self, numero_chip: str):
+    def buscar_cachorro_por_numero_chip(self, numero_chip: int):
         for cachorro in self.__cachorros:
             if cachorro.numero_chip == numero_chip:
                 return cachorro

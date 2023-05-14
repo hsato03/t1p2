@@ -39,7 +39,7 @@ class DoadorController:
 
         doador.nome = novos_dados_doador["nome"]
         doador.cpf = novos_dados_doador["cpf"]
-        doador.data_nascimento = novos_dados_doador["data_nascimento"]
+        doador.data = novos_dados_doador["data_nascimento"]
         doador.add_endereco(
             novos_dados_doador["logradouro"], novos_dados_doador["numero"]
         )

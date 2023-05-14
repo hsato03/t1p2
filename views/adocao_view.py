@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from exceptions import OpcaoInvalidaException
 
 
@@ -54,8 +54,17 @@ class AdocaoView:
     def pegar_dados_adocao(self):
         print("\n-------- DADOS ADOCAO ----------")
         cpf_adotante = input("CPF (adotante): ")
-        numero_chip = input("N° Chip (animal): ")
-        data = date.today()
+        numero_chip = self.pegar_numero_chip()
+
+        while True:
+            try:
+                data_adocao = input("Data de adocao (dd/mm/yyyy): ")
+                data_adocao_convertida = datetime.strptime(
+                    data_adocao, "%d/%m/%Y"
+                ).date()
+                break
+            except ValueError:
+                print("ERRO: Data em formato invalido! Tente novamente.")
 
         while True:
             try:
@@ -69,9 +78,17 @@ class AdocaoView:
         return {
             "cpf_adotante": cpf_adotante,
             "numero_chip": numero_chip,
-            "data": data,
+            "data": data_adocao_convertida,
             "termo_assinado": termo_assinado,
         }
+
+    def pegar_numero_chip(self):
+        while True:
+            try:
+                numero_chip = int(input("N° chip: "))
+                return numero_chip
+            except ValueError:
+                print("Somente numeros. Tente novamente")
 
     def mostrar_adocao(self, dados_adocao: dict):
         print("\t - CPF ADOTANTE: ", dados_adocao["cpf_adotante"])
@@ -83,7 +100,12 @@ class AdocaoView:
         if tipo_id == 1:
             identificador = input("CPF da adocao que deseja selecionar: ")
         else:
-            identificador = input("N° Chip da adocao que deseja selecionar: ")
+            while True:
+                try:
+                    identificador = int(input("N° Chip da doacao que deseja selecionar: "))
+                    break
+                except ValueError:
+                    print("Somente numeros. Tente novamente")
         return identificador
 
     def mostrar_mensagem(self, msg: str):

@@ -12,18 +12,18 @@ class DoacaoTest(unittest.TestCase):
 
         self.controlador_doacoes = DoacaoController(self.controlador_sistema)
 
-        self.doacao_valida = [TIPO_GATO, cpf, numero_chip, motivo]
+        self.doacao_valida = [TIPO_GATO, cpf, numero_chip, data, motivo]
 
-        self.doacao_atualizada = [cpf_atualizado, numero_chip_atualizado, motivo]
+        self.doacao_atualizada = [cpf_atualizado, numero_chip_atualizado, data, motivo]
 
-        self.doacao_doador_invalido = [TIPO_GATO, cpf_invalido, numero_chip, motivo]
+        self.doacao_doador_invalido = [TIPO_GATO, cpf_invalido, numero_chip, data, motivo]
 
-        self.doacao_animal_invalido = [TIPO_GATO, cpf, numero_chip_invalido, motivo]
+        self.doacao_animal_invalido = [TIPO_GATO, cpf, numero_chip_invalido, data, motivo]
 
         self.doador_valido = [
             cpf,
             nome,
-            data_nascimento,
+            data,
             logradouro,
             numero,
         ]
@@ -31,7 +31,7 @@ class DoacaoTest(unittest.TestCase):
         self.doador_atualizado = [
             cpf_atualizado,
             nome,
-            data_nascimento,
+            data,
             logradouro,
             numero,
         ]
@@ -39,7 +39,7 @@ class DoacaoTest(unittest.TestCase):
         self.doador_invalido = [
             cpf_invalido,
             nome,
-            data_nascimento,
+            data,
             logradouro,
             numero,
         ]
@@ -138,12 +138,14 @@ class DoacaoTest(unittest.TestCase):
 
     def test_alterar_doacao_should_raise_execption_when_cpf_invalido(self):
         self.incluir_doacao_test(self.doacao_valida)
+        self.doacao_doador_invalido.pop(0)
         with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.doacao_doador_invalido):
             with self.assertRaises(EntidadeNaoEncontradaException):
                 self.controlador_doacoes.alterar_doacao()
 
     def test_alterar_doacao_should_raise_execption_when_numero_chip_invalido(self):
         self.incluir_doacao_test(self.doacao_valida)
+        self.doacao_animal_invalido.pop(0)
         with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.doacao_animal_invalido):
             with self.assertRaises(EntidadeNaoEncontradaException):
                 self.controlador_doacoes.alterar_doacao()
