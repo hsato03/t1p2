@@ -47,7 +47,10 @@ class DoadorView:
     def mostrar_doador(self, dados_doador: dict):
         print("\t- CPF:", dados_doador["cpf"])
         print("\t- NOME:", dados_doador["nome"])
-        print("\t- DATA DE NASCIMENTO:", dados_doador["data_nascimento"].strftime('%d/%m/%Y'))
+        print(
+            "\t- DATA DE NASCIMENTO:",
+            dados_doador["data_nascimento"].strftime("%d/%m/%Y"),
+        )
         print(f"\t- ENDERECO: {dados_doador['endereco']}\n")
 
     # fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado

@@ -139,7 +139,9 @@ class AdotanteTest(unittest.TestCase):
     def test_incluir_adotante_should_throw_exception_when_data_nascimento_invalida(
         self,
     ):
-        with patch("builtins.input", side_effect=self.adotante_data_nascimento_invalida):
+        with patch(
+            "builtins.input", side_effect=self.adotante_data_nascimento_invalida
+        ):
             with self.assertRaises(TypeError):
                 self.controlador_adotantes.incluir_adotante()
 
@@ -153,7 +155,9 @@ class AdotanteTest(unittest.TestCase):
     def test_incluir_adotante_should_raise_exception_when_tamanho_habitacao_invalido(
         self,
     ):
-        with patch("builtins.input", side_effect=self.adotante_tamanho_habitacao_invalido):
+        with patch(
+            "builtins.input", side_effect=self.adotante_tamanho_habitacao_invalido
+        ):
             with self.assertRaises(StopIteration):
                 self.controlador_adotantes.incluir_adotante()
 
@@ -217,12 +221,18 @@ class AdotanteTest(unittest.TestCase):
 
         self.assertEqual(dados_alteracao[1], adotante_atualizado.cpf)
         self.assertEqual(dados_alteracao[2], adotante_atualizado.nome)
-        self.assertEqual(datetime.strptime(dados_alteracao[3], "%d/%m/%Y").date(),
-                         adotante_atualizado.data_nascimento)
+        self.assertEqual(
+            datetime.strptime(dados_alteracao[3], "%d/%m/%Y").date(),
+            adotante_atualizado.data_nascimento,
+        )
         self.assertEqual(dados_alteracao[4], adotante_atualizado.tipo_habitacao.value)
-        self.assertEqual(dados_alteracao[5], adotante_atualizado.tamanho_habitacao.value)
-        self.assertEqual(True if dados_alteracao[6] == 1 else False,
-                         adotante_atualizado.possui_animal)
+        self.assertEqual(
+            dados_alteracao[5], adotante_atualizado.tamanho_habitacao.value
+        )
+        self.assertEqual(
+            True if dados_alteracao[6] == 1 else False,
+            adotante_atualizado.possui_animal,
+        )
         self.assertEqual(dados_alteracao[7], adotante_atualizado.endereco.logradouro)
         self.assertEqual(dados_alteracao[8], adotante_atualizado.endereco.numero)
 
@@ -235,30 +245,45 @@ class AdotanteTest(unittest.TestCase):
             sys.stdin = io.StringIO(self.cpf_invalido)
             self.controlador_adotantes.alterar_adotante()
 
-    def test_alterar_adotante_should_throw_exception_when_data_nascimento_invalida(self):
+    def test_alterar_adotante_should_throw_exception_when_data_nascimento_invalida(
+        self,
+    ):
         self.incluir_adotante_test(self.adotante_valido)
 
-        with patch("builtins.input", side_effect=self.adotante_data_nascimento_invalida):
+        with patch(
+            "builtins.input", side_effect=self.adotante_data_nascimento_invalida
+        ):
             with self.assertRaises(TypeError):
                 self.controlador_adotantes.alterar_adotante()
 
     def test_alterar_adotante_should_throw_exception_when_tipo_habitacao_invalido(self):
         self.incluir_adotante_test(self.adotante_valido)
 
-        with patch("builtins.input", side_effect=[self.cpf]+self.adotante_tipo_habitacao_invalido):
+        with patch(
+            "builtins.input",
+            side_effect=[self.cpf] + self.adotante_tipo_habitacao_invalido,
+        ):
             with self.assertRaises(StopIteration):
                 self.controlador_adotantes.alterar_adotante()
 
-    def test_alterar_adotante_should_throw_exception_when_tamanho_habitacao_invalido(self):
+    def test_alterar_adotante_should_throw_exception_when_tamanho_habitacao_invalido(
+        self,
+    ):
         self.incluir_adotante_test(self.adotante_valido)
 
-        with patch("builtins.input", side_effect=[self.cpf]+self.adotante_tamanho_habitacao_invalido):
+        with patch(
+            "builtins.input",
+            side_effect=[self.cpf] + self.adotante_tamanho_habitacao_invalido,
+        ):
             with self.assertRaises(StopIteration):
                 self.controlador_adotantes.alterar_adotante()
 
     def test_alterar_adotante_should_throw_exception_when_possui_animal_invalido(self):
         self.incluir_adotante_test(self.adotante_valido)
 
-        with patch("builtins.input", side_effect=[self.cpf]+self.adotante_possui_animal_invalido):
+        with patch(
+            "builtins.input",
+            side_effect=[self.cpf] + self.adotante_possui_animal_invalido,
+        ):
             with self.assertRaises(StopIteration):
                 self.controlador_adotantes.alterar_adotante()

@@ -8,10 +8,11 @@ class SistemaView:
         print("[2] -> Adocoes")
         print("[3] -> Animais")
         print("[4] -> Doadores")
+        print("[5] -> Doacoes")
         print("[0] -> Finalizar sistema")
         opcao = int(input("Escolha a opcao: "))
 
-        if opcao not in range(0, 5):
+        if opcao not in range(0, 6):
             raise OpcaoInvalidaException()
 
         return opcao

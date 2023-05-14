@@ -1,10 +1,7 @@
 from views import AdocaoView
-from model import Adocao, TIPO_CACHORRO
+from model import Adocao, Cachorro, TIPO_CACHORRO, TIPO_CPF
 from exceptions import EntidadeNaoEncontradaException, OpcaoInvalidaException
 from datetime import date
-
-TIPO_CPF = 1
-TIPO_N_CHIP = 2
 
 
 class AdocaoController:
@@ -58,14 +55,8 @@ class AdocaoController:
             return
 
         self.listar_adocoes()
-        while True:
-            try:
-                tipo_id = self.__tela_adocao.telar_opcoes_identificador()
-                break
-            except OpcaoInvalidaException as e:
-                self.__tela_adocao.mostrar_mensagem(e)
-            except ValueError:
-                self.__tela_adocao.mostrar_mensagem("Somente numeros. Tente novamente.")
+
+        tipo_id = self.get_tipo_id()
 
         identificador = self.__tela_adocao.selecionar_adocao(tipo_id)
         adocao = self.buscar_adocao_por_identificador(identificador, tipo_id)
@@ -79,9 +70,15 @@ class AdocaoController:
         )
 
         numero_chip = novos_dados_adocao["numero_chip"]
-        animal = self.__controlador_principal.controlador_animais.buscar_animal_por_numero_chip(
-            numero_chip
-        )
+
+        if isinstance(adocao.animal, Cachorro):
+            animal = self.__controlador_principal.controlador_animais.buscar_cachorro_por_numero_chip(
+                numero_chip
+            )
+        else:
+            animal = self.__controlador_principal.controlador_animais.buscar_gato_por_numero_chip(
+                numero_chip
+            )
 
         adocao.adotante = adotante
         adocao.animal = animal
@@ -110,14 +107,7 @@ class AdocaoController:
 
         self.listar_adocoes()
 
-        while True:
-            try:
-                tipo_id = self.__tela_adocao.telar_opcoes_identificador()
-                break
-            except OpcaoInvalidaException as e:
-                self.__tela_adocao.mostrar_mensagem(e)
-            except ValueError:
-                self.__tela_adocao.mostrar_mensagem("Somente numeros. Tente novamente.")
+        tipo_id = self.get_tipo_id()
 
         identificador = self.__tela_adocao.selecionar_adocao(tipo_id)
         adocao = self.buscar_adocao_por_identificador(identificador, tipo_id)
@@ -154,6 +144,16 @@ class AdocaoController:
         if len(self.__adocoes) <= 0:
             self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
             return True
+
+    def get_tipo_id(self):
+        while True:
+            try:
+                tipo_id = self.__tela_adocao.telar_opcoes_identificador()
+                return tipo_id
+            except OpcaoInvalidaException as e:
+                self.__tela_adocao.mostrar_mensagem(e)
+            except ValueError:
+                self.__tela_adocao.mostrar_mensagem("Somente numeros. Tente novamente.")
 
     def retornar(self):
         self.__controlador_principal.abrir_tela()

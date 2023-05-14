@@ -1,4 +1,4 @@
-from .adocao import Adocao
+from .adocao import Adocao, TIPO_CPF, TIPO_N_CHIP
 from .adotante import Adotante
 from .animal import Animal, TIPO_CACHORRO, TIPO_GATO
 from .cachorro import Cachorro
@@ -30,4 +30,6 @@ __all__ = [
     "Vacina",
     "TIPO_CACHORRO",
     "TIPO_GATO",
+    "TIPO_CPF",
+    "TIPO_N_CHIP",
 ]

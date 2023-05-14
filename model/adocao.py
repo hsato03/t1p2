@@ -2,6 +2,9 @@ from .adotante import Adotante
 from .animal import Animal
 from datetime import date
 
+TIPO_CPF = 1
+TIPO_N_CHIP = 2
+
 
 class Adocao:
     def __init__(

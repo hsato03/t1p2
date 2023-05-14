@@ -18,12 +18,15 @@ class AdocaoView:
 
         return opcao
 
-    def telar_opcoe_termo(self):
+    def telar_opcoes_termo(self):
         print("ASSINAR TERMO?")
         print("\t[1] - Sim")
         print("\t[2] - Nao")
 
         opcao = int(input("Escolha a opcao: "))
+        if opcao not in range(1, 3):
+            raise OpcaoInvalidaException()
+
         return opcao
 
     def telar_opcoes_identificador(self):
@@ -38,7 +41,7 @@ class AdocaoView:
         return opcao
 
     def telar_opcoes_tipo_animal(self):
-        print("TIPO DO ANIMAL QUE DESEJA ADOTAR:")
+        print("TIPO DO ANIMAL:")
         print("\t[1] -> Cachorro")
         print("\t[2] -> Gato")
 
@@ -56,7 +59,7 @@ class AdocaoView:
 
         while True:
             try:
-                termo_assinado = self.telar_opcoe_termo()
+                termo_assinado = self.telar_opcoes_termo()
                 break
             except OpcaoInvalidaException as e:
                 print(e)
@@ -73,15 +76,15 @@ class AdocaoView:
     def mostrar_adocao(self, dados_adocao: dict):
         print("\t - CPF ADOTANTE: ", dados_adocao["cpf_adotante"])
         print("\t - N° CHIP ANIMAL: ", dados_adocao["numero_chip"])
-        print("\t - DATA DE ADOCAO: ", dados_adocao["data"].strftime('%d/%m/%Y'))
+        print("\t - DATA DE ADOCAO: ", dados_adocao["data"].strftime("%d/%m/%Y"))
         print("\t - TERMO ASSINADO: ", dados_adocao["termo_assinado"])
 
     def selecionar_adocao(self, tipo_id: int):
         if tipo_id == 1:
-            id = input("CPF da adocao que deseja selecionar: ")
+            identificador = input("CPF da adocao que deseja selecionar: ")
         else:
-            id = input("N° Chip da adocao que deseja selecionar: ")
-        return id
+            identificador = input("N° Chip da adocao que deseja selecionar: ")
+        return identificador
 
     def mostrar_mensagem(self, msg: str):
         print(msg)

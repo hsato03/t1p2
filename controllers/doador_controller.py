@@ -109,6 +109,4 @@ class DoadorController:
             except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
                 self.__tela_doador.mostrar_mensagem(e)
             except ValueError:
-                self.__tela_doador.mostrar_mensagem(
-                    "Somente numeros. Tente novamente."
-                )
+                self.__tela_doador.mostrar_mensagem("Somente numeros. Tente novamente.")

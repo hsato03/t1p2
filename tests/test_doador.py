@@ -93,9 +93,7 @@ class DoadorTest(unittest.TestCase):
             try:
                 self.controlador_doadores.alterar_doador()
             except EntidadeNaoEncontradaException:
-                self.fail(
-                    "Ocorreu um erro ao alterar doador! Entidade nao encontrada."
-                )
+                self.fail("Ocorreu um erro ao alterar doador! Entidade nao encontrada.")
 
         try:
             doador_atualizado = self.controlador_doadores.buscar_doador_por_cpf(
@@ -106,8 +104,10 @@ class DoadorTest(unittest.TestCase):
 
         self.assertEqual(dados_alteracao[1], doador_atualizado.cpf)
         self.assertEqual(dados_alteracao[2], doador_atualizado.nome)
-        self.assertEqual(datetime.strptime(dados_alteracao[3], "%d/%m/%Y").date(),
-                         doador_atualizado.data_nascimento)
+        self.assertEqual(
+            datetime.strptime(dados_alteracao[3], "%d/%m/%Y").date(),
+            doador_atualizado.data_nascimento,
+        )
         self.assertEqual(dados_alteracao[4], doador_atualizado.endereco.logradouro)
         self.assertEqual(dados_alteracao[5], doador_atualizado.endereco.numero)
 
