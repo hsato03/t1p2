@@ -111,7 +111,6 @@ class AdocaoTest(unittest.TestCase):
             with self.assertRaises(StopIteration):
                 self.controlador_adocoes.incluir_adocao()
 
-    # TODO: alterar e excluir
     def test_excluir_adocao_should_work_when_valid_data(self):
         self.incluir_adocao_test(self.adocao_valida)
         dados_exclusao = [TIPO_CPF, cpf]

@@ -42,3 +42,7 @@ possui_animal_invalido = "100"
 termo_assinado = 1
 termo_nao_assinado = 2
 termo_assinado_invalido = 100
+
+# Doacao variables
+motivo = "motivo"
+motivo_atualizado = "motivoAtualizado"
