@@ -102,3 +102,7 @@ class VacinaController:
                 self.__tela_vacina.mostrar_mensagem(
                     "Somente numeros. Tente novamente."
                 )
+
+    @property
+    def tela_vacina(self):
+        return self.__tela_vacina

@@ -1,4 +1,5 @@
 from model.vacina import Vacina
+from datetime import date
 
 
 class HistoricoVacinacao:
@@ -9,5 +10,5 @@ class HistoricoVacinacao:
     def vacinas(self):
         return self.__vacinas
 
-    def add_vacina(self, vacina: Vacina):
-        self.__vacinas.append(vacina)
+    def add_vacina(self, vacina: Vacina, data_aplicacao: date):
+        self.__vacinas.append({"vacina": vacina, "data_aplicacao": data_aplicacao})

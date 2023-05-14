@@ -64,6 +64,7 @@ class AnimalController:
                     "raca": cachorro.raca,
                     "tamanho_cachorro": cachorro.tamanho,
                     "tipo_animal": TIPO_CACHORRO,
+                    "historico_vacinacao": cachorro.historico_vacinacao,
                 }
             )
 
@@ -80,6 +81,7 @@ class AnimalController:
                     "nome": gato.nome,
                     "raca": gato.raca,
                     "tipo_animal": TIPO_GATO,
+                    "historico_vacinacao": gato.historico_vacinacao,
                 }
             )
 
@@ -149,9 +151,9 @@ class AnimalController:
 
     def listar_animal_por_numero_chip(self):
         tipo_animal = self.__tela_animal.telar_opcoes_tipo_animal()
+        numero_chip = self.__tela_animal.selecionar_animal()
 
         if tipo_animal == TIPO_CACHORRO:
-            numero_chip = self.__tela_animal.selecionar_animal()
             cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
 
             dados_animal = {
@@ -160,18 +162,39 @@ class AnimalController:
                 "raca": cachorro.raca,
                 "tamanho_cachorro": cachorro.tamanho,
                 "tipo_animal": TIPO_CACHORRO,
+                "historico_vacinacao": cachorro.historico_vacinacao,
             }
         else:
-            numero_chip = self.__tela_animal.selecionar_animal()
             gato = self.buscar_gato_por_numero_chip(numero_chip)
             dados_animal = {
                 "numero_chip": gato.numero_chip,
                 "nome": gato.nome,
                 "raca": gato.raca,
                 "tipo_animal": TIPO_GATO,
+                "historico_vacinacao": gato.historico_vacinacao,
             }
 
         self.__tela_animal.mostrar_animal(dados_animal)
+
+    def aplicar_vacina_animal(self):
+        tipo_animal = self.__tela_animal.telar_opcoes_tipo_animal()
+
+        if tipo_animal == TIPO_CACHORRO:
+            self.listar_cachorros()
+            numero_chip = self.__tela_animal.selecionar_animal()
+            animal = self.buscar_cachorro_por_numero_chip(numero_chip)
+        else:
+            self.listar_gatos()
+            numero_chip = self.__tela_animal.selecionar_animal()
+            animal = self.buscar_gato_por_numero_chip(numero_chip)
+
+        self.__controlador_sistema.controlador_vacinas.listar_vacinas()
+        identificador = self.__controlador_sistema.controlador_vacinas.tela_vacina.selecionar_vacina()
+        vacina = self.__controlador_sistema.controlador_vacinas.buscar_vacina_por_identificador(identificador)
+
+        data_aplicacao_vacina = self.__tela_animal.pegar_data_aplicacao_vacina()
+
+        animal.historico_vacinacao.add_vacina(vacina, data_aplicacao_vacina)
 
     def retornar(self):
         self.__controlador_sistema.abrir_tela()
@@ -183,6 +206,7 @@ class AnimalController:
             3: self.listar_animais,
             4: self.excluir_animal,
             5: self.listar_animal_por_numero_chip,
+            6: self.aplicar_vacina_animal,
             0: self.retornar,
         }
 

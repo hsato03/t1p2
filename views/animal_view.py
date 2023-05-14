@@ -1,6 +1,6 @@
 from exceptions import OpcaoInvalidaException
 from model import TIPO_CACHORRO
-
+from datetime import datetime
 
 class AnimalView:
     def telar_opcoes(self):
@@ -10,10 +10,11 @@ class AnimalView:
         print("[3] -> Listar Animais")
         print("[4] -> Excluir Animal")
         print("[5] -> Buscar Animal por N° chip")
+        print("[6] -> Aplicar vacina Animal")
         print("[0] -> Retornar")
 
         opcao = int(input("Escolha a opcao: "))
-        if opcao not in range(0, 6):
+        if opcao not in range(0, 7):
             raise OpcaoInvalidaException()
 
         return opcao
@@ -103,6 +104,17 @@ class AnimalView:
 
         return dados_animal
 
+    def pegar_data_aplicacao_vacina(self):
+        while True:
+            try:
+                data_aplicacao = input("Data de aplicacao da vacina (dd/mm/yyyy): ")
+                data_aplicacao_convertida = datetime.strptime(
+                    data_aplicacao, "%d/%m/%Y"
+                ).date()
+                return data_aplicacao_convertida
+            except ValueError:
+                print("ERRO: Data em formato invalido! Tente novamente.")
+
     def mostrar_animal(self, dados_animal: dict):
         print(f"\t- N° CHIP: {dados_animal['numero_chip']}")
         print(f"\t- NOME: {dados_animal['nome']}")
@@ -110,6 +122,14 @@ class AnimalView:
 
         if dados_animal["tipo_animal"] == TIPO_CACHORRO:
             print(f"\t- TAMANHO CACHORRO: {dados_animal['tamanho_cachorro'].name}")
+
+        historico_vacinacao = dados_animal["historico_vacinacao"]
+        if len(historico_vacinacao.vacinas) > 0:
+            print("\t- VACINA(S):")
+            for vacina in historico_vacinacao.vacinas:
+                print(f"\t\t{vacina['vacina'].nome} ({vacina['data_aplicacao'].strftime('%d/%m/%Y')})")
+        else:
+            print("\tNenhuma vacina aplicada")
 
     def selecionar_animal(self):
         numero_chip = input("N° chip do animal que deseja selecionar: ")

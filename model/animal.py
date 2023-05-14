@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from .historico_vacinacao import HistoricoVacinacao
 
 TIPO_CACHORRO = 1
 TIPO_GATO = 2
@@ -10,6 +11,7 @@ class Animal(ABC):
         self.__numero_chip = numero_chip
         self.__nome = nome
         self.__raca = raca
+        self.__historico_vacinacao = HistoricoVacinacao()
 
     @property
     def numero_chip(self):
@@ -34,3 +36,7 @@ class Animal(ABC):
     @raca.setter
     def raca(self, raca: str):
         self.__raca = raca
+
+    @property
+    def historico_vacinacao(self):
+        return self.__historico_vacinacao
