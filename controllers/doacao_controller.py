@@ -8,7 +8,7 @@ class DoacaoController:
     def __init__(self, controlador_sistema):
         self.__doacoes = []
         self.__tela_doacao = DoacaoView()
-        self.__controlador_principal = controlador_sistema
+        self.__controlador_sistema = controlador_sistema
 
     def buscar_doacao_por_identificador(self, identificador: str, tipo_id: int):
         for doacao in self.__doacoes:
@@ -28,16 +28,16 @@ class DoacaoController:
 
         numero_chip = dados_doacao["numero_chip"]
         if tipo_animal == TIPO_CACHORRO:
-            animal = self.__controlador_principal.controlador_animais.buscar_cachorro_por_numero_chip(
+            animal = self.__controlador_sistema.controlador_animais.buscar_cachorro_por_numero_chip(
                 numero_chip
             )
         else:
-            animal = self.__controlador_principal.controlador_animais.buscar_gato_por_numero_chip(
+            animal = self.__controlador_sistema.controlador_animais.buscar_gato_por_numero_chip(
                 numero_chip
             )
 
         doador = (
-            self.__controlador_principal.controlador_doadores.buscar_doador_por_cpf(
+            self.__controlador_sistema.controlador_doadores.buscar_doador_por_cpf(
                 cpf_doador
             )
         )
@@ -64,18 +64,18 @@ class DoacaoController:
 
         cpf_doador = novos_dados_doacao["cpf_doador"]
         doador = (
-            self.__controlador_principal.controlador_doadores.buscar_doador_por_cpf(
+            self.__controlador_sistema.controlador_doadores.buscar_doador_por_cpf(
                 cpf_doador
             )
         )
 
         numero_chip = novos_dados_doacao["numero_chip"]
         if isinstance(doacao.animal, Cachorro):
-            animal = self.__controlador_principal.controlador_animais.buscar_cachorro_por_numero_chip(
+            animal = self.__controlador_sistema.controlador_animais.buscar_cachorro_por_numero_chip(
                 numero_chip
             )
         else:
-            animal = self.__controlador_principal.controlador_animais.buscar_gato_por_numero_chip(
+            animal = self.__controlador_sistema.controlador_animais.buscar_gato_por_numero_chip(
                 numero_chip
             )
 
@@ -155,7 +155,7 @@ class DoacaoController:
                 self.__tela_doacao.mostrar_mensagem("Somente numeros. Tente novamente.")
 
     def retornar(self):
-        self.__controlador_principal.abrir_tela()
+        self.__controlador_sistema.abrir_tela()
 
     def abrir_tela(self):
         lista_opcoes = {

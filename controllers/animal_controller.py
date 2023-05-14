@@ -7,7 +7,7 @@ class AnimalController:
     def __init__(self, controlador_sistema):
         self.__gatos = []
         self.__cachorros = []
-        self.__controlador_principal = controlador_sistema
+        self.__controlador_sistema = controlador_sistema
         self.__tela_animal = AnimalView()
 
     def buscar_gato_por_numero_chip(self, numero_chip: str):
@@ -174,7 +174,7 @@ class AnimalController:
         self.__tela_animal.mostrar_animal(dados_animal)
 
     def retornar(self):
-        self.__controlador_principal.abrir_tela()
+        self.__controlador_sistema.abrir_tela()
 
     def abrir_tela(self):
         lista_opcoes = {

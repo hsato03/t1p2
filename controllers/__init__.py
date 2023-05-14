@@ -3,6 +3,7 @@ from .adotante_controller import AdotanteController
 from .animal_controller import AnimalController
 from .doador_controller import DoadorController
 from .doacao_controller import DoacaoController
+from .vacina_controller import VacinaController
 from .sistema_controller import SistemaController
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     "DoadorController",
     "SistemaController",
     "DoacaoController",
+    "VacinaController",
 ]

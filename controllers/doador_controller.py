@@ -7,7 +7,7 @@ class DoadorController:
     def __init__(self, controlador_sistema):
         self.__doadores = []
         self.__tela_doador = DoadorView()
-        self.__controlador_principal = controlador_sistema
+        self.__controlador_sistema = controlador_sistema
 
     def buscar_doador_por_cpf(self, cpf: str):
         for doador in self.__doadores:
@@ -91,7 +91,7 @@ class DoadorController:
         )
 
     def retornar(self):
-        self.__controlador_principal.abrir_tela()
+        self.__controlador_sistema.abrir_tela()
 
     def abrir_tela(self):
         lista_opcoes = {
