@@ -11,10 +11,11 @@ class AdocaoView:
         print("[4] -> Excluir Adocao")
         print("[5] -> Listar Adocao por id")
         print("[6] -> Listar Animais disponiveis para adocao")
+        print("[7] -> Listar Adocoes por periodo")
         print("[0] -> Retornar")
 
         opcao = int(input("Escolha a opcao: "))
-        if opcao not in range(0, 7):
+        if opcao not in range(0, 8):
             raise OpcaoInvalidaException()
 
         return opcao
@@ -90,6 +91,28 @@ class AdocaoView:
                 return numero_chip
             except ValueError:
                 print("Somente numeros. Tente novamente")
+
+    def pegar_dados_periodo(self):
+        while True:
+            try:
+                data_inicio = input("Data de inicio (dd/mm/yyyy): ")
+                data_inicio_convertida = datetime.strptime(
+                    data_inicio, "%d/%m/%Y"
+                ).date()
+                break
+            except ValueError:
+                print("ERRO: Data em formato invalido! Tente novamente.")
+        while True:
+            try:
+                data_fim = input("Data de fim (dd/mm/yyyy): ")
+                data_fim_convertida = datetime.strptime(
+                    data_fim, "%d/%m/%Y"
+                ).date()
+                break
+            except ValueError:
+                print("ERRO: Data em formato invalido! Tente novamente.")
+
+        return {"data_inicio": data_inicio_convertida, "data_fim": data_fim_convertida}
 
     def mostrar_adocao(self, dados_adocao: dict):
         print("\t - CPF ADOTANTE: ", dados_adocao["cpf_adotante"])

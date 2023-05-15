@@ -133,6 +133,28 @@ class DoacaoController:
             }
         )
 
+    def listar_doacoes_por_periodo(self):
+        contador = 1
+        dados_periodo = self.__tela_doacao.pegar_dados_periodo()
+        data_inicio = dados_periodo["data_inicio"]
+        data_fim = dados_periodo["data_fim"]
+
+        for doacao in self.__doacoes:
+            if data_inicio <= doacao.data <= data_fim:
+                self.__tela_doacao.mostrar_mensagem(f"DOACAO #{contador:02d}")
+                self.__tela_doacao.mostrar_doacao(
+                    {
+                        "cpf_doador": doacao.doador.cpf,
+                        "numero_chip": doacao.animal.numero_chip,
+                        "data": doacao.data,
+                        "motivo": doacao.motivo
+                    }
+                )
+                contador += 1
+
+        if contador == 1:
+            self.__tela_doacao.mostrar_mensagem("Nenhuma doacao encontrada neste periodo")
+
     def verificar_nenhuma_doacao_cadastrada(self):
         if len(self.__doacoes) <= 0:
             self.__tela_doacao.mostrar_mensagem("Nenhuma doacao cadastrada.")
@@ -158,6 +180,7 @@ class DoacaoController:
             3: self.listar_doacoes,
             4: self.excluir_doacao,
             5: self.listar_doacao_por_identificador,
+            6: self.listar_doacoes_por_periodo,
             0: self.retornar,
         }
 

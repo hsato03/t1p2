@@ -143,6 +143,28 @@ class AdocaoController:
     def listar_animais_disponiveis_para_adocao(self):
         self.__controlador_sistema.controlador_animais.listar_animais_disponiveis_para_adocao()
 
+    def listar_adocoes_por_periodo(self):
+        contador = 1
+        dados_periodo = self.__tela_adocao.pegar_dados_periodo()
+        data_inicio = dados_periodo["data_inicio"]
+        data_fim = dados_periodo["data_fim"]
+
+        for adocao in self.__adocoes:
+            if data_inicio <= adocao.data <= data_fim:
+                self.__tela_adocao.mostrar_mensagem(f"ADOCAO #{contador:02d}")
+                self.__tela_adocao.mostrar_adocao(
+                    {
+                        "cpf_adotante": adocao.adotante.cpf,
+                        "numero_chip": adocao.animal.numero_chip,
+                        "data": adocao.data,
+                        "termo_assinado": adocao.termo_assinado
+                    }
+                )
+                contador += 1
+
+        if contador == 1:
+            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao encontrada neste periodo")
+
     def verificar_nenhuma_adocao_cadastrada(self):
         if len(self.__adocoes) <= 0:
             self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
@@ -169,6 +191,7 @@ class AdocaoController:
             4: self.excluir_adocao,
             5: self.listar_adocao_por_identificador,
             6: self.listar_animais_disponiveis_para_adocao,
+            7: self.listar_adocoes_por_periodo,
             0: self.retornar,
         }
 

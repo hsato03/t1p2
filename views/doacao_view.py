@@ -11,10 +11,11 @@ class DoacaoView:
         print("[3] -> Listar Doacoes")
         print("[4] -> Excluir Doacao")
         print("[5] -> Listar Doacao por id")
+        print("[6] -> Listar Doacoes por periodo")
         print("[0] -> Retornar")
 
         opcao = int(input("Escolha a opcao: "))
-        if opcao not in range(0, 6):
+        if opcao not in range(0, 7):
             raise OpcaoInvalidaException()
 
         return opcao
@@ -64,6 +65,28 @@ class DoacaoView:
             "data": data_doacao_convertida,
             "motivo": motivo,
         }
+
+    def pegar_dados_periodo(self):
+        while True:
+            try:
+                data_inicio = input("Data de inicio (dd/mm/yyyy): ")
+                data_inicio_convertida = datetime.strptime(
+                    data_inicio, "%d/%m/%Y"
+                ).date()
+                break
+            except ValueError:
+                print("ERRO: Data em formato invalido! Tente novamente.")
+        while True:
+            try:
+                data_fim = input("Data de fim (dd/mm/yyyy): ")
+                data_fim_convertida = datetime.strptime(
+                    data_fim, "%d/%m/%Y"
+                ).date()
+                break
+            except ValueError:
+                print("ERRO: Data em formato invalido! Tente novamente.")
+
+        return {"data_inicio": data_inicio_convertida, "data_fim": data_fim_convertida}
 
     def pegar_numero_chip(self):
         while True:
