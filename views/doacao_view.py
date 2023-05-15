@@ -79,9 +79,7 @@ class DoacaoView:
         while True:
             try:
                 data_fim = input("Data de fim (dd/mm/yyyy): ")
-                data_fim_convertida = datetime.strptime(
-                    data_fim, "%d/%m/%Y"
-                ).date()
+                data_fim_convertida = datetime.strptime(data_fim, "%d/%m/%Y").date()
                 break
             except ValueError:
                 print("ERRO: Data em formato invalido! Tente novamente.")

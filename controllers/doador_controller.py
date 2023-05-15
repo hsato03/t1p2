@@ -25,7 +25,9 @@ class DoadorController:
 
         self.validar_digitos_cpf(dados_doador["cpf"])
         self.verificar_cpf_doador_ja_cadastrado(dados_doador["cpf"])
-        self.__controlador_sistema.controlador_adotantes.verificar_cpf_adotante_ja_cadastrado(dados_doador["cpf"])
+        self.__controlador_sistema.controlador_adotantes.verificar_cpf_adotante_ja_cadastrado(
+            dados_doador["cpf"]
+        )
 
         doador = Doador(
             dados_doador["cpf"],
@@ -47,8 +49,12 @@ class DoadorController:
         novos_dados_doador = self.__tela_doador.pegar_dados_doador()
 
         self.validar_digitos_cpf(novos_dados_doador["cpf"])
-        self.verificar_cpf_doador_ja_cadastrado(novos_dados_doador["cpf"])
-        self.__controlador_sistema.controlador_adotantes.verificar_cpf_adotante_ja_cadastrado(novos_dados_doador["cpf"])
+
+        if cpf_doador != novos_dados_doador["cpf"]:
+            self.verificar_cpf_doador_ja_cadastrado(novos_dados_doador["cpf"])
+            self.__controlador_sistema.controlador_adotantes.verificar_cpf_adotante_ja_cadastrado(
+                novos_dados_doador["cpf"]
+            )
 
         doador.nome = novos_dados_doador["nome"]
         doador.cpf = novos_dados_doador["cpf"]
@@ -131,7 +137,7 @@ class DoadorController:
                 OpcaoInvalidaException,
                 EntidadeNaoEncontradaException,
                 CpfInvalidoException,
-                IdentificadorJaExistenteException
+                IdentificadorJaExistenteException,
             ) as e:
                 self.__tela_doador.mostrar_mensagem(e)
             except ValueError:

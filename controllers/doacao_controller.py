@@ -147,13 +147,15 @@ class DoacaoController:
                         "cpf_doador": doacao.doador.cpf,
                         "numero_chip": doacao.animal.numero_chip,
                         "data": doacao.data,
-                        "motivo": doacao.motivo
+                        "motivo": doacao.motivo,
                     }
                 )
                 contador += 1
 
         if contador == 1:
-            self.__tela_doacao.mostrar_mensagem("Nenhuma doacao encontrada neste periodo")
+            self.__tela_doacao.mostrar_mensagem(
+                "Nenhuma doacao encontrada neste periodo"
+            )
 
     def verificar_nenhuma_doacao_cadastrada(self):
         if len(self.__doacoes) <= 0:

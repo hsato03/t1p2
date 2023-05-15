@@ -1,6 +1,18 @@
 from views import AdocaoView
-from model import Adocao, Cachorro, TIPO_CACHORRO, TIPO_CPF
-from exceptions import EntidadeNaoEncontradaException, OpcaoInvalidaException
+from model import (
+    Adocao,
+    Cachorro,
+    TIPO_CACHORRO,
+    TIPO_CPF,
+    TamanhoCachorro,
+    TamanhoHabitacao,
+    TipoHabitacao,
+)
+from exceptions import (
+    EntidadeNaoEncontradaException,
+    OpcaoInvalidaException,
+    AdocaoRegraVioladaException,
+)
 from datetime import date
 
 
@@ -25,8 +37,8 @@ class AdocaoController:
         dados_adocao = self.__tela_adocao.pegar_dados_adocao()
 
         cpf_adotante = dados_adocao["cpf_adotante"]
-
         numero_chip = dados_adocao["numero_chip"]
+
         if tipo_animal == TIPO_CACHORRO:
             animal = self.__controlador_sistema.controlador_animais.buscar_cachorro_por_numero_chip(
                 numero_chip
@@ -42,6 +54,8 @@ class AdocaoController:
             )
         )
 
+        self.verificar_regras_adocao(animal, adotante)
+
         adocao = Adocao(
             adotante,
             animal,
@@ -56,7 +70,7 @@ class AdocaoController:
 
         self.listar_adocoes()
 
-        tipo_id = self.get_tipo_id()
+        tipo_id = self.pegar_tipo_id()
 
         identificador = self.__tela_adocao.selecionar_adocao(tipo_id)
         adocao = self.buscar_adocao_por_identificador(identificador, tipo_id)
@@ -79,6 +93,8 @@ class AdocaoController:
             animal = self.__controlador_sistema.controlador_animais.buscar_gato_por_numero_chip(
                 numero_chip
             )
+
+        self.verificar_regras_adocao(animal, adotante)
 
         adocao.adotante = adotante
         adocao.animal = animal
@@ -107,7 +123,7 @@ class AdocaoController:
 
         self.listar_adocoes()
 
-        tipo_id = self.get_tipo_id()
+        tipo_id = self.pegar_tipo_id()
 
         identificador = self.__tela_adocao.selecionar_adocao(tipo_id)
         adocao = self.buscar_adocao_por_identificador(identificador, tipo_id)
@@ -157,20 +173,61 @@ class AdocaoController:
                         "cpf_adotante": adocao.adotante.cpf,
                         "numero_chip": adocao.animal.numero_chip,
                         "data": adocao.data,
-                        "termo_assinado": adocao.termo_assinado
+                        "termo_assinado": adocao.termo_assinado,
                     }
                 )
                 contador += 1
 
         if contador == 1:
-            self.__tela_adocao.mostrar_mensagem("Nenhuma adocao encontrada neste periodo")
+            self.__tela_adocao.mostrar_mensagem(
+                "Nenhuma adocao encontrada neste periodo"
+            )
 
     def verificar_nenhuma_adocao_cadastrada(self):
         if len(self.__adocoes) <= 0:
             self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
             return True
 
-    def get_tipo_id(self):
+    def atingiu_maioridade(self, data_nascimento):
+        data_atual = date.today()
+        idade = data_atual.year - data_nascimento.year
+
+        if idade > 18:
+            return True
+
+        if idade == 18:
+            if (data_atual.month, data_atual.day) >= (
+                data_nascimento.month,
+                data_nascimento.day,
+            ):
+                return True
+
+        return False
+
+    def verificar_regras_adocao(self, animal, adotante):
+        if not self.atingiu_maioridade(adotante.data_nascimento):
+            raise AdocaoRegraVioladaException(
+                "É preciso ter mais de 18 anos para adotar um animal."
+            )
+
+        if not self.__controlador_sistema.controlador_animais.possui_todas_vacinas_para_adocao(
+            animal
+        ):
+            raise AdocaoRegraVioladaException(
+                "Animal deve ter as vacinas: raiva, hepatite infecciosa e leptospirose para ser adotado"
+            )
+
+        if isinstance(animal, Cachorro):
+            if (
+                animal.tamanho == TamanhoCachorro.GRANDE
+                and adotante.tipo_habitacao == TipoHabitacao.APARTAMENTO
+                and adotante.tamanho_habitacao == TamanhoHabitacao.PEQUENO
+            ):
+                raise AdocaoRegraVioladaException(
+                    "Adotantes que moram em apartamento pequeno nao podem adotar caes de porte grande"
+                )
+
+    def pegar_tipo_id(self):
         while True:
             try:
                 tipo_id = self.__tela_adocao.telar_opcoes_identificador()
@@ -198,7 +255,7 @@ class AdocaoController:
         while True:
             try:
                 lista_opcoes[self.__tela_adocao.telar_opcoes()]()
-            except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
+            except (OpcaoInvalidaException, EntidadeNaoEncontradaException, AdocaoRegraVioladaException) as e:
                 self.__tela_adocao.mostrar_mensagem(e)
             except ValueError:
                 self.__tela_adocao.mostrar_mensagem("Somente numeros. Tente novamente")

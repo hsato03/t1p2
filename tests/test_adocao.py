@@ -88,19 +88,22 @@ class AdocaoTest(unittest.TestCase):
         self.incluir_adotante_animal_test(
             self.adotante_atualizado, self.animal_atualizado
         )
+        self.incluir_vacinas_necessarias_test()
+        self.aplicar_vacinas_necessarias_test(numero_chip)
+        self.aplicar_vacinas_necessarias_test(numero_chip_atualizado)
 
     def incluir_adotante_animal_test(self, dados_adotante, dados_animal):
         with patch("builtins.input", side_effect=dados_adotante):
             try:
                 self.controlador_sistema.controlador_adotantes.incluir_adotante()
-            except EntidadeNaoEncontradaException:
-                self.fail("Adotante nao encontrado")
+            except StopIteration:
+                self.fail("Ocorreu um erro ao incluir Adotante")
 
         with patch("builtins.input", side_effect=dados_animal):
             try:
                 self.controlador_sistema.controlador_animais.incluir_animal()
-            except EntidadeNaoEncontradaException:
-                self.fail("Animal nao encontrado")
+            except StopIteration:
+                self.fail("Ocorreu um erro ao incluir Animal")
 
     def incluir_adocao_test(self, dados_adocao):
         with patch("builtins.input", side_effect=dados_adocao):
@@ -108,6 +111,36 @@ class AdocaoTest(unittest.TestCase):
                 self.controlador_adocoes.incluir_adocao()
             except StopIteration:
                 self.fail("Ocorreu um erro ao incluir Adocao")
+
+    def incluir_vacinas_necessarias_test(self):
+        leptospirose = [1, "leptospirose"]
+        hepatite = [2, "hepatite infecciosa"]
+        raiva = [3, "raiva"]
+
+        try:
+            with patch("builtins.input", side_effect=leptospirose):
+                self.controlador_sistema.controlador_vacinas.incluir_vacina()
+            with patch("builtins.input", side_effect=hepatite):
+                self.controlador_sistema.controlador_vacinas.incluir_vacina()
+            with patch("builtins.input", side_effect=raiva):
+                self.controlador_sistema.controlador_vacinas.incluir_vacina()
+        except StopIteration:
+            self.fail("Ocorreu um erro ao incluir vacinas")
+
+    def aplicar_vacinas_necessarias_test(self, n_chip):
+        leptospirose = [TIPO_GATO, n_chip, 1, data]
+        hepatite = [TIPO_GATO, n_chip, 2, data]
+        raiva = [TIPO_GATO, n_chip, 3, data]
+
+        try:
+            with patch("builtins.input", side_effect=leptospirose):
+                self.controlador_sistema.controlador_animais.aplicar_vacina_animal()
+            with patch("builtins.input", side_effect=hepatite):
+                self.controlador_sistema.controlador_animais.aplicar_vacina_animal()
+            with patch("builtins.input", side_effect=raiva):
+                self.controlador_sistema.controlador_animais.aplicar_vacina_animal()
+        except StopIteration:
+            self.fail("Ocorreu um erro ao incluir vacinas")
 
     def test_incluir_adocao_should_work_when_valid_data_1(self):
         self.incluir_adocao_test(self.adocao_valida)

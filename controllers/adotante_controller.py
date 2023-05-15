@@ -25,7 +25,9 @@ class AdotanteController:
 
         self.validar_digitos_cpf(dados_adotante["cpf"])
         self.verificar_cpf_adotante_ja_cadastrado(dados_adotante["cpf"])
-        self.__controlador_sistema.controlador_doadores.verificar_cpf_doador_ja_cadastrado(dados_adotante["cpf"])
+        self.__controlador_sistema.controlador_doadores.verificar_cpf_doador_ja_cadastrado(
+            dados_adotante["cpf"]
+        )
 
         adotante = Adotante(
             dados_adotante["cpf"],
@@ -50,8 +52,12 @@ class AdotanteController:
         novos_dados_adotante = self.__tela_adotante.pegar_dados_adotante()
 
         self.validar_digitos_cpf(novos_dados_adotante["cpf"])
-        self.verificar_cpf_adotante_ja_cadastrado(novos_dados_adotante["cpf"])
-        self.__controlador_sistema.controlador_doadores.verificar_cpf_doador_ja_cadastrado(novos_dados_adotante["cpf"])
+
+        if cpf_adotante != novos_dados_adotante["cpf"]:
+            self.verificar_cpf_adotante_ja_cadastrado(novos_dados_adotante["cpf"])
+            self.__controlador_sistema.controlador_doadores.verificar_cpf_doador_ja_cadastrado(
+                novos_dados_adotante["cpf"]
+            )
 
         adotante.nome = novos_dados_adotante["nome"]
         adotante.cpf = novos_dados_adotante["cpf"]
@@ -147,7 +153,7 @@ class AdotanteController:
                 OpcaoInvalidaException,
                 EntidadeNaoEncontradaException,
                 CpfInvalidoException,
-                IdentificadorJaExistenteException
+                IdentificadorJaExistenteException,
             ) as e:
                 self.__tela_adotante.mostrar_mensagem(e)
             except ValueError:
