@@ -80,7 +80,7 @@ class AdotanteController:
 
         for i in range(len(self.__adotantes)):
             adotante = self.__adotantes[i]
-            self.__tela_adotante.mostrar_mensagem(f"ADOTANTE #{i + 1:02d}")
+            self.__tela_adotante.mostrar_mensagem(f"\nADOTANTE #{i + 1:02d}")
             self.__tela_adotante.mostrar_adotante(
                 {
                     "cpf": adotante.cpf,

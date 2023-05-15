@@ -70,7 +70,7 @@ class DoadorController:
 
         for i in range(len(self.__doadores)):
             doador = self.__doadores[i]
-            self.__tela_doador.mostrar_mensagem(f"ADOTANTE #{i + 1:02d}")
+            self.__tela_doador.mostrar_mensagem(f"\nADOTANTE #{i + 1:02d}")
             self.__tela_doador.mostrar_doador(
                 {
                     "cpf": doador.cpf,

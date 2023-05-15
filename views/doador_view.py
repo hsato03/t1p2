@@ -4,7 +4,9 @@ from datetime import datetime
 
 class DoadorView:
     def telar_opcoes(self):
-        print("\n---------- DOADORES ----------")
+        print("\n--------------------------------")
+        print("|           DOADORES           |")
+        print("--------------------------------")
         print("[1] -> Incluir Doador")
         print("[2] -> Alterar Doador")
         print("[3] -> Listar Doadores")

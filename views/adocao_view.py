@@ -4,7 +4,9 @@ from exceptions import OpcaoInvalidaException
 
 class AdocaoView:
     def telar_opcoes(self):
-        print("\n---------- ADOCOES ----------")
+        print("\n---------------------------------")
+        print("|            ADOCOES            |")
+        print("---------------------------------")
         print("[1] -> Incluir Adocao")
         print("[2] -> Alterar Adocao")
         print("[3] -> Listar Adocoes")

@@ -5,7 +5,9 @@ from datetime import datetime
 
 class AnimalView:
     def telar_opcoes(self):
-        print("\n---------- ANIMAIS ----------")
+        print("\n---------------------------------")
+        print("|            ANIMAIS            |")
+        print("---------------------------------")
         print("[1] -> Incluir Animal")
         print("[2] -> Alterar Animal")
         print("[3] -> Listar Animais")

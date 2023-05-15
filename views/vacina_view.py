@@ -4,7 +4,9 @@ from datetime import datetime
 
 class VacinaView:
     def telar_opcoes(self):
-        print("\n---------- DOADORES ----------")
+        print("\n---------------------------------")
+        print("|            VACINAS            |")
+        print("---------------------------------")
         print("[1] -> Incluir Vacina")
         print("[2] -> Alterar Vacina")
         print("[3] -> Listar Vacinas")

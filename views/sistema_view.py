@@ -3,7 +3,9 @@ from exceptions import OpcaoInvalidaException
 
 class SistemaView:
     def telar_opcoes(self):
-        print("\n---------- MENU PRINCIPAL ----------")
+        print("\n--------------------------------")
+        print("|        MENU PRINCIPAL        |")
+        print("--------------------------------")
         print("[1] -> Adotantes")
         print("[2] -> Adocoes")
         print("[3] -> Animais")

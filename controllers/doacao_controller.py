@@ -85,7 +85,7 @@ class DoacaoController:
             return
 
         for i in range(len(self.__doacoes)):
-            self.__tela_doacao.mostrar_mensagem(f"DOACAO #{i + 1:02d}")
+            self.__tela_doacao.mostrar_mensagem(f"\nDOACAO #{i + 1:02d}")
             doacao = self.__doacoes[i]
             self.__tela_doacao.mostrar_doacao(
                 {

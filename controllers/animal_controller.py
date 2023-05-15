@@ -61,7 +61,7 @@ class AnimalController:
 
         for i in range(len(self.__cachorros)):
             cachorro = self.__cachorros[i]
-            self.__tela_animal.mostrar_mensagem(f"CACHORRO #{i + 1:02d}")
+            self.__tela_animal.mostrar_mensagem(f"\nCACHORRO #{i + 1:02d}")
             self.__tela_animal.mostrar_animal(
                 {
                     "numero_chip": cachorro.numero_chip,
@@ -79,7 +79,7 @@ class AnimalController:
 
         for i in range(len(self.__gatos)):
             gato = self.__gatos[i]
-            self.__tela_animal.mostrar_mensagem(f"GATO #{i + 1:02d}")
+            self.__tela_animal.mostrar_mensagem(f"\nGATO #{i + 1:02d}")
             self.__tela_animal.mostrar_animal(
                 {
                     "numero_chip": gato.numero_chip,

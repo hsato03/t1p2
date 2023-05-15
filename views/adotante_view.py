@@ -4,7 +4,9 @@ from datetime import datetime
 
 class AdotanteView:
     def telar_opcoes(self):
-        print("\n---------- ADOTANTES ----------")
+        print("\n---------------------------------")
+        print("|           ADOTANTES           |")
+        print("---------------------------------")
         print("[1] -> Incluir Adotante")
         print("[2] -> Alterar Adotante")
         print("[3] -> Listar Adotantes")

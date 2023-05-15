@@ -62,6 +62,7 @@ class AdocaoController:
             dados_adocao["data"],
             True if dados_adocao["termo_assinado"] == 1 else False,
         )
+        adotante.possui_animal = True
         self.__adocoes.append(adocao)
 
     def alterar_adocao(self):
@@ -106,7 +107,7 @@ class AdocaoController:
             return
 
         for i in range(len(self.__adocoes)):
-            self.__tela_adocao.mostrar_mensagem(f"ADOCAO #{i + 1:02d}")
+            self.__tela_adocao.mostrar_mensagem(f"\nADOCAO #{i + 1:02d}")
             adocao = self.__adocoes[i]
             self.__tela_adocao.mostrar_adocao(
                 {
@@ -226,6 +227,10 @@ class AdocaoController:
                 raise AdocaoRegraVioladaException(
                     "Adotantes que moram em apartamento pequeno nao podem adotar caes de porte grande"
                 )
+
+        for adocao in self.__adocoes:
+            if adocao.animal.numero_chip == animal.numero_chip:
+                raise AdocaoRegraVioladaException(f"Animal {animal.nome} ({animal.numero_chip}) ja foi adotado")
 
     def pegar_tipo_id(self):
         while True:

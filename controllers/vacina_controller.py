@@ -45,7 +45,7 @@ class VacinaController:
 
         for i in range(len(self.__vacinas)):
             vacina = self.__vacinas[i]
-            self.__tela_vacina.mostrar_mensagem(f"VACINA #{i + 1:02d}")
+            self.__tela_vacina.mostrar_mensagem(f"\nVACINA #{i + 1:02d}")
             self.__tela_vacina.mostrar_vacina(
                 {
                     "identificador": vacina.identificador,

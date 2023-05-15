@@ -5,7 +5,9 @@ from exceptions import OpcaoInvalidaException
 
 class DoacaoView:
     def telar_opcoes(self):
-        print("\n---------- DOACOES ----------")
+        print("\n---------------------------------")
+        print("|            DOACOES            |")
+        print("---------------------------------")
         print("[1] -> Incluir Doacao")
         print("[2] -> Alterar Doacao")
         print("[3] -> Listar Doacoes")
