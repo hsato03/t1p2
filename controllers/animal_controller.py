@@ -1,6 +1,10 @@
 from views import AnimalView
 from model import Cachorro, TamanhoCachorro, Gato, TIPO_CACHORRO, TIPO_GATO
-from exceptions import EntidadeNaoEncontradaException, OpcaoInvalidaException
+from exceptions import (
+    EntidadeNaoEncontradaException,
+    OpcaoInvalidaException,
+    IdentificadorJaExistenteException,
+)
 
 
 class AnimalController:
@@ -24,6 +28,7 @@ class AnimalController:
 
     def incluir_animal(self):
         dados_animal = self.__tela_animal.pegar_dados_animal()
+        self.verificar_numero_chip_ja_existente(dados_animal["numero_chip"])
 
         if dados_animal["tipo_animal"] == TIPO_CACHORRO:
             cachorro = Cachorro(
@@ -101,19 +106,21 @@ class AnimalController:
 
             self.alterar_gato(numero_chip)
 
-    def alterar_cachorro(self, numero_chip: str):
+    def alterar_cachorro(self, numero_chip: int):
         cachorro = self.buscar_cachorro_por_numero_chip(numero_chip)
         dados_novos_cachorro = self.__tela_animal.pegar_dados_animal_alterar(
             TIPO_CACHORRO
         )
+        self.verificar_numero_chip_ja_existente(dados_novos_cachorro["numero_chip"])
         cachorro.numero_chip = dados_novos_cachorro["numero_chip"]
         cachorro.nome = dados_novos_cachorro["nome"]
         cachorro.raca = dados_novos_cachorro["raca"]
         cachorro.tamanho = TamanhoCachorro(dados_novos_cachorro["tamanho_cachorro"])
 
-    def alterar_gato(self, numero_chip: str):
+    def alterar_gato(self, numero_chip: int):
         gato = self.buscar_gato_por_numero_chip(numero_chip)
         dados_novos_gato = self.__tela_animal.pegar_dados_animal_alterar(TIPO_GATO)
+        self.verificar_numero_chip_ja_existente(dados_novos_gato["numero_chip"])
         gato.numero_chip = dados_novos_gato["numero_chip"]
         gato.nome = dados_novos_gato["nome"]
         gato.raca = dados_novos_gato["raca"]
@@ -189,12 +196,72 @@ class AnimalController:
             animal = self.buscar_gato_por_numero_chip(numero_chip)
 
         self.__controlador_sistema.controlador_vacinas.listar_vacinas()
-        identificador = self.__controlador_sistema.controlador_vacinas.tela_vacina.selecionar_vacina()
-        vacina = self.__controlador_sistema.controlador_vacinas.buscar_vacina_por_identificador(identificador)
+        identificador = (
+            self.__controlador_sistema.controlador_vacinas.tela_vacina.selecionar_vacina()
+        )
+        vacina = self.__controlador_sistema.controlador_vacinas.buscar_vacina_por_identificador(
+            identificador
+        )
 
         data_aplicacao_vacina = self.__tela_animal.pegar_data_aplicacao_vacina()
 
         animal.historico_vacinacao.add_vacina(vacina, data_aplicacao_vacina)
+
+    def listar_animais_disponiveis_para_adocao(self):
+        contador = 1
+        for gato in self.__gatos:
+            if self.possui_todas_vacinas_para_adocao(gato):
+                self.__tela_animal.mostrar_mensagem(f"ANIMAL #{contador:02d}")
+                self.__tela_animal.mostrar_animal(
+                    {
+                        "numero_chip": gato.numero_chip,
+                        "nome": gato.nome,
+                        "raca": gato.raca,
+                        "tipo_animal": TIPO_GATO,
+                        "historico_vacinacao": gato.historico_vacinacao,
+                    }
+                )
+                contador += 1
+
+        for cachorro in self.__cachorros:
+            if self.possui_todas_vacinas_para_adocao(cachorro):
+                self.__tela_animal.mostrar_mensagem(f"ANIMAL #{contador:02d}")
+                self.__tela_animal.mostrar_animal(
+                    {
+                        "numero_chip": cachorro.numero_chip,
+                        "nome": cachorro.nome,
+                        "raca": cachorro.raca,
+                        "tamanho_cachorro": cachorro.tamanho,
+                        "tipo_animal": TIPO_CACHORRO,
+                        "historico_vacinacao": cachorro.historico_vacinacao,
+                    }
+                )
+                contador += 1
+        if contador == 1:
+            self.__tela_animal.mostrar_mensagem("Nenhum animal disponivel para adocao.")
+
+    def possui_todas_vacinas_para_adocao(self, animal):
+        leptospirose = False
+        hepatite = False
+        raiva = False
+        for vacina in animal.historico_vacinacao.vacinas:
+            if vacina["vacina"].nome == "raiva":
+                raiva = True
+            elif vacina["vacina"].nome == "leptospirose":
+                leptospirose = True
+            elif vacina["vacina"].nome == "hepatite infecciosa":
+                hepatite = True
+        if leptospirose and hepatite and raiva:
+            return True
+        return False
+
+    def verificar_numero_chip_ja_existente(self, numero_chip: int):
+        for gato in self.__gatos:
+            if gato.numero_chip == numero_chip:
+                raise IdentificadorJaExistenteException(numero_chip)
+        for cachorro in self.__cachorros:
+            if cachorro.numero_chip == numero_chip:
+                raise IdentificadorJaExistenteException(numero_chip)
 
     def retornar(self):
         self.__controlador_sistema.abrir_tela()
@@ -213,5 +280,9 @@ class AnimalController:
         while True:
             try:
                 lista_opcoes[self.__tela_animal.telar_opcoes()]()
-            except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
+            except (
+                OpcaoInvalidaException,
+                EntidadeNaoEncontradaException,
+                IdentificadorJaExistenteException,
+            ) as e:
                 self.__tela_animal.mostrar_mensagem(e)

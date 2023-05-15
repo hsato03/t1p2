@@ -9,7 +9,7 @@ class VacinaView:
         print("[2] -> Alterar Vacina")
         print("[3] -> Listar Vacinas")
         print("[4] -> Excluir Vacina")
-        print("[5] -> Buscar Vacina por CPF")
+        print("[5] -> Buscar Vacina por ID")
         print("[0] -> Retornar")
 
         opcao = int(input("Escolha a opcao: "))
@@ -33,7 +33,7 @@ class VacinaView:
 
     def mostrar_vacina(self, dados_vacina: dict):
         print("\t- ID:", dados_vacina["identificador"])
-        print("\t- NOME:", dados_vacina["nome"])
+        print("\t- NOME:", dados_vacina["nome"].lower())
 
     def selecionar_vacina(self):
         try:

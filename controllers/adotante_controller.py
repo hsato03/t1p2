@@ -1,6 +1,11 @@
 from views import AdotanteView
 from model import Adotante, TipoHabitacao, TamanhoHabitacao
-from exceptions import EntidadeNaoEncontradaException, OpcaoInvalidaException
+from exceptions import (
+    EntidadeNaoEncontradaException,
+    OpcaoInvalidaException,
+    CpfInvalidoException,
+    IdentificadorJaExistenteException,
+)
 
 
 class AdotanteController:
@@ -17,6 +22,10 @@ class AdotanteController:
 
     def incluir_adotante(self):
         dados_adotante = self.__tela_adotante.pegar_dados_adotante()
+
+        self.validar_digitos_cpf(dados_adotante["cpf"])
+        self.verificar_cpf_adotante_ja_cadastrado(dados_adotante["cpf"])
+        self.__controlador_sistema.controlador_doadores.verificar_cpf_doador_ja_cadastrado(dados_adotante["cpf"])
 
         adotante = Adotante(
             dados_adotante["cpf"],
@@ -39,6 +48,10 @@ class AdotanteController:
         cpf_adotante = self.__tela_adotante.selecionar_adotante()
         adotante = self.buscar_adotante_por_cpf(cpf_adotante)
         novos_dados_adotante = self.__tela_adotante.pegar_dados_adotante()
+
+        self.validar_digitos_cpf(novos_dados_adotante["cpf"])
+        self.verificar_cpf_adotante_ja_cadastrado(novos_dados_adotante["cpf"])
+        self.__controlador_sistema.controlador_doadores.verificar_cpf_doador_ja_cadastrado(novos_dados_adotante["cpf"])
 
         adotante.nome = novos_dados_adotante["nome"]
         adotante.cpf = novos_dados_adotante["cpf"]
@@ -106,6 +119,14 @@ class AdotanteController:
             }
         )
 
+    def verificar_cpf_adotante_ja_cadastrado(self, cpf: str):
+        for adotante in self.__adotantes:
+            if adotante.cpf == cpf:
+                raise IdentificadorJaExistenteException(cpf)
+
+    def validar_digitos_cpf(self, cpf):
+        int(cpf)
+
     def retornar(self):
         self.__controlador_sistema.abrir_tela()
 
@@ -122,7 +143,12 @@ class AdotanteController:
         while True:
             try:
                 lista_opcoes[self.__tela_adotante.telar_opcoes()]()
-            except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
+            except (
+                OpcaoInvalidaException,
+                EntidadeNaoEncontradaException,
+                CpfInvalidoException,
+                IdentificadorJaExistenteException
+            ) as e:
                 self.__tela_adotante.mostrar_mensagem(e)
             except ValueError:
                 self.__tela_adotante.mostrar_mensagem(

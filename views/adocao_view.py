@@ -10,10 +10,11 @@ class AdocaoView:
         print("[3] -> Listar Adocoes")
         print("[4] -> Excluir Adocao")
         print("[5] -> Listar Adocao por id")
+        print("[6] -> Listar Animais disponiveis para adocao")
         print("[0] -> Retornar")
 
         opcao = int(input("Escolha a opcao: "))
-        if opcao not in range(0, 6):
+        if opcao not in range(0, 7):
             raise OpcaoInvalidaException()
 
         return opcao
@@ -102,7 +103,9 @@ class AdocaoView:
         else:
             while True:
                 try:
-                    identificador = int(input("N° Chip da doacao que deseja selecionar: "))
+                    identificador = int(
+                        input("N° Chip da doacao que deseja selecionar: ")
+                    )
                     break
                 except ValueError:
                     print("Somente numeros. Tente novamente")

@@ -4,13 +4,14 @@ import unittest
 from unittest.mock import patch
 from datetime import datetime
 from tests.test_variables import *
-from controllers import AdotanteController
-from exceptions import EntidadeNaoEncontradaException
+from controllers import AdotanteController, SistemaController
+from exceptions import EntidadeNaoEncontradaException, CpfInvalidoException
 
 
 class AdotanteTest(unittest.TestCase):
     def setUp(self):
-        self.controlador_adotantes = AdotanteController(None)
+        self.controlador_sistema = SistemaController()
+        self.controlador_adotantes = AdotanteController(self.controlador_sistema)
 
         self.adotante_valido = [
             cpf,
@@ -164,7 +165,7 @@ class AdotanteTest(unittest.TestCase):
     ):
         self.incluir_adotante_test(self.adotante_valido)
 
-        with self.assertRaises(EntidadeNaoEncontradaException):
+        with self.assertRaises(CpfInvalidoException):
             sys.stdin = io.StringIO(cpf_invalido)
             self.controlador_adotantes.excluir_adotante()
 
@@ -220,7 +221,7 @@ class AdotanteTest(unittest.TestCase):
     ):
         self.incluir_adotante_test(self.adotante_valido)
 
-        with self.assertRaises(EntidadeNaoEncontradaException):
+        with self.assertRaises(CpfInvalidoException):
             sys.stdin = io.StringIO(cpf_invalido)
             self.controlador_adotantes.alterar_adotante()
 
@@ -230,7 +231,7 @@ class AdotanteTest(unittest.TestCase):
         self.incluir_adotante_test(self.adotante_valido)
 
         with patch(
-            "builtins.input", side_effect=self.adotante_data_nascimento_invalida
+            "builtins.input", side_effect=[cpf] + self.adotante_data_nascimento_invalida
         ):
             with self.assertRaises(TypeError):
                 self.controlador_adotantes.alterar_adotante()

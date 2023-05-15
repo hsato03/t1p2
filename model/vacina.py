@@ -1,5 +1,3 @@
-
-
 class Vacina:
     def __init__(self, identificador: int, nome: str):
         self.__nome = nome

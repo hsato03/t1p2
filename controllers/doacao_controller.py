@@ -36,10 +36,8 @@ class DoacaoController:
                 numero_chip
             )
 
-        doador = (
-            self.__controlador_sistema.controlador_doadores.buscar_doador_por_cpf(
-                cpf_doador
-            )
+        doador = self.__controlador_sistema.controlador_doadores.buscar_doador_por_cpf(
+            cpf_doador
         )
 
         doacao = Doacao(
@@ -63,10 +61,8 @@ class DoacaoController:
         novos_dados_doacao = self.__tela_doacao.pegar_dados_doacao()
 
         cpf_doador = novos_dados_doacao["cpf_doador"]
-        doador = (
-            self.__controlador_sistema.controlador_doadores.buscar_doador_por_cpf(
-                cpf_doador
-            )
+        doador = self.__controlador_sistema.controlador_doadores.buscar_doador_por_cpf(
+            cpf_doador
         )
 
         numero_chip = novos_dados_doacao["numero_chip"]

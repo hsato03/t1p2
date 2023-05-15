@@ -140,6 +140,9 @@ class AdocaoController:
             }
         )
 
+    def listar_animais_disponiveis_para_adocao(self):
+        self.__controlador_sistema.controlador_animais.listar_animais_disponiveis_para_adocao()
+
     def verificar_nenhuma_adocao_cadastrada(self):
         if len(self.__adocoes) <= 0:
             self.__tela_adocao.mostrar_mensagem("Nenhuma adocao cadastrada.")
@@ -165,6 +168,7 @@ class AdocaoController:
             3: self.listar_adocoes,
             4: self.excluir_adocao,
             5: self.listar_adocao_por_identificador,
+            6: self.listar_animais_disponiveis_para_adocao,
             0: self.retornar,
         }
 

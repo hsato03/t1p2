@@ -99,9 +99,7 @@ class VacinaController:
             except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
                 self.__tela_vacina.mostrar_mensagem(e)
             except ValueError:
-                self.__tela_vacina.mostrar_mensagem(
-                    "Somente numeros. Tente novamente."
-                )
+                self.__tela_vacina.mostrar_mensagem("Somente numeros. Tente novamente.")
 
     @property
     def tela_vacina(self):

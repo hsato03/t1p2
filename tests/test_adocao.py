@@ -14,13 +14,36 @@ class AdocaoTest(unittest.TestCase):
 
         self.adocao_valida = [TIPO_GATO, cpf, numero_chip, data, termo_assinado]
 
-        self.adocao_atualizada = [cpf_atualizado, numero_chip_atualizado, data, termo_assinado]
+        self.adocao_atualizada = [
+            cpf_atualizado,
+            numero_chip_atualizado,
+            data,
+            termo_assinado,
+        ]
 
-        self.adocao_adotante_invalido = [TIPO_GATO, cpf_invalido, numero_chip, data, termo_assinado]
+        self.adocao_adotante_invalido = [
+            TIPO_GATO,
+            cpf_invalido,
+            numero_chip,
+            data,
+            termo_assinado,
+        ]
 
-        self.adocao_animal_invalido = [TIPO_GATO, cpf, numero_chip_invalido, data, termo_assinado]
+        self.adocao_animal_invalido = [
+            TIPO_GATO,
+            cpf,
+            numero_chip_invalido,
+            data,
+            termo_assinado,
+        ]
 
-        self.adocao_termo_assinado_invalido = [TIPO_GATO, cpf, numero_chip, data, termo_assinado_invalido]
+        self.adocao_termo_assinado_invalido = [
+            TIPO_GATO,
+            cpf,
+            numero_chip,
+            data,
+            termo_assinado_invalido,
+        ]
 
         self.adotante_valido = [
             cpf,
@@ -62,7 +85,9 @@ class AdocaoTest(unittest.TestCase):
         self.animal_atualizado = [numero_chip_atualizado, nome, tipo_gato, raca]
 
         self.incluir_adotante_animal_test(self.adotante_valido, self.animal_valido)
-        self.incluir_adotante_animal_test(self.adotante_atualizado, self.animal_atualizado)
+        self.incluir_adotante_animal_test(
+            self.adotante_atualizado, self.animal_atualizado
+        )
 
     def incluir_adotante_animal_test(self, dados_adotante, dados_animal):
         with patch("builtins.input", side_effect=dados_adotante):
@@ -144,7 +169,9 @@ class AdocaoTest(unittest.TestCase):
 
     def test_alterar_adocao_should_work_when_valid_data(self):
         self.incluir_adocao_test(self.adocao_valida)
-        with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_atualizada):
+        with patch(
+            "builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_atualizada
+        ):
             try:
                 self.controlador_adocoes.alterar_adocao()
             except EntidadeNaoEncontradaException:
@@ -165,21 +192,29 @@ class AdocaoTest(unittest.TestCase):
     def test_alterar_adocao_should_raise_execption_when_cpf_invalido(self):
         self.incluir_adocao_test(self.adocao_valida)
         self.adocao_adotante_invalido.pop(0)
-        with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_adotante_invalido):
+        with patch(
+            "builtins.input",
+            side_effect=[TIPO_CPF, cpf] + self.adocao_adotante_invalido,
+        ):
             with self.assertRaises(EntidadeNaoEncontradaException):
                 self.controlador_adocoes.alterar_adocao()
 
     def test_alterar_adocao_should_raise_execption_when_numero_chip_invalido(self):
         self.incluir_adocao_test(self.adocao_valida)
         self.adocao_animal_invalido.pop(0)
-        with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_animal_invalido):
+        with patch(
+            "builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_animal_invalido
+        ):
             with self.assertRaises(EntidadeNaoEncontradaException):
                 self.controlador_adocoes.alterar_adocao()
 
     def test_alterar_adocao_should_raise_exception_when_termo_assinado_invalido(self):
         self.incluir_adocao_test(self.adocao_valida)
         self.adocao_termo_assinado_invalido.pop(0)
-        with patch("builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_termo_assinado_invalido):
+        with patch(
+            "builtins.input",
+            side_effect=[TIPO_CPF, cpf] + self.adocao_termo_assinado_invalido,
+        ):
             with self.assertRaises(StopIteration):
                 self.controlador_adocoes.alterar_adocao()
 

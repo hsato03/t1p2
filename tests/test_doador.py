@@ -4,13 +4,14 @@ import unittest
 from unittest.mock import patch
 from datetime import datetime
 from tests.test_variables import *
-from controllers import DoadorController
-from exceptions import EntidadeNaoEncontradaException
+from controllers import DoadorController, SistemaController
+from exceptions import EntidadeNaoEncontradaException, CpfInvalidoException
 
 
 class DoadorTest(unittest.TestCase):
     def setUp(self):
-        self.controlador_doadores = DoadorController(None)
+        self.controlador_sistema = SistemaController()
+        self.controlador_doadores = DoadorController(self.controlador_sistema)
 
         self.doador_valido = [
             cpf,
@@ -62,7 +63,7 @@ class DoadorTest(unittest.TestCase):
     ):
         self.incluir_doador_test(self.doador_valido)
 
-        with self.assertRaises(EntidadeNaoEncontradaException):
+        with self.assertRaises(CpfInvalidoException):
             sys.stdin = io.StringIO(cpf_invalido)
             self.controlador_doadores.excluir_doador()
 
@@ -105,13 +106,15 @@ class DoadorTest(unittest.TestCase):
     ):
         self.incluir_doador_test(self.doador_valido)
 
-        with self.assertRaises(EntidadeNaoEncontradaException):
+        with self.assertRaises(CpfInvalidoException):
             sys.stdin = io.StringIO(cpf_invalido)
             self.controlador_doadores.alterar_doador()
 
     def test_alterar_doador_should_throw_exception_when_data_nascimento_invalida(self):
         self.incluir_doador_test(self.doador_valido)
 
-        with patch("builtins.input", side_effect=self.doador_data_nascimento_invalida):
+        with patch(
+            "builtins.input", side_effect=[cpf] + self.doador_data_nascimento_invalida
+        ):
             with self.assertRaises(StopIteration):
                 self.controlador_doadores.alterar_doador()

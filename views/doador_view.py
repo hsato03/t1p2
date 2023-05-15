@@ -1,4 +1,4 @@
-from exceptions import OpcaoInvalidaException
+from exceptions import OpcaoInvalidaException, CpfInvalidoException
 from datetime import datetime
 
 
@@ -21,6 +21,8 @@ class DoadorView:
     def pegar_dados_doador(self):
         print("\n-------- DADOS DOADOR ----------")
         cpf = input("CPF: ")
+        if not self.validar_cpf(cpf):
+            raise CpfInvalidoException(cpf)
         nome = input("Nome: ")
         while True:
             try:
@@ -53,10 +55,14 @@ class DoadorView:
         )
         print(f"\t- ENDERECO: {dados_doador['endereco']}\n")
 
-    # fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado
+    def validar_cpf(self, cpf: str):
+        return len(cpf) == 11
+
     def selecionar_doador(self):
         cpf = input("CPF do doador que deseja selecionar: ")
-        return cpf
+        if self.validar_cpf(cpf):
+            return cpf
+        raise CpfInvalidoException(cpf)
 
     def mostrar_mensagem(self, msg: str):
         print(msg)

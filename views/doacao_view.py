@@ -85,7 +85,9 @@ class DoacaoView:
         else:
             while True:
                 try:
-                    identificador = int(input("N° Chip da doacao que deseja selecionar: "))
+                    identificador = int(
+                        input("N° Chip da doacao que deseja selecionar: ")
+                    )
                     break
                 except ValueError:
                     print("Somente numeros. Tente novamente")

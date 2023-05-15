@@ -2,6 +2,7 @@ from exceptions import OpcaoInvalidaException
 from model import TIPO_CACHORRO
 from datetime import datetime
 
+
 class AnimalView:
     def telar_opcoes(self):
         print("\n---------- ANIMAIS ----------")
@@ -135,7 +136,9 @@ class AnimalView:
         if len(historico_vacinacao.vacinas) > 0:
             print("\t- VACINA(S):")
             for vacina in historico_vacinacao.vacinas:
-                print(f"\t\t{vacina['vacina'].nome} ({vacina['data_aplicacao'].strftime('%d/%m/%Y')})")
+                print(
+                    f"\t\t+ {vacina['vacina'].nome} ({vacina['data_aplicacao'].strftime('%d/%m/%Y')})"
+                )
         else:
             print("\tNenhuma vacina aplicada")
 

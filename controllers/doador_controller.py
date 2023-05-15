@@ -1,4 +1,9 @@
-from exceptions import OpcaoInvalidaException, EntidadeNaoEncontradaException
+from exceptions import (
+    OpcaoInvalidaException,
+    EntidadeNaoEncontradaException,
+    CpfInvalidoException,
+    IdentificadorJaExistenteException,
+)
 from views import DoadorView
 from model import Doador
 
@@ -18,6 +23,10 @@ class DoadorController:
     def incluir_doador(self):
         dados_doador = self.__tela_doador.pegar_dados_doador()
 
+        self.validar_digitos_cpf(dados_doador["cpf"])
+        self.verificar_cpf_doador_ja_cadastrado(dados_doador["cpf"])
+        self.__controlador_sistema.controlador_adotantes.verificar_cpf_adotante_ja_cadastrado(dados_doador["cpf"])
+
         doador = Doador(
             dados_doador["cpf"],
             dados_doador["nome"],
@@ -36,6 +45,10 @@ class DoadorController:
         cpf_doador = self.__tela_doador.selecionar_doador()
         doador = self.buscar_doador_por_cpf(cpf_doador)
         novos_dados_doador = self.__tela_doador.pegar_dados_doador()
+
+        self.validar_digitos_cpf(novos_dados_doador["cpf"])
+        self.verificar_cpf_doador_ja_cadastrado(novos_dados_doador["cpf"])
+        self.__controlador_sistema.controlador_adotantes.verificar_cpf_adotante_ja_cadastrado(novos_dados_doador["cpf"])
 
         doador.nome = novos_dados_doador["nome"]
         doador.cpf = novos_dados_doador["cpf"]
@@ -90,6 +103,14 @@ class DoadorController:
             }
         )
 
+    def verificar_cpf_doador_ja_cadastrado(self, cpf: str):
+        for doador in self.__doadores:
+            if doador.cpf == cpf:
+                raise IdentificadorJaExistenteException(cpf)
+
+    def validar_digitos_cpf(self, cpf):
+        int(cpf)
+
     def retornar(self):
         self.__controlador_sistema.abrir_tela()
 
@@ -106,7 +127,12 @@ class DoadorController:
         while True:
             try:
                 lista_opcoes[self.__tela_doador.telar_opcoes()]()
-            except (OpcaoInvalidaException, EntidadeNaoEncontradaException) as e:
+            except (
+                OpcaoInvalidaException,
+                EntidadeNaoEncontradaException,
+                CpfInvalidoException,
+                IdentificadorJaExistenteException
+            ) as e:
                 self.__tela_doador.mostrar_mensagem(e)
             except ValueError:
                 self.__tela_doador.mostrar_mensagem("Somente numeros. Tente novamente.")
