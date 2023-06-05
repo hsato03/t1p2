@@ -55,10 +55,11 @@ class AdocaoView:
 
         return opcao
 
-    def pegar_dados_adocao(self):
+    def pegar_dados_adocao(self, criacao):
         print("\n-------- DADOS ADOCAO ----------")
-        cpf_adotante = input("CPF (adotante): ")
-        numero_chip = self.pegar_numero_chip()
+        if criacao:
+            cpf_adotante = input("CPF (adotante): ")
+            numero_chip = self.pegar_numero_chip()
 
         while True:
             try:
@@ -79,9 +80,14 @@ class AdocaoView:
             except ValueError:
                 print("Somente numeros. Tente novamente.")
 
+        if criacao:
+            return {
+                "cpf_adotante": cpf_adotante,
+                "numero_chip": numero_chip,
+                "data": data_adocao_convertida,
+                "termo_assinado": termo_assinado,
+            }
         return {
-            "cpf_adotante": cpf_adotante,
-            "numero_chip": numero_chip,
             "data": data_adocao_convertida,
             "termo_assinado": termo_assinado,
         }

@@ -131,7 +131,7 @@ class DoacaoTest(unittest.TestCase):
     def test_alterar_doacao_should_work_when_valid_data(self):
         self.incluir_doacao_test(self.doacao_valida)
         with patch(
-            "builtins.input", side_effect=[TIPO_CPF, cpf] + self.doacao_atualizada
+            "builtins.input", side_effect=[TIPO_CPF, cpf, data_atualizada, motivo_atualizado]
         ):
             try:
                 self.controlador_doacoes.alterar_doacao()
@@ -141,32 +141,14 @@ class DoacaoTest(unittest.TestCase):
         try:
             adoacao_atualizada = (
                 self.controlador_doacoes.buscar_doacao_por_identificador(
-                    cpf_atualizado, TIPO_CPF
+                    cpf, TIPO_CPF
                 )
             )
         except EntidadeNaoEncontradaException:
             self.fail("Doacao nao alterada.")
 
-        self.assertEqual(cpf_atualizado, adoacao_atualizada.doador.cpf)
-        self.assertEqual(numero_chip_atualizado, adoacao_atualizada.animal.numero_chip)
-
-    def test_alterar_doacao_should_raise_execption_when_cpf_invalido(self):
-        self.incluir_doacao_test(self.doacao_valida)
-        self.doacao_doador_invalido.pop(0)
-        with patch(
-            "builtins.input", side_effect=[TIPO_CPF, cpf] + self.doacao_doador_invalido
-        ):
-            with self.assertRaises(EntidadeNaoEncontradaException):
-                self.controlador_doacoes.alterar_doacao()
-
-    def test_alterar_doacao_should_raise_execption_when_numero_chip_invalido(self):
-        self.incluir_doacao_test(self.doacao_valida)
-        self.doacao_animal_invalido.pop(0)
-        with patch(
-            "builtins.input", side_effect=[TIPO_CPF, cpf] + self.doacao_animal_invalido
-        ):
-            with self.assertRaises(EntidadeNaoEncontradaException):
-                self.controlador_doacoes.alterar_doacao()
+        self.assertNotEqual(data, adoacao_atualizada.data)
+        self.assertNotEqual(motivo, adoacao_atualizada.motivo)
 
     def test_alterar_doacao_should_raise_exception_when_tipo_id_invalido(self):
         self.incluir_doacao_test(self.doacao_valida)

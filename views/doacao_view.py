@@ -44,10 +44,12 @@ class DoacaoView:
 
         return opcao
 
-    def pegar_dados_doacao(self):
+    def pegar_dados_doacao(self, criacao):
         print("\n-------- DADOS DOACAO ----------")
-        cpf_doador = input("CPF (doador): ")
-        numero_chip = self.pegar_numero_chip()
+
+        if criacao:
+            cpf_doador = input("CPF (doador): ")
+            numero_chip = self.pegar_numero_chip()
 
         while True:
             try:
@@ -61,9 +63,14 @@ class DoacaoView:
 
         motivo = input("Motivo: ")
 
+        if criacao:
+            return {
+                "cpf_doador": cpf_doador,
+                "numero_chip": numero_chip,
+                "data": data_doacao_convertida,
+                "motivo": motivo,
+            }
         return {
-            "cpf_doador": cpf_doador,
-            "numero_chip": numero_chip,
             "data": data_doacao_convertida,
             "motivo": motivo,
         }

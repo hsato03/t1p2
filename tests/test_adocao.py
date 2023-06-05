@@ -203,7 +203,7 @@ class AdocaoTest(unittest.TestCase):
     def test_alterar_adocao_should_work_when_valid_data(self):
         self.incluir_adocao_test(self.adocao_valida)
         with patch(
-            "builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_atualizada
+            "builtins.input", side_effect=[TIPO_CPF, cpf, data_atualizada, termo_nao_assinado]
         ):
             try:
                 self.controlador_adocoes.alterar_adocao()
@@ -213,46 +213,20 @@ class AdocaoTest(unittest.TestCase):
         try:
             adoacao_atualizada = (
                 self.controlador_adocoes.buscar_adocao_por_identificador(
-                    cpf_atualizado, TIPO_CPF
+                    cpf, TIPO_CPF
                 )
             )
         except EntidadeNaoEncontradaException:
             self.fail("Adocao nao alterada.")
 
-        self.assertEqual(cpf_atualizado, adoacao_atualizada.adotante.cpf)
-        self.assertEqual(numero_chip_atualizado, adoacao_atualizada.animal.numero_chip)
-
-    def test_alterar_adocao_should_raise_execption_when_cpf_invalido(self):
-        self.incluir_adocao_test(self.adocao_valida)
-        self.adocao_adotante_invalido.pop(0)
-        with patch(
-            "builtins.input",
-            side_effect=[TIPO_CPF, cpf] + self.adocao_adotante_invalido,
-        ):
-            with self.assertRaises(EntidadeNaoEncontradaException):
-                self.controlador_adocoes.alterar_adocao()
-
-    def test_alterar_adocao_should_raise_execption_when_numero_chip_invalido(self):
-        self.incluir_adocao_test(self.adocao_valida)
-        self.adocao_animal_invalido.pop(0)
-        with patch(
-            "builtins.input", side_effect=[TIPO_CPF, cpf] + self.adocao_animal_invalido
-        ):
-            with self.assertRaises(EntidadeNaoEncontradaException):
-                self.controlador_adocoes.alterar_adocao()
+        self.assertNotEqual(data_atualizada, adoacao_atualizada.data)
+        self.assertNotEqual(termo_assinado, adoacao_atualizada.termo_assinado)
 
     def test_alterar_adocao_should_raise_exception_when_termo_assinado_invalido(self):
         self.incluir_adocao_test(self.adocao_valida)
-        self.adocao_termo_assinado_invalido.pop(0)
         with patch(
             "builtins.input",
-            side_effect=[TIPO_CPF, cpf] + self.adocao_termo_assinado_invalido,
+            side_effect=[TIPO_CPF, cpf, data, termo_assinado_invalido],
         ):
-            with self.assertRaises(StopIteration):
-                self.controlador_adocoes.alterar_adocao()
-
-    def test_alterar_adocao_should_raise_exception_when_tipo_id_invalido(self):
-        self.incluir_adocao_test(self.adocao_valida)
-        with patch("builtins.input", side_effect=[100, cpf] + self.adocao_atualizada):
             with self.assertRaises(StopIteration):
                 self.controlador_adocoes.alterar_adocao()

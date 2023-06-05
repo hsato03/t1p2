@@ -22,7 +22,7 @@ class DoacaoController:
 
     def incluir_doacao(self):
         tipo_animal = self.__tela_doacao.telar_opcoes_tipo_animal()
-        dados_doacao = self.__tela_doacao.pegar_dados_doacao()
+        dados_doacao = self.__tela_doacao.pegar_dados_doacao(criacao=True)
 
         cpf_doador = dados_doacao["cpf_doador"]
 
@@ -58,25 +58,8 @@ class DoacaoController:
 
         identificador = self.__tela_doacao.selecionar_doacao(tipo_id)
         doacao = self.buscar_doacao_por_identificador(identificador, tipo_id)
-        novos_dados_doacao = self.__tela_doacao.pegar_dados_doacao()
+        novos_dados_doacao = self.__tela_doacao.pegar_dados_doacao(criacao=False)
 
-        cpf_doador = novos_dados_doacao["cpf_doador"]
-        doador = self.__controlador_sistema.controlador_doadores.buscar_doador_por_cpf(
-            cpf_doador
-        )
-
-        numero_chip = novos_dados_doacao["numero_chip"]
-        if isinstance(doacao.animal, Cachorro):
-            animal = self.__controlador_sistema.controlador_animais.buscar_cachorro_por_numero_chip(
-                numero_chip
-            )
-        else:
-            animal = self.__controlador_sistema.controlador_animais.buscar_gato_por_numero_chip(
-                numero_chip
-            )
-
-        doacao.doador = doador
-        doacao.animal = animal
         doacao.data = novos_dados_doacao["data"]
         doacao.motivo = novos_dados_doacao["motivo"]
 
